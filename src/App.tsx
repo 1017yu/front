@@ -4,7 +4,8 @@ import Container from '@/components/ui/Container';
 import Select from '@/components/ui/Seletct';
 import TextInput from '@/components/ui/TextInput';
 import Toggle from '@/components/ui/Toggle';
-import LoadingSpinner from './components/ui/LoadingSpinner';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Modal from '@/components/ui/Modal';
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
             ]}
             value=""
           />
+          <Modal />
         </div>
       </Container>
     </>
