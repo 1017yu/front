@@ -11,3 +11,4 @@
 1. export default functional component
 1. @ alias
 1. text 색은 기본(검정색), sub-text & border 색은 gray-400
+1. yarn(x) npm(o)
