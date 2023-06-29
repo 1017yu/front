@@ -7,6 +7,7 @@ export default {
         primary: '#845EC2',
         secondary: '#B39CD0',
         accent: '#00C9A7',
+        subTextAndBorder: '#9ca3af',
       },
     },
   },
