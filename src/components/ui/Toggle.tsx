@@ -1,15 +1,17 @@
-import { useState } from 'react';
 import { Switch } from '@headlessui/react';
 
-export default function Toggle() {
-  const [enabled, setEnabled] = useState(false);
+interface ToggleProps {
+  enabled: boolean;
+  onToggle: () => void;
+}
 
+export default function Toggle({ enabled, onToggle }: ToggleProps) {
   return (
     <Switch
       checked={enabled}
-      onChange={setEnabled}
+      onChange={onToggle}
       className={`${
-        enabled ? 'bg-accent' : 'bg-gray-400'
+        enabled ? 'bg-accent' : 'bg-subTextAndBorder'
       } relative inline-flex h-6 w-11 items-center rounded-full`}
     >
       <span

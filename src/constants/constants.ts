@@ -1,18 +1,18 @@
 export const NAV_ITEMS = [
   {
     label: '팝업스토어',
-    href: '/',
+    href: '/store',
   },
   {
     label: '공간찾기',
-    href: '/',
+    href: '/search',
   },
   {
     label: '임차대행',
-    href: '/',
+    href: '/rent',
   },
   {
     label: '프로모션대행',
-    href: '/',
+    href: '/promotion',
   },
 ];
