@@ -22,7 +22,7 @@ export default function Select({
         value={value}
         name={name}
         onChange={onChange}
-        className="block w-full appearance-none rounded-md border-2 border-subTextAndBorder px-3 py-2 transition focus:border-accent focus:outline-none"
+        className="block h-12 w-full appearance-none rounded-md border-2 border-subTextAndBorder px-3 py-2 transition focus:border-accent focus:outline-none"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
