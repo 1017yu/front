@@ -44,7 +44,7 @@ export default function Login() {
   return (
     <Container>
       <div className="flex items-center py-32">
-        <div className="login_bg absolute right-0 -z-10  h-[500px] w-full opacity-30" />
+        <div className="login_bg absolute right-0 z-10 h-[500px] w-full opacity-30" />
         <div className="w-3/5">
           <h1 className="text-3xl font-bold text-accent">반가워요!</h1>
           <p className="mt-4 text-xl leading-relaxed">
@@ -55,7 +55,7 @@ export default function Login() {
           </p>
         </div>
         <form
-          className="mt-10 flex w-full  flex-col gap-4 rounded-lg bg-gray-100 p-8 md:ml-auto md:mt-0 md:w-1/2 lg:w-2/6"
+          className="z-20 mt-10 flex w-full flex-col gap-4 rounded-lg bg-white p-8 md:ml-auto md:mt-0 md:w-1/2 lg:w-2/6"
           onSubmit={handleLogin}
         >
           <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function Login() {
           </div>
           <div>
             <p className="mt-3 text-xs text-subTextAndBorder">
-              아직 회원가입을 하지 않으셨나요?{' '}
+              아직 회원이 아니신가요?{' '}
               <Link to="/signup" className="transition hover:text-black">
                 회원가입
               </Link>
