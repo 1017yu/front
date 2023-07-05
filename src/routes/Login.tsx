@@ -75,7 +75,7 @@ export default function Login() {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <form
-        className="flex w-5/6 flex-col gap-4 rounded-lg bg-white p-5 sm:w-1/2 sm:p-8"
+        className="flex w-5/6 flex-col gap-4 rounded-lg bg-white p-5 sm:w-[600px] sm:p-8"
         onSubmit={handleLogin}
       >
         <div className="mx-auto w-32">
