@@ -16,3 +16,18 @@ export const NAV_ITEMS = [
     href: '/promotion',
   },
 ];
+
+export const ADMIN_NAV_ITEMS = [
+  {
+    label: 'menu 1',
+    href: '/admin',
+  },
+  {
+    label: 'menu 2',
+    href: '/admin',
+  },
+  {
+    label: '수요조사',
+    href: '/admin/survey',
+  },
+];

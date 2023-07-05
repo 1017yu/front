@@ -18,6 +18,10 @@ export default function Navbar() {
       </div>
       <div>
         <ul className="flex gap-2">
+          {/* 관리자 메뉴 임시 생성 */}
+          <li>
+            <Link to="/admin/survey">관리자</Link>
+          </li>
           <li>
             <Link to="/login">로그인</Link>
           </li>

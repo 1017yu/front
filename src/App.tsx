@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import AdminLayout from '@/components/AdminLayout';
+import AdminSurvey from '@/routes/admin/AdminSurvey';
 import Home from '@/routes/Home';
 import NotFound from '@/routes/NotFound';
 import Login from './routes/Login';
@@ -19,6 +21,9 @@ export default function App() {
       </Route>
       {/* 회원가입은 Navbar, Footer 없이 */}
       <Route path="/signup" element={<SignUp />} />
+      <Route element={<AdminLayout />}>
+        <Route path="/admin/survey" element={<AdminSurvey />} />
+      </Route>
     </Routes>
   );
 }
