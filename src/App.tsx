@@ -11,14 +11,14 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
 
         <Route path="/auth/kakao/callback" element={<Kakao />} />
         <Route path="/signup" element={<SignUp />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
       </Route>
-      {/* 회원가입은 Navbar, Footer 없이 */}
+      {/* 로그인 회원가입은 Navbar, Footer 없이 */}
+      <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
     </Routes>
   );
