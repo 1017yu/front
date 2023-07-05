@@ -28,3 +28,7 @@
     transform: rotate(360deg);
   }
 }
+
+.login_bg {
+  background-image: url('/public/login.jpg');
+}

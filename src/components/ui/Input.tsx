@@ -23,7 +23,7 @@ export default function Input({
       <input
         name={name}
         id={label}
-        className="block h-12 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 outline-none transition focus:border-accent"
+        className="mt-1 block h-12 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 outline-none transition focus:border-accent"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
