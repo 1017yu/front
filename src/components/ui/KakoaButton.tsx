@@ -17,7 +17,7 @@ export default function KakoaButton({ disabled }: KakoaButtonProps) {
       >
         <div className="flex items-center gap-2">
           <RiKakaoTalkFill size={20} />
-          <span>카카오로 로그인 하기</span>
+          <span>카카오 로그인 하기</span>
         </div>
       </button>
     </a>

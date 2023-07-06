@@ -10,6 +10,9 @@ export default {
         accent: '#00C9A7',
         subTextAndBorder: '#9ca3af',
       },
+      gridTemplateColumns: {
+        surveyItems: '2fr 1fr 1fr 120px 50px',
+      },
     },
   },
   plugins: [],

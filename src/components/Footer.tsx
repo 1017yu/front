@@ -1,8 +1,10 @@
+import Popple from '@/components/ui/Popple';
+
 export default function Footer() {
   return (
     <footer className="body-font text-gray-400">
       <div className="container mx-auto flex flex-col items-center border-t px-10 py-3 sm:flex-row">
-        <img src="/popple.jpg" alt="popple" className="h-8" />
+        <Popple />
         <p className="mt-4 text-sm text-subTextAndBorder sm:ml-4 sm:mt-0 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:pl-4">
           <span className="ml-1 text-gray-400" rel="noopener noreferrer">
             © 2023 POPPLE @FASTSIDE
