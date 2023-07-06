@@ -4,7 +4,6 @@ import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Modal from '@/components/ui/Modal';
 import Select from '@/components/ui/Seletct';
-import Toggle from '@/components/ui/Toggle';
 
 export default function Home() {
   return (
@@ -40,7 +39,6 @@ export default function Home() {
           placeholder="email"
           value="email"
         />
-        <Toggle />
         <Select
           name="place"
           onChange={() => {

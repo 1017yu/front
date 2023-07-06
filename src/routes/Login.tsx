@@ -1,18 +1,21 @@
 import Button from '@/components/ui/Button';
-import Container from '@/components/ui/Container';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Title from '@/components/ui/Title';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
+import Popple from '@/components/ui/Popple';
+import { EMAIL_REGEX } from '@/constants/constants';
+import ValidationMessage from '@/components/ui/ValidationMessage';
 
 export default function Login() {
-  const navigate = useNavigate();
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isSeller, setIsSeller] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [loginInput, setLoginInput] = useState({ email: '', password: '' });
+  const [message, setMessage] = useState('');
 
   const handleToggle = () => {
     setIsSeller((prev) => !prev);
@@ -28,6 +31,34 @@ export default function Login() {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // 이전 타임아웃 초기화
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+
+    // 이메일, 비번 입력안한경우
+    if (!loginInput.email.trim() || !loginInput.password.trim()) {
+      setMessage('이메일과 비밀번호를 입력해주세요');
+      const id = setTimeout(() => {
+        setMessage('');
+      }, 2000);
+      setTimeoutId(id);
+      return;
+    }
+
+    // 이메일 형식 옳지 않은 경우
+    if (!EMAIL_REGEX.test(loginInput.email)) {
+      setMessage('유효한 이메일 형식이 아닙니다');
+      const id = setTimeout(() => {
+        setMessage('');
+      }, 2000);
+      setTimeoutId(id);
+      return;
+    }
+
+    // 통신 시작
     setIsSending(true);
     try {
       setTimeout(() => {
@@ -42,70 +73,62 @@ export default function Login() {
   };
 
   return (
-    <Container>
-      <div className="flex items-center py-32">
-        <div className="login_bg absolute right-0 z-10 h-[500px] w-full opacity-30" />
-        <div className="w-3/5">
-          <h1 className="text-3xl font-bold text-accent">반가워요!</h1>
-          <p className="mt-4 text-xl leading-relaxed">
-            포플 피플 퍼플 Lorem ipsum dolor sit amet, consectetur adipisicing
-            elit. Alias recusandae saepe labore eaque officiis excepturi nobis,
-            voluptatum velit fugiat voluptas magnam molestias natus voluptate
-            eligendi tenetur ratione vitae error! Voluptas.{' '}
+    <div className="flex h-screen items-center justify-center bg-gray-100">
+      <form
+        className="flex w-5/6 flex-col gap-4 rounded-lg bg-white p-5 sm:w-[600px] sm:p-8"
+        onSubmit={handleLogin}
+      >
+        <div className="mx-auto w-32">
+          <Popple />
+        </div>
+        <div className="flex items-center justify-between">
+          <Title text="로그인" />
+          <div className="flex items-center gap-2">
+            <span>판매자</span>
+            <Toggle enabled={isSeller} onToggle={handleToggle} />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Input
+            name="email"
+            label="이메일"
+            onChange={handleChange}
+            placeholder="example@email.com"
+            value={loginInput.email}
+          />
+          <Input
+            name="password"
+            label="비밀번호"
+            onChange={handleChange}
+            value={loginInput.password}
+            type="password"
+          />
+        </div>
+        <ValidationMessage message={message} />
+        <div className="flex flex-col gap-2">
+          <Button
+            contents={isSending ? <LoadingSpinner color="white" /> : '로그인'}
+            submit
+            disabled={isSending}
+          />
+
+          <KakoaButton disabled={isSeller} />
+        </div>
+        <div>
+          <p className="mt-3 text-xs text-subTextAndBorder">
+            아직 회원이 아니신가요?{' '}
+            <Link to="/signup" className="transition hover:text-black">
+              회원가입
+            </Link>
+          </p>
+          <p className="mt-3 text-xs text-subTextAndBorder">
+            비밀번호를 잊으셨나요?{' '}
+            <Link to="/findpassword" className="transition hover:text-black">
+              비밀번호 찾기
+            </Link>
           </p>
         </div>
-        <form
-          className="z-20 mt-10 flex w-full flex-col gap-4 rounded-lg bg-white p-8 md:ml-auto md:mt-0 md:w-1/2 lg:w-2/6"
-          onSubmit={handleLogin}
-        >
-          <div className="flex items-center justify-between">
-            <Title text="로그인" />
-            <div className="flex items-center gap-2">
-              <span>판매자</span>
-              <Toggle enabled={isSeller} onToggle={handleToggle} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Input
-              name="email"
-              label="이메일"
-              onChange={handleChange}
-              placeholder="example@email.com"
-              value={loginInput.email}
-            />
-            <Input
-              name="password"
-              label="비밀번호"
-              onChange={handleChange}
-              value={loginInput.password}
-              type="password"
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Button
-              contents={isSending ? <LoadingSpinner color="white" /> : '로그인'}
-              submit
-              disabled={isSending}
-            />
-
-            <KakoaButton disabled={isSeller} />
-          </div>
-          <div>
-            <p className="mt-3 text-xs text-subTextAndBorder">
-              아직 회원이 아니신가요?{' '}
-              <Link to="/signup" className="transition hover:text-black">
-                회원가입
-              </Link>
-            </p>
-            <p className="mt-3 text-xs text-subTextAndBorder">
-              비밀번호를 잊으셨나요?{' '}
-              <Link to="/findpassword" className="transition hover:text-black">
-                비밀번호 찾기
-              </Link>
-            </p>
-          </div>
-        </form>
-      </div>
-    </Container>
+      </form>
+    </div>
   );
 }
