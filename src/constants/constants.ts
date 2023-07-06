@@ -17,6 +17,22 @@ export const NAV_ITEMS = [
   },
 ];
 
+export const ADMIN_NAV_ITEMS = [
+  {
+    label: 'menu 1',
+    href: '/admin',
+  },
+  {
+    label: 'menu 2',
+    href: '/admin',
+  },
+  {
+    label: '수요조사',
+    href: '/admin/survey',
+  },
+];
+
 // 이메일 유효성 정규식
 export const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
