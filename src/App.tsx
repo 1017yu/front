@@ -15,7 +15,6 @@ export default function App() {
         <Route path="/" element={<Home />} />
 
         <Route path="/auth/kakao/callback" element={<Kakao />} />
-        <Route path="/signup" element={<SignUp />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
       </Route>
