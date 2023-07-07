@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
-import { EMAIL_REGEX } from '@/constants/constants';
+import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
 
 export default function Login() {

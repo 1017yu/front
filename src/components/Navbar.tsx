@@ -1,4 +1,4 @@
-import { NAV_ITEMS } from '@/constants/constants';
+import { NAV_ITEMS } from '@/data/constants';
 import { Link } from 'react-router-dom';
 import Popple from './ui/Popple';
 

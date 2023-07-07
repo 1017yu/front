@@ -36,3 +36,5 @@ export const ADMIN_NAV_ITEMS = [
 export const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
+// 비밀번호 8자리 이상
+export const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
