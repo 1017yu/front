@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
 import IAdminSurvey from '@/types/IAdminSurvey';
@@ -24,7 +25,9 @@ const AdminSurvey = () => {
     <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
       <h1 className="text-3xl font-medium">수요조사 관리</h1>
       <div className="h-9 w-[200px] self-end">
-        <Button contents={'수요조사 등록하기'} />
+        <Link to="/admin/survey/detail">
+          <Button contents={'수요조사 등록하기'} />
+        </Link>
       </div>
 
       {/* 수요조사 목록 */}
