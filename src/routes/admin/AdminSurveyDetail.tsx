@@ -12,7 +12,7 @@ interface DateValueType {
 }
 const AdminSurveyDetail = () => {
   const [title, setTitle] = useState<string>('');
-  const [value, setValue] = useState<DateValueType | null>({
+  const [surveyDate, setSurveyDate] = useState<DateValueType | null>({
     startDate: null,
     endDate: null,
   });
@@ -20,7 +20,7 @@ const AdminSurveyDetail = () => {
   const [answerList, setAnswerList] = useState<string[]>([]);
 
   const handleValueChange = (newDate: DateValueType | null) => {
-    setValue(newDate);
+    setSurveyDate(newDate);
   };
 
   const handleAnswerAddClick = () => {
@@ -35,7 +35,15 @@ const AdminSurveyDetail = () => {
   };
 
   const handleClickSurveyAdd = () => {
-    console.log('수요조사 등록 클릭');
+    const request = {
+      title: title,
+      startDate: surveyDate?.startDate,
+      endDate: surveyDate?.endDate,
+      options: answerList.map((answer) => {
+        return { content: answer };
+      }),
+    };
+    console.log(request);
   };
 
   const today = new Date();
@@ -64,7 +72,7 @@ const AdminSurveyDetail = () => {
               }
               primaryColor={'teal'}
               startFrom={today}
-              value={value}
+              value={surveyDate}
               onChange={handleValueChange}
             />
           </label>
@@ -78,6 +86,11 @@ const AdminSurveyDetail = () => {
                   setAnswer(e.target.value);
                 }}
                 placeholder="선택지를 입력 후 추가 버튼을 클릭하세요."
+                onKeyUp={(e) => {
+                  if (e.key === 'Enter') {
+                    handleAnswerAddClick();
+                  }
+                }}
                 value={answer}
               />
             </div>
