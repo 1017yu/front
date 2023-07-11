@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
-import { EMAIL_REGEX } from '@/constants/constants';
+import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
 
 export default function Login() {
@@ -73,9 +73,9 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
+    <div className="flex h-screen items-center justify-center bg-slate-100">
       <form
-        className="flex w-5/6 flex-col gap-4 rounded-lg bg-white p-5 sm:w-[600px] sm:p-8"
+        className="flex w-5/6 flex-col gap-4 rounded-md bg-white p-5 sm:w-[600px] sm:p-8"
         onSubmit={handleLogin}
       >
         <div className="mx-auto w-32">

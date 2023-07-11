@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 interface InputProps {
   placeholder?: string;
   value: string;
@@ -16,14 +17,17 @@ export default function Input({
   name,
 }: InputProps) {
   return (
-    <div>
-      <label className="text-subTextAndBorder" htmlFor={label}>
+    <div className="w-full">
+      <label
+        className="text-xs text-subTextAndBorder sm:text-base"
+        htmlFor={label}
+      >
         {label}
       </label>
       <input
         name={name}
         id={label}
-        className="mt-1 block h-12 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 outline-none transition focus:border-accent"
+        className="mt-1 block h-10 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 text-xs outline-none transition focus:border-accent sm:h-12 sm:text-base"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
