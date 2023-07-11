@@ -7,15 +7,15 @@ const dummySurveyItems: IAdminSurvey[] = [
   {
     id: 1,
     title: '수요조사 1번',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '2023-05-11',
+    endDate: '2023-06-11',
     status: 'REVERT',
   },
   {
     id: 2,
     title: '수요조사 2번',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '2023-07-11',
+    endDate: '2023-08-11',
     status: 'INPROGRESS',
   },
 ];
