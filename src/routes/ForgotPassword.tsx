@@ -54,7 +54,7 @@ export default function ForgotPassword() {
           <Popple />
         </div>
         <Title text="비밀번호를 잊으셨나요?" />
-        <p className="text-subTextAndBorder dark:text-gray-400">
+        <p className="text-sm text-subTextAndBorder dark:text-gray-400">
           이메일을 입력해주시면 <br />
           비밀번호를 재설정하는 링크를 보내드릴게요.
         </p>
