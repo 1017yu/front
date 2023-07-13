@@ -5,7 +5,7 @@ import AdminSurvey from '@/routes/admin/AdminSurvey';
 import AdminSurveyDetail from '@/routes/admin/AdminSurveyDetail';
 import Home from '@/routes/Home';
 import NotFound from '@/routes/NotFound';
-import Login from './routes/Login';
+import Signin from './routes/Signin';
 import SignUp from './routes/SignUp';
 import Kakao from './routes/Kakao';
 
@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/*" element={<NotFound />} />
       </Route>
       {/* 로그인 회원가입은 Navbar, Footer 없이 */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<SignUp />} />
       <Route element={<AdminLayout />}>
         <Route path="/admin/survey" element={<AdminSurvey />} />

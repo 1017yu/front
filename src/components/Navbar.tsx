@@ -23,6 +23,7 @@ export default function Navbar() {
           <li>
             <Link to="/admin/survey">관리자</Link>
           </li>
+
           {user ? (
             <>
               <li className="text-subTextAndBorder">{user.email}님</li>
@@ -41,7 +42,7 @@ export default function Navbar() {
           ) : (
             <>
               <li>
-                <Link to="/login">로그인</Link>
+                <Link to="/signin">로그인</Link>
               </li>
               <li>
                 <Link to="/signup">회원가입</Link>
