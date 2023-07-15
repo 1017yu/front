@@ -3,13 +3,13 @@ export interface ISigninRequestBody {
   password: string;
 }
 
-export interface LocalUser {
+export interface IServerUser {
+  userId: string;
   email: string;
   nickname: string;
   profileImgUrl: string;
   accessToken: string;
   refreshToken: string;
 }
-export interface ServerUser extends LocalUser {
-  userId: number;
-}
+
+export type ILocalUser = Omit<IServerUser, 'userId'>;

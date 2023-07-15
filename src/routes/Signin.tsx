@@ -11,8 +11,8 @@ import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
 import signin from '@/api/auth/signin';
 import { useUser } from '@/hooks/useUser';
-import { LocalUser, ServerUser } from '@/types/ISignin';
 import { toast } from 'react-toastify';
+import { ILocalUser, IServerUser } from '@/types/ISignin';
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -74,8 +74,8 @@ export default function Signin() {
       });
       if (response.status === 200) {
         // nickname이 안옴
-        const serverUserData: ServerUser = response.data.data;
-        const localUserData: LocalUser = {
+        const serverUserData: IServerUser = response.data.data;
+        const localUserData: ILocalUser = {
           email: serverUserData.email,
           nickname: serverUserData.nickname,
           profileImgUrl: serverUserData.profileImgUrl,
