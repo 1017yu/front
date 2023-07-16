@@ -1,18 +1,23 @@
-import IEvents from '@/types/IEvents';
+import { IEvents } from '@/types/IEvents';
 import { Link } from 'react-router-dom';
 
 function EventLayout({ ...props }: IEvents) {
   return (
-    <Link to={`/events/${props.id}`}>
-      <div className="w-3/8 mb-8 flex flex-col justify-center">
+    <Link to={`/events/${props.id}`} className="mb-8 w-auto">
+      <div className="overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60">
         <img
-          src={props.thumbnail_url ? 'http://via.placeholder.com/360x240' : ''}
-          alt="thumbnail"
+          className=" h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
+          src={props.thumbnail_url ? 'http://via.placeholder.com/640x400' : ''}
+          alt="Thumbnail"
         />
-        <div className="w-3/8 flex h-60 flex-col gap-2 border border-solid border-black p-4">
-          <div className="text-subTextAndBorder">{props.category}</div>
-          <div className="text-4xl">{props.name}</div>
-          <div className="text-2xl">{props.location}</div>
+        <div className="p-6">
+          <h2 className="title-font mb-1 text-xs font-medium tracking-widest text-gray-400">
+            {props.category}
+          </h2>
+          <h1 className="title-font mb-3 text-lg font-medium text-gray-900">
+            {props.name}
+          </h1>
+          <p className="mb-3 leading-relaxed">{props.location}</p>
         </div>
       </div>
     </Link>
