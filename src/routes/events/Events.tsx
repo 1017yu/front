@@ -1,11 +1,11 @@
 import Banner from '@/components/Banner';
-import Container from '@/components/ui/Container';
+import EventList from '@/components/events/EventList';
 
 export default function Events() {
   return (
     <>
       <Banner />
-      <Container>Events</Container>
+      <EventList />
     </>
   );
 }
