@@ -9,15 +9,16 @@ import Login from './routes/Login';
 import SignUp from './routes/SignUp';
 import Kakao from './routes/Kakao';
 import Events from '@/routes/events/Events';
+import Event from '@/routes/events/Event';
 
 export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/events" element={<Events />}>
-          <Route path=":id" element={<Events />} />
-        </Route>
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<Event />} />
+
         <Route path="/auth/kakao/callback" element={<Kakao />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
