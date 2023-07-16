@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   mode: 'jit',
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx}',
+    './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
+  ],
   theme: {
     extend: {
       colors: {

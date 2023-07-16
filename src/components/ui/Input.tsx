@@ -3,6 +3,7 @@ interface InputProps {
   placeholder?: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   type?: string;
   label?: string;
   name: string;
@@ -12,6 +13,7 @@ export default function Input({
   placeholder,
   value,
   onChange,
+  onKeyUp,
   type,
   label,
   name,
@@ -31,6 +33,7 @@ export default function Input({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyUp={onKeyUp}
         type={type}
       />
     </div>
