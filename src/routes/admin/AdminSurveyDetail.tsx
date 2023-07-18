@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import SurveyAnswerTag from '@/components/admin/SurveyAnswerTag';
+import { insertAdminSurvey } from '@/api/admin/adminRequests';
 import Datepicker from 'react-tailwindcss-datepicker';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+
 /**
  * 관리자 수요조사 등록/조회/수정 페이지
  */
+
 interface DateValueType {
   startDate: string | null | Date;
   endDate: string | null | Date;
@@ -18,32 +23,58 @@ const AdminSurveyDetail = () => {
   });
   const [answer, setAnswer] = useState<string>('');
   const [answerList, setAnswerList] = useState<string[]>([]);
+  const [isValid, setIsValid] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsValid(
+      title !== '' &&
+        surveyDate?.startDate !== null &&
+        surveyDate?.endDate !== null &&
+        answerList.length !== 0,
+    );
+  }, [title, surveyDate, answerList]);
 
   const handleValueChange = (newDate: DateValueType | null) => {
     setSurveyDate(newDate);
   };
 
-  const handleAnswerAddClick = () => {
+  const handleAnswerAddClick = useCallback(() => {
     if (answer.trim()) {
-      answerList.push(answer.trim());
+      setAnswerList([...answerList, answer.trim()]);
       setAnswer('');
     }
-  };
+  }, [answerList, answer]);
 
-  const handleDeleteAnswer = (answer: string) => {
-    setAnswerList(answerList.filter((a) => a !== answer));
-  };
+  const handleDeleteAnswer = useCallback(
+    (answer: string) => {
+      setAnswerList(answerList.filter((a) => a !== answer));
+    },
+    [answerList],
+  );
 
   const handleClickSurveyAdd = () => {
-    const request = {
-      title: title,
-      startDate: surveyDate?.startDate,
-      endDate: surveyDate?.endDate,
-      options: answerList.map((answer) => {
-        return { content: answer };
-      }),
-    };
-    console.log(request);
+    if (surveyDate?.startDate && surveyDate.endDate) {
+      const request = {
+        title: title,
+        startDate: surveyDate.startDate.toString(),
+        endDate: surveyDate.endDate.toString(),
+        options: answerList.map((answer) => {
+          return { content: answer };
+        }),
+      };
+
+      try {
+        insertAdminSurvey(request).then((res) => {
+          // TODO : 등록 성공 모달
+          // navigate(-1);
+        });
+      } catch (error) {
+        // TODO : 예외처리 에러 모달
+      }
+    }
+    navigate(-1);
   };
 
   const today = new Date();
@@ -73,7 +104,9 @@ const AdminSurveyDetail = () => {
               primaryColor={'teal'}
               startFrom={today}
               value={surveyDate}
+              readOnly={true}
               onChange={handleValueChange}
+              minDate={moment().add(1, 'day').toDate()}
             />
           </label>
 
@@ -114,7 +147,11 @@ const AdminSurveyDetail = () => {
           </ul>
 
           <div className="mt-10 min-w-[120px] self-end">
-            <Button onClick={handleClickSurveyAdd} contents={'등록하기'} />
+            <Button
+              onClick={handleClickSurveyAdd}
+              contents={'등록하기'}
+              disabled={!isValid}
+            />
           </div>
         </div>
       </form>
