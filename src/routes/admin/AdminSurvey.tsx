@@ -23,7 +23,7 @@ const dummySurveyItems: IAdminSurvey[] = [
 const AdminSurvey = () => {
   return (
     <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
-      <h1 className="text-3xl font-medium">수요조사 관리</h1>
+      <h1 className="text-2xl font-bold">수요조사 관리</h1>
       <div className="h-9 w-[200px] self-end">
         <Link to="/admin/survey/detail">
           <Button contents={'수요조사 등록하기'} />

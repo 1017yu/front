@@ -4,7 +4,7 @@ import AdminNav from '@/components/admin/AdminNav';
 
 const AdminLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex flex-col sm:flex-row">
       <AdminNav />
       <Outlet />
     </div>

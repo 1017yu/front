@@ -81,7 +81,7 @@ const AdminSurveyDetail = () => {
 
   return (
     <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
-      <h1 className="text-3xl font-medium">수요조사 등록</h1>
+      <h1 className="text-2xl font-bold">수요조사 등록</h1>
       <form className="mt-10">
         <div className="flex flex-col gap-6">
           <Input
@@ -94,12 +94,15 @@ const AdminSurveyDetail = () => {
             value={title}
           />
 
-          <label className="text-subTextAndBorder" htmlFor="date">
+          <label
+            className="sm:text-baser text-xs text-subTextAndBorder"
+            htmlFor="date"
+          >
             수요조사 기간
             <Datepicker
               i18n={'ko'}
               inputClassName={
-                'mt-1 h-12 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 outline-none transition focus:border-accent'
+                'mt-1 h-12 w-full rounded-md border-2 border-subTextAndBorder px-3 py-2 text-xs outline-none transition focus:border-accent sm:h-12 sm:text-base'
               }
               primaryColor={'teal'}
               startFrom={today}
@@ -110,7 +113,7 @@ const AdminSurveyDetail = () => {
             />
           </label>
 
-          <div className="flex w-[60%] gap-5">
+          <div className="flex gap-5">
             <div className="flex-grow">
               <Input
                 name="answer"
