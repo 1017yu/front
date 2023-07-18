@@ -10,6 +10,7 @@ import SignUp from './routes/SignUp';
 import Kakao from './routes/Kakao';
 import Events from '@/routes/events/Events';
 import Event from '@/routes/events/Event';
+import ForgotPassword from './routes/ForgotPassword';
 
 export default function App() {
   return (
@@ -23,9 +24,10 @@ export default function App() {
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
       </Route>
-      {/* 로그인 회원가입은 Navbar, Footer 없이 */}
+      {/* 로그인, 회원가입은 Navbar, Footer 없이 */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route element={<AdminLayout />}>
         <Route path="/admin/survey" element={<AdminSurvey />} />
         <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />
