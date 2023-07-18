@@ -1,4 +1,3 @@
-import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ADMIN_NAV_ITEMS } from '@/data/constants';
 
@@ -16,7 +15,7 @@ const AdminNav = () => {
           <li
             key={item.label}
             className={`${
-              path === item.href
+              path === item.href || item.children.includes(path)
                 ? 'sm:bg-accent sm:text-white'
                 : 'sm:bg-white sm:text-black'
             } sm:container sm:rounded-lg sm:py-2`}

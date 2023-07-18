@@ -31,11 +31,19 @@ const AdminSurvey = () => {
       </div>
 
       {/* 수요조사 목록 */}
-      <ul className="mt-[70px] grid grid-cols-surveyItems gap-3 border-b border-subTextAndBorder bg-white">
-        <li className="pl-10 text-lg leading-[56px]">제목</li>
-        <li className="text-lg leading-[56px]">조사 시작일</li>
-        <li className="text-lg leading-[56px]">조사 종료일</li>
-        <li className="text-lg leading-[56px]">상태</li>
+      <ul className="mt-[70px] grid grid-cols-smSurveyItems gap-3 border-b border-subTextAndBorder bg-white sm:grid-cols-surveyItems">
+        <li className="pl-5 text-sm leading-[56px] sm:pl-10 sm:text-base sm:leading-[56px]">
+          제목
+        </li>
+        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+          조사 시작일
+        </li>
+        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+          조사 종료일
+        </li>
+        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+          상태
+        </li>
         <li className="mr-[10px] h-[56px] w-10"></li>
       </ul>
 
