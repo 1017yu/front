@@ -8,6 +8,8 @@ import NotFound from '@/routes/NotFound';
 import Login from './routes/Login';
 import SignUp from './routes/SignUp';
 import Kakao from './routes/Kakao';
+import Events from '@/routes/events/Events';
+import Event from '@/routes/events/Event';
 import ForgotPassword from './routes/ForgotPassword';
 
 export default function App() {
@@ -15,6 +17,9 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<Event />} />
+
         <Route path="/auth/kakao/callback" element={<Kakao />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
