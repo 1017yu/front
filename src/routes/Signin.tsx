@@ -159,7 +159,7 @@ export default function Signin() {
           </p>
           <p className="mt-3 text-xs text-subTextAndBorder">
             비밀번호를 잊으셨나요?{' '}
-            <Link to="/findpassword" className="transition hover:text-black">
+            <Link to="/forgotpassword" className="transition hover:text-black">
               비밀번호 찾기
             </Link>
           </p>
