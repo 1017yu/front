@@ -6,6 +6,8 @@ import { insertAdminSurvey } from '@/api/admin/adminRequests';
 import Datepicker from 'react-tailwindcss-datepicker';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/hooks/useModal';
+import { modalData } from '@/data/modalData';
 
 /**
  * 관리자 수요조사 등록/조회/수정 페이지
@@ -16,6 +18,8 @@ interface DateValueType {
   endDate: string | null | Date;
 }
 const AdminSurveyDetail = () => {
+  const { openModal } = useModal();
+
   const [title, setTitle] = useState<string>('');
   const [surveyDate, setSurveyDate] = useState<DateValueType | null>({
     startDate: null,
@@ -66,15 +70,23 @@ const AdminSurveyDetail = () => {
       };
 
       try {
-        insertAdminSurvey(request).then((res) => {
-          // TODO : 등록 성공 모달
-          // navigate(-1);
+        insertAdminSurvey(request).then((_) => {
+          openModal({
+            ...modalData['ADMIN_SURVEY_SUCCESS'],
+            cancelCallback: () => {
+              navigate(-1);
+            },
+          });
         });
       } catch (error) {
-        // TODO : 예외처리 에러 모달
+        openModal({
+          ...modalData['ADMIN_SURVEY_FAILURE'],
+          cancelCallback: () => {
+            navigate(-1);
+          },
+        });
       }
     }
-    navigate(-1);
   };
 
   const today = new Date();
