@@ -3,19 +3,26 @@ import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Title from '@/components/ui/Title';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
 import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
+import signin from '@/api/auth/signin';
+import { useUser } from '@/hooks/useUser';
+import { toast } from 'react-toastify';
+import { ILocalUser, IServerUser } from '@/types/ISignin';
 
-export default function Login() {
+export default function Signin() {
+  const navigate = useNavigate();
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isSeller, setIsSeller] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [loginInput, setLoginInput] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
+
+  const { setUser } = useUser();
 
   const handleToggle = () => {
     setIsSeller((prev) => !prev);
@@ -61,14 +68,43 @@ export default function Login() {
     // 통신 시작
     setIsSending(true);
     try {
-      setTimeout(() => {
-        console.log({ loginInput, isSeller });
-        setIsSending(false);
-      }, 1000);
+      const response = await signin({
+        email: loginInput.email,
+        password: loginInput.password,
+      });
+      if (response.status === 200) {
+        // nickname이 안옴
+        const serverUserData: IServerUser = response.data.data;
+        const localUserData: ILocalUser = {
+          email: serverUserData.email,
+          nickname: serverUserData.nickname,
+          profileImgUrl: serverUserData.profileImgUrl,
+          accessToken: serverUserData.accessToken,
+          refreshToken: serverUserData.refreshToken,
+        };
+        setUser(localUserData);
+        localStorage.setItem('user', JSON.stringify(localUserData));
+        navigate('/');
+        toast.success(`${localUserData.email}님 반가워요🖐️🖐️`, {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
     } catch (error) {
       console.log(error);
+      setMessage('서버로부터 온 메세지!');
+      const id = setTimeout(() => {
+        setMessage('');
+      }, 2000);
+      setTimeoutId(id);
     } finally {
-      // setIsSending(false);
+      setIsSending(false);
     }
   };
 
