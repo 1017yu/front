@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
@@ -7,6 +7,24 @@ import { fetchAdminSurvey } from '@/api/admin/adminRequests';
 
 const AdminSurvey = () => {
   const [surveyList, setSurveyList] = useState<IAdminSurvey[]>([]);
+  const [openMenuID, setOpenMenuID] = useState<number | null>(null);
+
+  const closeMenu = useCallback(() => {
+    setOpenMenuID(null);
+  }, []);
+
+  const onClickMore = useCallback((id: number) => {
+    console.log(id);
+    setOpenMenuID(id);
+  }, []);
+
+  const onClickMenuItem = useCallback((isDelete: boolean) => {
+    if (isDelete) {
+      console.log('삭제 처리 요청');
+      return;
+    }
+    console.log('종료 처리 요청');
+  }, []);
 
   useEffect(() => {
     try {
@@ -19,7 +37,10 @@ const AdminSurvey = () => {
   }, []);
 
   return (
-    <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
+    <div
+      className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10"
+      onClick={closeMenu}
+    >
       <h1 className="text-2xl font-bold">수요조사 관리</h1>
       <div className="h-9 w-[200px] self-end">
         <Link to="/admin/survey/detail">
@@ -46,7 +67,13 @@ const AdminSurvey = () => {
 
       <ul>
         {surveyList.map((item) => (
-          <SurveyItem key={item.id} survey={item} />
+          <SurveyItem
+            key={item.id}
+            survey={item}
+            isOpen={openMenuID === item.id}
+            onClickMore={onClickMore}
+            onClickMenuItem={onClickMenuItem}
+          />
         ))}
       </ul>
     </div>
