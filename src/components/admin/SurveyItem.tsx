@@ -1,6 +1,7 @@
 import React from 'react';
 import IAdminSurvey from '@/types/IAdminSurvey';
 import { AiOutlineMore } from 'react-icons/ai';
+import moment from 'moment';
 const SurveyItem = React.memo(({ survey }: { survey: IAdminSurvey }) => {
   return (
     <li
@@ -10,10 +11,10 @@ const SurveyItem = React.memo(({ survey }: { survey: IAdminSurvey }) => {
         {survey.title}
       </div>
       <div className="text-xs leading-[40px]  sm:text-sm sm:leading-[40px]">
-        {survey.startDate}
+        {moment(survey.startDate).format('YYYY년 MM월 DD일')}
       </div>
       <div className="text-xs leading-[40px]  sm:text-sm sm:leading-[40px]">
-        {survey.endDate}
+        {moment(survey.endDate).format('YYYY년 MM월 DD일')}
       </div>
       <div className="text-xs leading-[40px]  sm:text-sm sm:leading-[40px]">
         {survey.status}

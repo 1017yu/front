@@ -70,7 +70,7 @@ const AdminSurveyDetail = () => {
       };
 
       try {
-        insertAdminSurvey(request).then((_) => {
+        insertAdminSurvey(request).then(() => {
           openModal({
             ...modalData['ADMIN_SURVEY_SUCCESS'],
             cancelCallback: () => {

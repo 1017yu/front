@@ -1,26 +1,23 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
 import IAdminSurvey from '@/types/IAdminSurvey';
-
-const dummySurveyItems: IAdminSurvey[] = [
-  {
-    id: 1,
-    title: '수요조사 1번',
-    startDate: '2023-05-11',
-    endDate: '2023-06-11',
-    status: 'REVERT',
-  },
-  {
-    id: 2,
-    title: '수요조사 2번',
-    startDate: '2023-07-11',
-    endDate: '2023-08-11',
-    status: 'INPROGRESS',
-  },
-];
+import { fetchAdminSurvey } from '@/api/admin/adminRequests';
 
 const AdminSurvey = () => {
+  const [surveyList, setSurveyList] = useState<IAdminSurvey[]>([]);
+
+  useEffect(() => {
+    try {
+      fetchAdminSurvey().then((res) => {
+        setSurveyList(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
       <h1 className="text-2xl font-bold">수요조사 관리</h1>
@@ -48,7 +45,7 @@ const AdminSurvey = () => {
       </ul>
 
       <ul>
-        {dummySurveyItems.map((item) => (
+        {surveyList.map((item) => (
           <SurveyItem key={item.id} survey={item} />
         ))}
       </ul>
