@@ -3,37 +3,70 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
 import IAdminSurvey from '@/types/IAdminSurvey';
-import { fetchAdminSurvey } from '@/api/admin/adminRequests';
-
+import { fetchAdminSurvey, deleteAdminSurvey } from '@/api/admin/adminRequests';
+import { useModal } from '@/hooks/useModal';
+import { modalData } from '@/data/modalData';
 const AdminSurvey = () => {
   const [surveyList, setSurveyList] = useState<IAdminSurvey[]>([]);
   const [openMenuID, setOpenMenuID] = useState<number | null>(null);
+  const { openModal } = useModal();
 
+  // 수요조사 삭제 모달 + 삭제처리
+  const openDeleteModal = useCallback(
+    (surveyId: number) => {
+      openModal({
+        ...modalData.ADMIN_SURVEY_DELETE_CONFIRM,
+        okCallback: () => {
+          deleteAdminSurvey(surveyId).then(
+            () => {
+              getSurveyList();
+            },
+            (error) => {
+              openModal({
+                ...modalData.ADMIN_RESPONSE_ERROR,
+                content: `${error.errorCode} ${error.message}`,
+              });
+            },
+          );
+        },
+      });
+    },
+    [openModal],
+  );
+
+  // 드롭다운 메뉴 닫기
   const closeMenu = useCallback(() => {
     setOpenMenuID(null);
   }, []);
 
+  // 드롭다운 메뉴 오픈
   const onClickMore = useCallback((id: number) => {
-    console.log(id);
     setOpenMenuID(id);
   }, []);
 
-  const onClickMenuItem = useCallback((isDelete: boolean) => {
+  // 삭제, 종료 아이템 클릭 이벤트
+  const onClickMenuItem = useCallback((isDelete: boolean, surveyId: number) => {
     if (isDelete) {
-      console.log('삭제 처리 요청');
+      openDeleteModal(surveyId);
       return;
     }
-    console.log('종료 처리 요청');
+    // 종료 처리
+  }, []);
+
+  // 수요조사 목록 조회
+  const getSurveyList = useCallback(() => {
+    fetchAdminSurvey().then(
+      (res) => {
+        setSurveyList(res.data);
+      },
+      () => {
+        openModal(modalData.ADMIN_SURVEY_FETCH_FAILURE);
+      },
+    );
   }, []);
 
   useEffect(() => {
-    try {
-      fetchAdminSurvey().then((res) => {
-        setSurveyList(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    getSurveyList();
   }, []);
 
   return (
