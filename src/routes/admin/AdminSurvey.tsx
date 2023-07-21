@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
 import IAdminSurvey from '@/types/IAdminSurvey';
@@ -7,6 +7,7 @@ import { fetchAdminSurvey, deleteAdminSurvey } from '@/api/admin/adminRequests';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
 const AdminSurvey = () => {
+  const navigate = useNavigate();
   const [surveyList, setSurveyList] = useState<IAdminSurvey[]>([]);
   const [openMenuID, setOpenMenuID] = useState<number | null>(null);
   const { openModal } = useModal();
@@ -65,6 +66,11 @@ const AdminSurvey = () => {
     );
   }, []);
 
+  // 상세조회로 이동
+  const moveToDetail = useCallback((data: IAdminSurvey) => {
+    navigate('/admin/survey/detail', { state: data });
+  }, []);
+
   useEffect(() => {
     getSurveyList();
   }, []);
@@ -106,6 +112,9 @@ const AdminSurvey = () => {
             isOpen={openMenuID === item.id}
             onClickMore={onClickMore}
             onClickMenuItem={onClickMenuItem}
+            onClickDetails={() => {
+              moveToDetail(item);
+            }}
           />
         ))}
       </ul>

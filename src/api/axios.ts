@@ -18,6 +18,7 @@ apiInstance.interceptors.response.use(
     return response;
   },
   function (error: AxiosError) {
+    // AxiosError에서 서버에서 내려오는 error response만 파싱
     return Promise.reject(error.response?.data);
   },
 );

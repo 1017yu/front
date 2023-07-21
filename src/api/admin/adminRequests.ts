@@ -22,3 +22,11 @@ export const deleteAdminSurvey = async (surveyId: number) => {
   const response = await apiInstance.delete(`/admin/survey/${surveyId}`);
   return response.data;
 };
+
+// * 수요조사 상세 조회
+export const getSurveyDetail = async (
+  surveyId: number,
+): Promise<IResponse<IAdminSurvey>> => {
+  const response = await apiInstance.get(`/admin/survey/${surveyId}`);
+  return response.data as IResponse<IAdminSurvey>;
+};

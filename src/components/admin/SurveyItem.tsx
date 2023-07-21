@@ -9,18 +9,20 @@ type SurveyItemProps = {
   isOpen: boolean;
   onClickMore: (id: number) => void;
   onClickMenuItem: (isDeleteClick: boolean, id: number) => void;
+  onClickDetails: () => void;
 };
 
 const SurveyItem = React.memo(
   ({
     survey,
     isOpen,
-    onClickMore: onClickMenu,
+    onClickMore,
     onClickMenuItem,
+    onClickDetails,
   }: SurveyItemProps) => {
     const handleOnClickMore = (event: React.MouseEvent) => {
       event.stopPropagation();
-      onClickMenu(survey.id);
+      onClickMore(survey.id);
     };
 
     const handleOnClickDelete = () => {
@@ -33,7 +35,8 @@ const SurveyItem = React.memo(
 
     return (
       <li
-        className={`grid grid-cols-smSurveyItems gap-2 border-t border-subTextAndBorder bg-white sm:grid-cols-surveyItems sm:gap-3`}
+        className={`grid cursor-pointer grid-cols-smSurveyItems gap-2 border-t border-subTextAndBorder bg-white sm:grid-cols-surveyItems sm:gap-3`}
+        onClick={onClickDetails}
       >
         <div className="min-h-10 flex items-center pl-5 text-xs sm:pl-10 sm:text-sm">
           {survey.title}
@@ -55,7 +58,7 @@ const SurveyItem = React.memo(
               handleOnClickMore(e);
             }}
           />
-
+          {/* 메뉴 */}
           {isOpen && (
             <ul className="absolute right-0 top-8 z-10 flex w-[150px] flex-col items-start rounded-lg bg-white py-1 drop-shadow">
               <li

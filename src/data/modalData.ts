@@ -34,4 +34,10 @@ export const modalData = {
     content: '',
     cancelButton: '취소',
   },
+  ADMIN_SURVEY_FETCH_DETAIL_FAILURE: {
+    type: 'basic',
+    title: '수요조사 조회',
+    content: '수요조사 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
+    cancelButton: '확인',
+  },
 };

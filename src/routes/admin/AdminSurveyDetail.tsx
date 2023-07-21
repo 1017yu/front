@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import SurveyAnswerTag from '@/components/admin/SurveyAnswerTag';
-import { insertAdminSurvey } from '@/api/admin/adminRequests';
+import { insertAdminSurvey, getSurveyDetail } from '@/api/admin/adminRequests';
 import Datepicker from 'react-tailwindcss-datepicker';
 import moment from 'moment';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
+import IAdminSurvey from '@/types/IAdminSurvey';
 
 /**
  * 관리자 수요조사 등록/조회/수정 페이지
@@ -19,7 +20,7 @@ interface DateValueType {
 }
 const AdminSurveyDetail = () => {
   const { openModal } = useModal();
-
+  const survey = useLocation().state as IAdminSurvey;
   const [title, setTitle] = useState<string>('');
   const [surveyDate, setSurveyDate] = useState<DateValueType | null>({
     startDate: null,
@@ -30,6 +31,32 @@ const AdminSurveyDetail = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  // 상세 조회
+  useEffect(() => {
+    if (survey) {
+      getSurveyDetail(survey.id).then(
+        (res) => {
+          const { title, startDate, endDate, options } = res.data;
+          setTitle(title);
+          setSurveyDate({
+            startDate: moment(startDate).format('YYYY-MM-DD'),
+            endDate: moment(endDate).format('YYYY-MM-DD'),
+          });
+          setAnswerList(options?.map((option) => option.content) ?? []);
+        },
+        (error) => {
+          openModal({
+            ...modalData.ADMIN_SURVEY_FETCH_DETAIL_FAILURE,
+            content: `${error.errorCode} ${error.message}`,
+            cancelCallback: () => {
+              navigate(-1);
+            },
+          });
+        },
+      );
+    }
+  }, [survey]);
 
   useEffect(() => {
     setIsValid(
@@ -151,7 +178,7 @@ const AdminSurveyDetail = () => {
             </div>
           </div>
 
-          <ul className="flex min-h-[40px] gap-3">
+          <ul className="flex min-h-[40px] flex-wrap gap-3">
             {answerList.map((answer, index) => (
               <SurveyAnswerTag
                 answer={answer}
