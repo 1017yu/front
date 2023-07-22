@@ -23,14 +23,17 @@ export const ADMIN_NAV_ITEMS = [
   {
     label: 'menu 1',
     href: '/admin',
+    children: [], // 하위 메뉴 href
   },
   {
     label: 'menu 2',
-    href: '/admin',
+    href: '/admin/menu2',
+    children: [],
   },
   {
     label: '수요조사',
     href: '/admin/survey',
+    children: ['/admin/survey/detail'],
   },
 ];
 
