@@ -9,6 +9,10 @@ export const NAV_ITEMS = [
     label: '공간찾기',
     href: '/search',
   },
+  {
+    label: '회원 커뮤니티',
+    href: '/community',
+  },
   // {
   //   label: '임차대행',
   //   href: '/rent',
@@ -43,3 +47,7 @@ export const EMAIL_REGEX =
 
 // 비밀번호 8자리 이상
 export const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+
+// 페이지네이션 상수
+export const ITEMS_COUNT_PER_COMMUNITY_PAGE: number = 10;
+export const PAGE_RANGE_DISPLAY: number = 5;
