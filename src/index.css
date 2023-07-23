@@ -28,3 +28,28 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  color: #9ca3af;
+}
+ul.pagination li {
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  padding-bottom: 4px;
+  padding-top: 1px;
+}
+ul.pagination li:hover,
+ul.pagination li.active {
+  background-color: #00c9a7;
+  color: white;
+}
