@@ -1,28 +1,85 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import SurveyItem from '@/components/admin/SurveyItem';
 import IAdminSurvey from '@/types/IAdminSurvey';
-
-const dummySurveyItems: IAdminSurvey[] = [
-  {
-    id: 1,
-    title: '수요조사 1번',
-    startDate: '2023-05-11',
-    endDate: '2023-06-11',
-    status: 'REVERT',
-  },
-  {
-    id: 2,
-    title: '수요조사 2번',
-    startDate: '2023-07-11',
-    endDate: '2023-08-11',
-    status: 'INPROGRESS',
-  },
-];
-
+import { fetchAdminSurvey, deleteAdminSurvey } from '@/api/admin/adminRequests';
+import { useModal } from '@/hooks/useModal';
+import { modalData } from '@/data/modalData';
 const AdminSurvey = () => {
+  const navigate = useNavigate();
+  const [surveyList, setSurveyList] = useState<IAdminSurvey[]>([]);
+  const [openMenuID, setOpenMenuID] = useState<number | null>(null);
+  const { openModal } = useModal();
+
+  // 수요조사 삭제 모달 + 삭제처리
+  const openDeleteModal = useCallback(
+    (surveyId: number) => {
+      openModal({
+        ...modalData.ADMIN_SURVEY_DELETE_CONFIRM,
+        okCallback: () => {
+          deleteAdminSurvey(surveyId).then(
+            () => {
+              getSurveyList();
+            },
+            (error) => {
+              openModal({
+                ...modalData.ADMIN_RESPONSE_ERROR,
+                content: `${error.errorCode} ${error.message}`,
+              });
+            },
+          );
+        },
+      });
+    },
+    [openModal],
+  );
+
+  // 드롭다운 메뉴 닫기
+  const closeMenu = useCallback(() => {
+    setOpenMenuID(null);
+  }, []);
+
+  // 드롭다운 메뉴 오픈
+  const onClickMore = useCallback((id: number) => {
+    setOpenMenuID(id);
+  }, []);
+
+  // 삭제, 종료 아이템 클릭 이벤트
+  const onClickMenuItem = useCallback((isDelete: boolean, surveyId: number) => {
+    if (isDelete) {
+      openDeleteModal(surveyId);
+      return;
+    }
+    // 종료 처리
+  }, []);
+
+  // 수요조사 목록 조회
+  const getSurveyList = useCallback(() => {
+    fetchAdminSurvey().then(
+      (res) => {
+        setSurveyList(res.data);
+      },
+      () => {
+        openModal(modalData.ADMIN_SURVEY_FETCH_FAILURE);
+      },
+    );
+  }, []);
+
+  // 상세조회로 이동
+  const moveToDetail = useCallback((data: IAdminSurvey) => {
+    navigate('/admin/survey/detail', { state: data });
+  }, []);
+
+  useEffect(() => {
+    getSurveyList();
+  }, []);
+
   return (
-    <div className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10">
+    <div
+      className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10"
+      onClick={closeMenu}
+    >
       <h1 className="text-2xl font-bold">수요조사 관리</h1>
       <div className="h-9 w-[200px] self-end">
         <Link to="/admin/survey/detail">
@@ -48,8 +105,17 @@ const AdminSurvey = () => {
       </ul>
 
       <ul>
-        {dummySurveyItems.map((item) => (
-          <SurveyItem key={item.id} survey={item} />
+        {surveyList.map((item) => (
+          <SurveyItem
+            key={item.id}
+            survey={item}
+            isOpen={openMenuID === item.id}
+            onClickMore={onClickMore}
+            onClickMenuItem={onClickMenuItem}
+            onClickDetails={() => {
+              moveToDetail(item);
+            }}
+          />
         ))}
       </ul>
     </div>
