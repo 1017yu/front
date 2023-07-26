@@ -6,5 +6,6 @@ export default interface IAdminSurveyRequest {
 }
 
 export interface ISurveyOption {
+  id?: number;
   content: string;
 }
