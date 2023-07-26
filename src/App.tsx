@@ -11,6 +11,9 @@ import Kakao from './routes/Kakao';
 import Events from '@/routes/events/Events';
 import Event from '@/routes/events/Event';
 import ForgotPassword from './routes/ForgotPassword';
+import Community from '@/routes/Community';
+import Post from '@/routes/Post';
+import NewPost from '@/routes/NewPost';
 
 export default function App() {
   return (
@@ -19,7 +22,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<Event />} />
-
+        <Route path="/community" element={<Community />} />
+        <Route path="/community/:id" element={<Post />} />
         <Route path="/auth/kakao/callback" element={<Kakao />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
@@ -27,6 +31,7 @@ export default function App() {
       {/* 로그인 회원가입은 Navbar, Footer 없이 */}
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/community/new" element={<NewPost />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route element={<AdminLayout />}>
         <Route path="/admin/survey" element={<AdminSurvey />} />
