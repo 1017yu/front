@@ -30,3 +30,9 @@ export const getSurveyDetail = async (
   const response = await apiInstance.get(`/admin/survey/${surveyId}`);
   return response.data as IResponse<IAdminSurvey>;
 };
+
+// * 수요조사 수정
+export const modifySurvey = async (survey: IAdminSurvey) => {
+  const response = await apiInstance.put(`/admin/survey/${survey.id}`);
+  return response.data;
+};
