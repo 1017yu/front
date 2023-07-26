@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
 import IAdminSurvey from '@/types/IAdminSurvey';
+import { ISurveyOption } from '@/types/IAdminSurveyRequest';
 
 /**
  * 관리자 수요조사 등록/조회/수정 페이지
@@ -27,7 +28,7 @@ const AdminSurveyDetail = () => {
     endDate: null,
   });
   const [answer, setAnswer] = useState<string>('');
-  const [answerList, setAnswerList] = useState<string[]>([]);
+  const [answerList, setAnswerList] = useState<ISurveyOption[]>([]);
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const AdminSurveyDetail = () => {
             startDate: moment(startDate).format('YYYY-MM-DD'),
             endDate: moment(endDate).format('YYYY-MM-DD'),
           });
-          setAnswerList(options?.map((option) => option.content) ?? []);
+          setAnswerList(options ?? []);
         },
         (error) => {
           openModal({
@@ -73,14 +74,14 @@ const AdminSurveyDetail = () => {
 
   const handleAnswerAddClick = useCallback(() => {
     if (answer.trim()) {
-      setAnswerList([...answerList, answer.trim()]);
+      setAnswerList([...answerList, { content: answer.trim() }]);
       setAnswer('');
     }
   }, [answerList, answer]);
 
   const handleDeleteAnswer = useCallback(
     (answer: string) => {
-      setAnswerList(answerList.filter((a) => a !== answer));
+      setAnswerList(answerList.filter((a) => a.content !== answer));
     },
     [answerList],
   );
@@ -91,9 +92,7 @@ const AdminSurveyDetail = () => {
         title: title,
         startDate: surveyDate.startDate.toString(),
         endDate: surveyDate.endDate.toString(),
-        options: answerList.map((answer) => {
-          return { content: answer };
-        }),
+        options: answerList,
       };
 
       try {
@@ -181,7 +180,7 @@ const AdminSurveyDetail = () => {
           <ul className="flex min-h-[40px] flex-wrap gap-3">
             {answerList.map((answer, index) => (
               <SurveyAnswerTag
-                answer={answer}
+                answer={answer.content}
                 key={index}
                 onDelete={handleDeleteAnswer}
               />
@@ -191,7 +190,7 @@ const AdminSurveyDetail = () => {
           <div className="mt-10 min-w-[120px] self-end">
             <Button
               onClick={handleClickSurveyAdd}
-              contents={'등록하기'}
+              contents={survey ? '수정하기' : '등록하기'}
               disabled={!isValid}
             />
           </div>
