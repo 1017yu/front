@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import IDummyData_PostDetail from '@/types/IDummyData_PostDetail';
 import IDummyData_Comments from '@/types/IDummyData_PostComments';
 import RenderHtml from '@/components/community/RenderHtml';
+import Comments from '@/components/community/Comments';
 
 const Post = () => {
   //API 통신으로 데이터를 받아옴
@@ -12,7 +13,7 @@ const Post = () => {
   const commentsList: IDummyData_Comments[] = [
     {
       nickname: 'guest1',
-      content: 'This is Comment1',
+      content: 'This is Comment1, Lorem Ipsum',
       created_at: times + 100000,
       updated_at: times + 100000,
     },
@@ -20,7 +21,7 @@ const Post = () => {
       nickname: 'guest2',
       content: 'This is Comment2',
       created_at: times + 150000,
-      updated_at: times + 150000,
+      updated_at: times + 200000,
     },
   ];
 
@@ -34,19 +35,19 @@ const Post = () => {
   };
 
   return (
-    <div
-      className={
-        'container mx-auto mb-[35px] mt-[35px] bg-white pb-[35px] pl-[35px] pr-[35px]'
-      }
-    >
-      <div></div>
-      <RenderHtml
-        nickname={DummyData.nickname}
-        title={DummyData.title}
-        content={htmlString}
-        created_at={DummyData.created_at}
-        updated_at={DummyData.updated_at}
-      />
+    <div>
+      <div>
+        <RenderHtml
+          nickname={DummyData.nickname}
+          title={DummyData.title}
+          content={htmlString}
+          created_at={DummyData.created_at}
+          updated_at={DummyData.updated_at}
+        />
+      </div>
+      <div>
+        <Comments TCommentsList={DummyData.comments} />
+      </div>
     </div>
   );
 };
