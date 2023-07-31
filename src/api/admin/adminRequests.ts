@@ -33,6 +33,6 @@ export const getSurveyDetail = async (
 
 // * 수요조사 수정
 export const modifySurvey = async (survey: IAdminSurvey) => {
-  const response = await apiInstance.put(`/admin/survey/${survey.id}`);
+  const response = await apiInstance.put(`/admin/survey/${survey.id}`, survey);
   return response.data;
 };
