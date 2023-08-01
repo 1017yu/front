@@ -2,26 +2,26 @@ import { useState } from 'react';
 import { dummyEventsData } from '@/types/IEvents';
 import Pagination from '@mui/material/Pagination';
 import EventLayout from '@/components/EventLayout';
+import { COUNT_PER_EVENTS_PAGE } from '@/data/constants';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function EventList() {
+export default function EventList() {
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
   const [isSearched, setIsSearched] = useState<boolean>(false); // 검색 전, 검색 후
   const [page, setPage] = useState(1); // 페이지 번호
 
   const numOfEvent = dummyEventsData.length; // 등록된 이벤트의 개수
-  const eventsPerPage = 12; // 헌 페이지 당 노출시킬 event의 개수
-  const totalPages = Math.ceil(numOfEvent / eventsPerPage); // 총 페이지의 수
-  const startIdx = (page - 1) * eventsPerPage; // 이벤트 데이터 내 idx
+  const totalPages = Math.ceil(numOfEvent / COUNT_PER_EVENTS_PAGE); // 총 페이지의 수
+  const startIdx = (page - 1) * COUNT_PER_EVENTS_PAGE; // 이벤트 데이터 내 idx
   const displayedEvents = dummyEventsData.slice(
     startIdx,
-    startIdx + eventsPerPage,
+    startIdx + COUNT_PER_EVENTS_PAGE,
   );
   const listTitle = isSearched ? `${numOfEvent}개의 이벤트` : '행사 리스트'; // 판매자 로그인 때, 비 로그인 & 일반 유저일 때의 title
 
   // page button click에 따른 현재 페이지 번호 핸들링
   const handlePagination = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
     setPage(value);
@@ -42,8 +42,8 @@ function EventList() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="container mx-auto px-8 md:px-20">
-        <div className="mt-[-3rem] flex h-40 items-center text-2xl md:mt-0 md:text-5xl">
+      <div className="container mx-auto px-8 sm:px-20">
+        <div className="mt-[-3rem] flex h-40 items-center text-2xl sm:mt-0 sm:text-5xl">
           {listTitle}
         </div>
         <section className="body-font text-gray-600">
@@ -82,5 +82,3 @@ function EventList() {
     </ThemeProvider>
   );
 }
-
-export default EventList;

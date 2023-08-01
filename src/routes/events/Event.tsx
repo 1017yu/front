@@ -1,9 +1,14 @@
-import { useParams } from 'react-router-dom';
+import Banner from '@/components/Banner';
+import EventDetail from '@/components/events/EventDetail';
 
 function Event() {
-  const { id } = useParams();
-
-  return <div>Event ID: {id}</div>;
+  return (
+    <>
+      {/* dummy image: banner로 임시 대체 */}
+      <Banner />
+      <EventDetail />
+    </>
+  );
 }
 
 export default Event;

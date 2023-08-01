@@ -1,11 +1,12 @@
-import Banner from '@/components/Banner';
+import { RecoilRoot } from 'recoil';
 import EventList from '@/components/events/EventList';
+import EventSearchBar from '@/components/events/EventSearchBar';
 
 export default function Events() {
   return (
-    <>
-      <Banner />
+    <RecoilRoot>
+      <EventSearchBar />
       <EventList />
-    </>
+    </RecoilRoot>
   );
 }

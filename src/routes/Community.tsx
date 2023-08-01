@@ -27,8 +27,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest2',
       title: 'Title2',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 10000,
-      updatedAt: new Date().getTime() + 10000,
+      createdAt: new Date().getTime() + 1000000,
+      updatedAt: new Date().getTime() + 1000000,
       commentCount: 3,
     },
     {
@@ -36,8 +36,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest3',
       title: 'Title3',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 22200,
-      updatedAt: new Date().getTime() + 22200,
+      createdAt: new Date().getTime() + 2220000,
+      updatedAt: new Date().getTime() + 2220000,
       commentCount: 2,
     },
     {
@@ -45,8 +45,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest4',
       title: 'Title4',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 30000,
-      updatedAt: new Date().getTime() + 30000,
+      createdAt: new Date().getTime() + 3000000,
+      updatedAt: new Date().getTime() + 3000000,
       commentCount: 5,
     },
     {
@@ -54,8 +54,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest5',
       title: 'Title5',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 35000,
-      updatedAt: new Date().getTime() + 35000,
+      createdAt: new Date().getTime() + 3500000,
+      updatedAt: new Date().getTime() + 3500000,
       commentCount: 3,
     },
     {
@@ -63,8 +63,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest6',
       title: 'Title6',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 50000,
-      updatedAt: new Date().getTime() + 70000,
+      createdAt: new Date().getTime() + 5000000,
+      updatedAt: new Date().getTime() + 7000000,
       commentCount: 2,
     },
     {
@@ -72,8 +72,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest7',
       title: 'Title7',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 60000,
-      updatedAt: new Date().getTime() + 60000,
+      createdAt: new Date().getTime() + 6000000,
+      updatedAt: new Date().getTime() + 6000000,
       commentCount: 2,
     },
     {
@@ -81,8 +81,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest8',
       title: 'Title8',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 70000,
-      updatedAt: new Date().getTime() + 70000,
+      createdAt: new Date().getTime() + 7000000,
+      updatedAt: new Date().getTime() + 7000000,
       commentCount: 2,
     },
     {
@@ -90,8 +90,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest9',
       title: 'Title9',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 80000,
-      updatedAt: new Date().getTime() + 80000,
+      createdAt: new Date().getTime() + 8000000,
+      updatedAt: new Date().getTime() + 8000000,
       commentCount: 2,
     },
     {
@@ -99,8 +99,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest10',
       title: 'Title10',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 90000,
-      updatedAt: new Date().getTime() + 90000,
+      createdAt: new Date().getTime() + 9000000,
+      updatedAt: new Date().getTime() + 9000000,
       commentCount: 2,
     },
     {
@@ -108,8 +108,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest11',
       title: 'Title11',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 100000,
-      updatedAt: new Date().getTime() + 100000,
+      createdAt: new Date().getTime() + 10000000,
+      updatedAt: new Date().getTime() + 10000000,
       commentCount: 2,
     },
     {
@@ -117,8 +117,8 @@ const Community = (): JSX.Element => {
       nickname: 'guest12',
       title: 'Title12',
       content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 110000,
-      updatedAt: new Date().getTime() + 110000,
+      createdAt: new Date().getTime() + 11000000,
+      updatedAt: new Date().getTime() + 11000000,
       commentCount: 2,
     },
   ];
@@ -139,14 +139,10 @@ const Community = (): JSX.Element => {
   return (
     <div
       className={
-        'container mx-auto mb-[35px] mt-[35px] bg-white pb-[35px] pl-[35px] pr-[35px]'
+        'mx-auto mb-[35px] mt-[35px] rounded-md bg-white pb-[35px] pl-[35px] pr-[35px] shadow-sm sm:w-[540px] md:w-[700px] lg:w-[1024px] xl:w-[1024px]'
       }
     >
-      <div
-        className={
-          'container flex items-center justify-between  pb-[35px] pt-[35px]'
-        }
-      >
+      <div className={'flex items-center justify-between  pb-[35px] pt-[35px]'}>
         <h1 className={'text-[40px] font-thin'}>전체 글</h1>
         <div className={'w-36'}>
           <Button
@@ -157,7 +153,7 @@ const Community = (): JSX.Element => {
           />
         </div>
       </div>
-      <div className={'container flex flex-col gap-10'}>
+      <div className={'flex flex-col gap-10'}>
         {data.map((item, index) => (
           <PostItem key={index} data={item} />
         ))}

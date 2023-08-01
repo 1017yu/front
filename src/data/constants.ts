@@ -51,3 +51,6 @@ export const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 // 페이지네이션 상수
 export const ITEMS_COUNT_PER_COMMUNITY_PAGE: number = 10;
 export const PAGE_RANGE_DISPLAY: number = 5;
+
+// 전체 이벤트 조회
+export const COUNT_PER_EVENTS_PAGE = 12;
