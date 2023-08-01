@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 
@@ -17,9 +17,8 @@ const PostEditor = (): JSX.Element => {
   const contentRef = useRef<ReactQuill | null>(null);
   const [title, setTitle] = useState<string>('');
   const [editorContent, setEditorContent] = useState<string>('');
-  console.log(editorContent);
 
-  const savePost = () => {
+  const savePost = useCallback(() => {
     if (titleInputRef.current && titleInputRef.current.value === '') {
       titleInputRef.current.focus();
       alert('제목을 작성해주세요.');
@@ -31,10 +30,11 @@ const PostEditor = (): JSX.Element => {
       //데이터를 서버로 전송하기
       navigate('/community', { replace: true });
     }
-  };
-  const cancelPost = () => {
+  }, []);
+
+  const cancelPost = useCallback(() => {
     navigate('/community');
-  };
+  }, []);
 
   const modules = {
     toolbar: [
@@ -81,7 +81,6 @@ const PostEditor = (): JSX.Element => {
         placeholder="제목을 입력하세요."
         onChange={(event) => {
           setTitle(event.target.value);
-          console.log(title);
         }}
       />
       <div className={'mb-[15px] h-[10px] w-[350px] bg-gray-400'}></div>
