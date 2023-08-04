@@ -1,3 +1,5 @@
+import { createTheme } from '@mui/material/styles';
+
 export const API_BASE_URL = 'http://15.164.205.25:8080';
 
 export const NAV_ITEMS = [
@@ -54,3 +56,15 @@ export const PAGE_RANGE_DISPLAY: number = 5;
 
 // 전체 이벤트 조회
 export const COUNT_PER_EVENTS_PAGE = 12;
+
+// 모든 이벤트 조회 페이지 테마 생성
+export const EVENTS_THEME = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(0 201 167)', // 커스텀 primary 색상
+    },
+    secondary: {
+      main: '#fff',
+    },
+  },
+});
