@@ -16,7 +16,11 @@ function EventLayout({ ...props }: IEvents) {
       <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 hover:shadow-lg">
         <img
           className=" h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
-          src={props.thumbnail_url ? 'http://via.placeholder.com/640x400' : ''}
+          src={
+            props.thumbnail_url
+              ? 'http://via.placeholder.com/640x400'
+              : 'http://via.placeholder.com/640x400'
+          }
           alt="Thumbnail"
         />
         <button

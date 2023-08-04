@@ -4,7 +4,7 @@ import { AiOutlineDown } from 'react-icons/ai';
 import { AdressState } from '@/states/AdressState';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import {
-  EVENT_REGION_ITEMS,
+  EVENT_CITY_ITEMS,
   EVENT_STATE_ITEMS,
   EVENT_CATEGORY_ITEMS,
 } from '@/data/address';
@@ -46,7 +46,7 @@ export default function EventSearchBar() {
 
   return (
     <div className="container mx-auto  sm:flex  sm:px-20">
-      <div className="ml-8 flex w-full gap-2  sm:m-0 sm:gap-4  sm:pb-4">
+      <div className="ml-8 flex w-full gap-2 sm:m-0 sm:gap-4  sm:pb-4">
         {/* 드롭다운 버튼 - region */}
         <Listbox value={selected.region} onChange={handleRegionChange}>
           <div className="relative mt-4 ">
@@ -67,7 +67,7 @@ export default function EventSearchBar() {
             {/* 드롭다운 목록 */}
             <Listbox.Options className="absolute z-10 mt-1 max-h-[25rem] w-[10rem] gap-2 overflow-auto bg-white py-1 text-center text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:w-full sm:text-sm">
               <div className=" grid grid-cols-2 rounded-lg">
-                {EVENT_REGION_ITEMS.map((value, index) => (
+                {EVENT_CITY_ITEMS.map((value, index) => (
                   <Listbox.Option
                     key={index}
                     className={({ active }) =>
@@ -85,7 +85,7 @@ export default function EventSearchBar() {
                           selected ? 'font-medium' : 'font-normal'
                         }`}
                       >
-                        {value.region}
+                        {value.city}
                       </span>
                     )}
                   </Listbox.Option>
