@@ -1,3 +1,5 @@
+import { createTheme } from '@mui/material/styles';
+
 export const API_BASE_URL = 'http://15.164.205.25:8080';
 
 export const NAV_ITEMS = [
@@ -45,9 +47,6 @@ export const ADMIN_NAV_ITEMS = [
 export const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-// 페이지네이션 상수
-export const ITEMS_COUNT_PER_COMMUNITY_PAGE = 10;
-export const PAGE_RANGE_DISPLAY = 5;
 // 비밀번호 8자리 이상 숫자 최소 1개, 문자 최소 1개
 export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
@@ -370,3 +369,20 @@ export const ADRESS_SELECT_OPTIONS = [
     district: ['세종시'],
   },
 ];
+export const ITEMS_COUNT_PER_COMMUNITY_PAGE = 10;
+export const PAGE_RANGE_DISPLAY = 5;
+
+// 전체 이벤트 조회
+export const COUNT_PER_EVENTS_PAGE = 12;
+
+// 모든 이벤트 조회 페이지 테마 생성
+export const EVENTS_THEME = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(0 201 167)', // 커스텀 primary 색상
+    },
+    secondary: {
+      main: '#fff',
+    },
+  },
+});
