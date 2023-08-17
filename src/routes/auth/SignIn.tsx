@@ -9,12 +9,18 @@ import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
 import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
-import signin from '@/api/auth/signin';
 import { useUser } from '@/hooks/useUser';
 import { toast } from 'react-toastify';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
+import { signin } from '@/api/auth/signin';
+import { AxiosError } from 'axios';
 
-export default function Signin() {
+interface Error {
+  errorCode: number;
+  message: string;
+}
+
+export default function SignIn() {
   const navigate = useNavigate();
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isSeller, setIsSeller] = useState(false);
@@ -72,9 +78,10 @@ export default function Signin() {
         email: loginInput.email,
         password: loginInput.password,
       });
-      if (response.status === 200) {
-        // nickname이 안옴
-        const serverUserData: IServerUser = response.data.data;
+      // 로그인 응답이 200인 경우
+      if (response.statusCode === 200) {
+        const serverUserData = response.data as IServerUser;
+        // 로컬 유져데이터 변수 선언
         const localUserData: ILocalUser = {
           email: serverUserData.email,
           nickname: serverUserData.nickname,
@@ -82,9 +89,13 @@ export default function Signin() {
           accessToken: serverUserData.accessToken,
           refreshToken: serverUserData.refreshToken,
         };
+        // 전역 유져 지정
         setUser(localUserData);
+        // 로컬저장소 저장
         localStorage.setItem('user', JSON.stringify(localUserData));
+        // 홈으로 이동
         navigate('/');
+        // 성공메세지 토스트
         toast.success(`${localUserData.email}님 반가워요🖐️🖐️`, {
           position: 'bottom-right',
           autoClose: 5000,
@@ -96,9 +107,9 @@ export default function Signin() {
           theme: 'light',
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      setMessage('서버로부터 온 메세지!');
+      setMessage(error.message);
       const id = setTimeout(() => {
         setMessage('');
       }, 2000);
