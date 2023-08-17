@@ -2,13 +2,20 @@ import { useCallback, useEffect, useState } from 'react';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import SurveyAnswerTag from '@/components/admin/SurveyAnswerTag';
-import { insertAdminSurvey, getSurveyDetail } from '@/api/admin/adminRequests';
+import {
+  insertAdminSurvey,
+  getSurveyDetail,
+  modifySurvey,
+} from '@/api/admin/adminRequests';
 import Datepicker from 'react-tailwindcss-datepicker';
 import moment from 'moment';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
 import IAdminSurvey from '@/types/IAdminSurvey';
+import IAdminSurveyRequest, {
+  ISurveyOption,
+} from '@/types/IAdminSurveyRequest';
 
 /**
  * 관리자 수요조사 등록/조회/수정 페이지
@@ -27,7 +34,7 @@ const AdminSurveyDetail = () => {
     endDate: null,
   });
   const [answer, setAnswer] = useState<string>('');
-  const [answerList, setAnswerList] = useState<string[]>([]);
+  const [answerList, setAnswerList] = useState<ISurveyOption[]>([]);
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -43,7 +50,7 @@ const AdminSurveyDetail = () => {
             startDate: moment(startDate).format('YYYY-MM-DD'),
             endDate: moment(endDate).format('YYYY-MM-DD'),
           });
-          setAnswerList(options?.map((option) => option.content) ?? []);
+          setAnswerList(options ?? []);
         },
         (error) => {
           openModal({
@@ -73,17 +80,59 @@ const AdminSurveyDetail = () => {
 
   const handleAnswerAddClick = useCallback(() => {
     if (answer.trim()) {
-      setAnswerList([...answerList, answer.trim()]);
+      setAnswerList([...answerList, { id: null, content: answer.trim() }]);
       setAnswer('');
     }
   }, [answerList, answer]);
 
   const handleDeleteAnswer = useCallback(
     (answer: string) => {
-      setAnswerList(answerList.filter((a) => a !== answer));
+      setAnswerList(answerList.filter((a) => a.content !== answer));
     },
     [answerList],
   );
+
+  const handleModifySurvey = (request: IAdminSurvey) => {
+    modifySurvey(request).then(
+      () => {
+        openModal({
+          ...modalData['ADMIN_SURVEY_MODIFY_SUCCESS'],
+          cancelCallback: () => {
+            navigate(-1);
+          },
+        });
+      },
+      () => {
+        openModal({
+          ...modalData['ADMIN_SURVEY_FAILURE'],
+          cancelCallback: () => {
+            navigate(-1);
+          },
+        });
+      },
+    );
+  };
+
+  const handleInsertSurvey = (request: IAdminSurveyRequest) => {
+    insertAdminSurvey(request).then(
+      () => {
+        openModal({
+          ...modalData['ADMIN_SURVEY_SUCCESS'],
+          cancelCallback: () => {
+            navigate(-1);
+          },
+        });
+      },
+      () => {
+        openModal({
+          ...modalData['ADMIN_SURVEY_MODIFY_FAILURE'],
+          cancelCallback: () => {
+            navigate(-1);
+          },
+        });
+      },
+    );
+  };
 
   const handleClickSurveyAdd = () => {
     if (surveyDate?.startDate && surveyDate.endDate) {
@@ -91,27 +140,16 @@ const AdminSurveyDetail = () => {
         title: title,
         startDate: surveyDate.startDate.toString(),
         endDate: surveyDate.endDate.toString(),
-        options: answerList.map((answer) => {
-          return { content: answer };
-        }),
+        options: answerList,
       };
 
-      try {
-        insertAdminSurvey(request).then(() => {
-          openModal({
-            ...modalData['ADMIN_SURVEY_SUCCESS'],
-            cancelCallback: () => {
-              navigate(-1);
-            },
-          });
-        });
-      } catch (error) {
-        openModal({
-          ...modalData['ADMIN_SURVEY_FAILURE'],
-          cancelCallback: () => {
-            navigate(-1);
-          },
-        });
+      if (survey) {
+        // 수정
+        console.log({ ...request, id: survey.id });
+        handleModifySurvey({ ...request, id: survey.id });
+      } else {
+        // 추가
+        handleInsertSurvey(request);
       }
     }
   };
@@ -181,7 +219,7 @@ const AdminSurveyDetail = () => {
           <ul className="flex min-h-[40px] flex-wrap gap-3">
             {answerList.map((answer, index) => (
               <SurveyAnswerTag
-                answer={answer}
+                answer={answer.content}
                 key={index}
                 onDelete={handleDeleteAnswer}
               />
@@ -191,7 +229,7 @@ const AdminSurveyDetail = () => {
           <div className="mt-10 min-w-[120px] self-end">
             <Button
               onClick={handleClickSurveyAdd}
-              contents={'등록하기'}
+              contents={survey ? '수정하기' : '등록하기'}
               disabled={!isValid}
             />
           </div>

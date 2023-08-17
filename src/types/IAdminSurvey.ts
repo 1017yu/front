@@ -5,6 +5,6 @@ export default interface IAdminSurvey {
   title: string;
   startDate: string;
   endDate: string;
-  status: string;
+  status?: string;
   options?: ISurveyOption[];
 }

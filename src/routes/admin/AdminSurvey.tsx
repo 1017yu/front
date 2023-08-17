@@ -104,20 +104,24 @@ const AdminSurvey = () => {
         <li className="mr-[10px] h-[56px] w-10"></li>
       </ul>
 
-      <ul>
-        {surveyList.map((item) => (
-          <SurveyItem
-            key={item.id}
-            survey={item}
-            isOpen={openMenuID === item.id}
-            onClickMore={onClickMore}
-            onClickMenuItem={onClickMenuItem}
-            onClickDetails={() => {
-              moveToDetail(item);
-            }}
-          />
-        ))}
-      </ul>
+      {surveyList.length !== 0 ? (
+        <ul>
+          {surveyList.map((item) => (
+            <SurveyItem
+              key={item.id}
+              survey={item}
+              isOpen={openMenuID === item.id}
+              onClickMore={onClickMore}
+              onClickMenuItem={onClickMenuItem}
+              onClickDetails={() => {
+                moveToDetail(item);
+              }}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div className="bg-white p-5">수요조사가 없습니다.</div>
+      )}
     </div>
   );
 };
