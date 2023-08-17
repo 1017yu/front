@@ -1,11 +1,33 @@
+import { useCallback, useEffect, useState } from 'react';
+
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Modal from '@/components/ui/Modal';
 import Select from '@/components/ui/Seletct';
+import SurveyPopUp from '@/components/survey/SurveyPopUp';
+
+import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
+import ISurveyResponse from '@/types/ISurveyResponse';
+import moment from 'moment';
 
 export default function Home() {
+  const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
+    null,
+  );
+  const closeTodayDate = localStorage.getItem('CloseTodayDate');
+
+  useEffect(() => {
+    fetchActiveSurvey().then((res) => {
+      setActiveSurvey(res.data);
+    });
+  }, []);
+
+  const closeSurveyPopUp = useCallback(() => {
+    setActiveSurvey(null);
+  }, []);
+
   return (
     <Container>
       <div className="flex flex-col gap-2">
@@ -52,6 +74,13 @@ export default function Home() {
           value=""
         />
         <Modal />
+        {activeSurvey && moment().format('YYYY-MM-DD') !== closeTodayDate && (
+          <SurveyPopUp
+            surveyId={activeSurvey.id}
+            title={activeSurvey.title}
+            closePopUp={closeSurveyPopUp}
+          />
+        )}
       </div>
     </Container>
   );

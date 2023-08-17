@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import Button from '@/components/ui/Button';
 import { useModal } from '@/hooks/useModal';
 
-export const AdminModal = () => {
+export const CommonModal = () => {
   const { modalDataState, closeModal } = useModal();
 
   const handleCancelClick = () => {
