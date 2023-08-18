@@ -40,4 +40,17 @@ export const modalData = {
     content: '수요조사 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
     cancelButton: '확인',
   },
+  ADMIN_SURVEY_MODIFY_SUCCESS: {
+    type: 'basic',
+    title: '수요조사 수정',
+    content: '수요조사가 수정되었습니다.',
+    cancelButton: '확인',
+  },
+  ADMIN_SURVEY_MODIFY_FAILURE: {
+    type: 'basic',
+    title: '수요조사 수정',
+    content:
+      '수요조사 수정 중 오류가 발생했습니다. 데이터를 다시 확인해주세요.',
+    cancelButton: '확인',
+  },
 };

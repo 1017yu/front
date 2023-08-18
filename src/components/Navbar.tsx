@@ -26,7 +26,7 @@ export default function Navbar() {
 
           {user ? (
             <>
-              <li className="text-subTextAndBorder">{user.email}님</li>
+              <li className="text-subTextAndBorder">{user.nickname}님</li>
               <li>
                 <img
                   src={
