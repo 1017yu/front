@@ -1,11 +1,12 @@
 import { useLocation } from 'react-router-dom';
 import Container from '@/components/ui/Container';
-import ISurveyResponse from '@/types/ISurveyResponse';
+import { ISurveyRequest, ISurveyResponse } from '@/types/ISurvey';
 import SurveyRadioGroup, {
   IRadioOption,
 } from '@/components/survey/SurveyRadioGroup';
 import surveyHeader from '/public/survey_header.png';
 import { AGE_OPTIONS } from '@/data/constants';
+import { submitSurvey } from '@/api/survey/surveyRequests';
 
 import { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/ui/Button';
@@ -34,9 +35,16 @@ const Survey = () => {
       surveyId: surveyData.id,
       surveyOptionId: optionCheckedId,
       age: ageCheckedId,
-    };
-    console.log(request);
-  }, [ageCheckedId, optionCheckedId]);
+    } as ISurveyRequest;
+    submitSurvey(request).then(
+      () => {
+        console.log('제출 성공');
+      },
+      (error) => {
+        console.log('제출 실패');
+      },
+    );
+  }, [ageCheckedId, optionCheckedId, surveyData]);
 
   return (
     <Container>

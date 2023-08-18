@@ -9,7 +9,7 @@ import Select from '@/components/ui/Seletct';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
 
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
-import ISurveyResponse from '@/types/ISurveyResponse';
+import { ISurveyResponse } from '@/types/ISurvey';
 import moment from 'moment';
 
 export default function Home() {

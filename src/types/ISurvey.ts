@@ -1,6 +1,6 @@
 import { ISurveyOption } from '@/types/IAdminSurveyRequest';
 
-export default interface ISurveyResponse {
+export interface ISurveyResponse {
   id: number;
   title: string;
   startDate: string;
@@ -8,4 +8,10 @@ export default interface ISurveyResponse {
   status: string;
   isDone: boolean;
   options: ISurveyOption[];
+}
+
+export interface ISurveyRequest {
+  surveyId: number;
+  surveyOptionId: number;
+  age: number;
 }
