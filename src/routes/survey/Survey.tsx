@@ -7,7 +7,8 @@ import SurveyRadioGroup, {
 import surveyHeader from '/public/survey_header.png';
 import { AGE_OPTIONS } from '@/data/constants';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import Button from '@/components/ui/Button';
 
 const Survey = () => {
   const location = useLocation();
@@ -15,15 +16,27 @@ const Survey = () => {
 
   const [ageCheckedId, setAgeCheckedId] = useState(-1);
   const [optionCheckedId, setOptionCheckedId] = useState(-1);
+  const isValid = useMemo(
+    () => ageCheckedId !== -1 && optionCheckedId !== -1 && surveyData !== null,
+    [ageCheckedId, optionCheckedId, surveyData],
+  );
 
   const handleAgeCheckedChange = useCallback((id: number) => {
     setAgeCheckedId(id);
   }, []);
 
   const handleOptionCheckedChange = useCallback((id: number) => {
-    console.log(id);
     setOptionCheckedId(id);
   }, []);
+
+  const onClickSubmit = useCallback(() => {
+    const request = {
+      surveyId: surveyData.id,
+      surveyOptionId: optionCheckedId,
+      age: ageCheckedId,
+    };
+    console.log(request);
+  }, [ageCheckedId, optionCheckedId]);
 
   return (
     <Container>
@@ -31,11 +44,11 @@ const Survey = () => {
         <div className="mx-auto mt-10 flex justify-center">
           <img src={surveyHeader} className="" />
         </div>
-        <div className="flex flex-col p-5">
+        <div className="flex flex-col p-5 sm:px-10">
           <p className="self-end text-sm">
             조사 기간 : 2023.08.09 ~ 2023.08.30
           </p>
-          <div className="">
+          <div>
             <h4 className="mb-3 mt-5 text-lg sm:mt-10 sm:text-xl">
               회원님의 연령대를 선택해주세요.
             </h4>
@@ -46,8 +59,8 @@ const Survey = () => {
               onChagedChecked={handleAgeCheckedChange}
             />
           </div>
-          <div className="">
-            <h4 className="mb-3 mt-5 text-lg sm:mt-10 sm:text-xl">
+          <div>
+            <h4 className="mb-3 mt-5 text-lg sm:mt-20 sm:text-xl">
               {surveyData.title}
             </h4>
             <SurveyRadioGroup
@@ -57,6 +70,14 @@ const Survey = () => {
               onChagedChecked={handleOptionCheckedChange}
             />
           </div>
+        </div>
+
+        <div className="mx-auto mt-10 w-[50%] pb-5">
+          <Button
+            contents={'답변 제출'}
+            onClick={onClickSubmit}
+            disabled={!isValid}
+          />
         </div>
       </div>
     </Container>

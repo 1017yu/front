@@ -18,8 +18,6 @@ const SurveyRadioGroup = React.memo(
       onChagedChecked(parseInt(id));
     };
 
-    useEffect(() => {}, [checked]);
-
     return (
       <div className="ml-2 flex flex-col gap-2 gap-x-6 md:flex-row">
         {options.map((option) => {
