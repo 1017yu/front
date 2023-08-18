@@ -29,7 +29,6 @@
   }
 }
 
-
 /* Pagination */
 .pagination {
   display: flex;
@@ -52,4 +51,12 @@ ul.pagination li:hover,
 ul.pagination li.active {
   background-color: #00c9a7;
   color: white;
+}
+
+.drag-none {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }

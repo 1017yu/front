@@ -74,13 +74,14 @@ export default function Home() {
           value=""
         />
         <Modal />
-        {activeSurvey && moment().format('YYYY-MM-DD') !== closeTodayDate && (
-          <SurveyPopUp
-            surveyId={activeSurvey.id}
-            title={activeSurvey.title}
-            closePopUp={closeSurveyPopUp}
-          />
-        )}
+        {activeSurvey &&
+          !activeSurvey.isDone &&
+          moment().format('YYYY-MM-DD') !== closeTodayDate && (
+            <SurveyPopUp
+              surveyData={activeSurvey}
+              closePopUp={closeSurveyPopUp}
+            />
+          )}
       </div>
     </Container>
   );
