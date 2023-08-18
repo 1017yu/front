@@ -2,11 +2,12 @@ import { NAV_ITEMS } from '@/data/constants';
 import { Link } from 'react-router-dom';
 import Popple from './ui/Popple';
 import { useUser } from '@/hooks/useUser';
+import dummyProfile from '@/assets/dummy-profile.png';
 
 export default function Navbar() {
   const { user } = useUser();
   return (
-    <header className="container mx-auto flex items-center justify-between px-10 py-5">
+    <header className="container mx-auto flex items-center justify-between px-10 py-2 shadow-lg">
       <div className="flex items-center gap-10">
         <Popple />
         <ul className="flex gap-3">
@@ -31,7 +32,7 @@ export default function Navbar() {
                 <img
                   src={
                     `${user.profileImgUrl}` === 'profileDefaultImageUrl'
-                      ? '/dummy-profile.png'
+                      ? dummyProfile
                       : user.profileImgUrl
                   }
                   alt="profile"
