@@ -3,6 +3,7 @@ import CheckBox from '@/components/ui/CheckBox';
 import ISurveyResponse from '@/types/ISurveyResponse';
 import surveyBg from '/public/survey_bg.png';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 type SurveyPopUpProps = {
   surveyData: ISurveyResponse;
@@ -12,6 +13,7 @@ type SurveyPopUpProps = {
 const SurveyPopUp = React.memo(
   ({ surveyData, closePopUp }: SurveyPopUpProps) => {
     const [closeChecked, setCloseChecked] = useState(false);
+    const navigate = useNavigate();
 
     const handleCheckedChange = useCallback(() => {
       setCloseChecked((prev) => !prev);
@@ -28,7 +30,8 @@ const SurveyPopUp = React.memo(
 
     const handleClickSurvey = useCallback(() => {
       // 수요조사 상세 페이지로 이동
-    }, []);
+      navigate('/survey', { state: { survey: surveyData } });
+    }, [navigate, surveyData]);
 
     return (
       <div className="z-1000 fixed bottom-0 left-0 right-0 top-0 m-auto h-[440px] w-[400px] drop-shadow-md">

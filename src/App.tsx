@@ -14,6 +14,7 @@ import ForgotPassword from './routes/ForgotPassword';
 import Community from '@/routes/Community';
 import Post from '@/routes/Post';
 import NewPost from '@/routes/NewPost';
+import Survey from '@/routes/survey/Survey';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<Post />} />
         <Route path="/auth/kakao/callback" element={<Kakao />} />
+        <Route path="/survey" element={<Survey />} />
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
       </Route>

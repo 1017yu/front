@@ -68,3 +68,27 @@ export const EVENTS_THEME = createTheme({
     },
   },
 });
+
+// 수요조사 연령대 옵션
+export const AGE_OPTIONS = [
+  {
+    id: 10,
+    content: '10대',
+  },
+  {
+    id: 20,
+    content: '20대',
+  },
+  {
+    id: 30,
+    content: '30대',
+  },
+  {
+    id: 40,
+    content: '40대',
+  },
+  {
+    id: 50,
+    content: '50대 이상',
+  },
+];
