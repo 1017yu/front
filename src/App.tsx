@@ -15,7 +15,6 @@ import NewPost from '@/routes/NewPost';
 import ForgotPassword from '@/routes/auth/ForgotPassword';
 import SignIn from './routes/auth/SignIn';
 import ConfirmSignup from './routes/auth/ConfirmSignUp';
-import { Flip, ToastContainer } from 'react-toastify';
 
 export default function App() {
   return (

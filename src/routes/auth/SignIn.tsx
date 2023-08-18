@@ -10,9 +10,9 @@ import Popple from '@/components/ui/Popple';
 import { EMAIL_REGEX } from '@/data/constants';
 import ValidationMessage from '@/components/ui/ValidationMessage';
 import { useUser } from '@/hooks/useUser';
-import { toast } from 'react-toastify';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
 import { signin } from '@/api/auth/signin';
+import customToast from '@/utils/customToast';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -85,16 +85,7 @@ export default function SignIn() {
         // 홈으로 이동
         navigate('/');
         // 성공메세지 토스트
-        toast.success(`${localUserData.email}님 반가워요🖐️🖐️`, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        customToast(`${localUserData.nickname}님 반가워요🖐️🖐️`, 'success');
       }
     } catch (error: any) {
       console.log(error);
