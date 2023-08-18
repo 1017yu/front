@@ -13,12 +13,6 @@ import { useUser } from '@/hooks/useUser';
 import { toast } from 'react-toastify';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
 import { signin } from '@/api/auth/signin';
-import { AxiosError } from 'axios';
-
-interface Error {
-  errorCode: number;
-  message: string;
-}
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -29,10 +23,6 @@ export default function SignIn() {
   const [message, setMessage] = useState('');
 
   const { setUser } = useUser();
-
-  const handleToggle = () => {
-    setIsSeller((prev) => !prev);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -78,7 +68,6 @@ export default function SignIn() {
         email: loginInput.email,
         password: loginInput.password,
       });
-      // 로그인 응답이 200인 경우
       if (response.statusCode === 200) {
         const serverUserData = response.data as IServerUser;
         // 로컬 유져데이터 변수 선언
@@ -89,7 +78,7 @@ export default function SignIn() {
           accessToken: serverUserData.accessToken,
           refreshToken: serverUserData.refreshToken,
         };
-        // 전역 유져 지정
+        // 전역 사용자 지정
         setUser(localUserData);
         // 로컬저장소 저장
         localStorage.setItem('user', JSON.stringify(localUserData));
@@ -132,7 +121,10 @@ export default function SignIn() {
           <Title text="로그인" />
           <div className="flex items-center gap-2">
             <span>판매자</span>
-            <Toggle enabled={isSeller} onToggle={handleToggle} />
+            <Toggle
+              enabled={isSeller}
+              onToggle={() => setIsSeller((prev) => !prev)}
+            />
           </div>
         </div>
         <div className="space-y-2">

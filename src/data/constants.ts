@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-export const API_BASE_URL = 'http://15.164.205.25:8080';
+export const API_BASE_URL = 'http://15.164.205.25:8080/api';
 
 export const NAV_ITEMS = [
   {
