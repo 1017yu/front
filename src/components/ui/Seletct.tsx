@@ -6,8 +6,11 @@ interface SelectProps {
     name: string;
     value: string;
   }[];
-  onChange: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   value: string;
+  label?: string;
+  disabled?: boolean;
 }
 
 export default function Select({
@@ -15,14 +18,23 @@ export default function Select({
   onChange,
   value,
   name,
+  label,
+  disabled,
 }: SelectProps) {
   return (
     <div className="relative block">
+      <label
+        className="text-xs text-subTextAndBorder sm:text-base"
+        htmlFor={label}
+      >
+        {label}
+      </label>
       <select
+        disabled={disabled}
         value={value}
         name={name}
         onChange={onChange}
-        className="block h-12 w-full appearance-none rounded-md border-2 border-subTextAndBorder px-3 py-2 transition focus:border-accent focus:outline-none"
+        className="block h-12 w-full appearance-none rounded-md border-2 border-subTextAndBorder bg-transparent px-3 py-2 transition focus:border-accent focus:outline-none"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -30,7 +42,7 @@ export default function Select({
           </option>
         ))}
       </select>
-      <div className="absolute right-3 top-[calc(50%-7px)] text-accent">
+      <div className="absolute right-3 top-[calc(50%+4px)] text-accent">
         <IoIosArrowDown />
       </div>
     </div>
