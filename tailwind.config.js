@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   mode: 'jit',
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx}',
+    './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
+  ],
   theme: {
     extend: {
       colors: {
@@ -12,6 +16,7 @@ export default {
       },
       gridTemplateColumns: {
         surveyItems: '2fr 1fr 1fr 120px 50px',
+        smSurveyItems: '1.5fr 1fr 1fr 1.2fr 40px',
       },
     },
   },

@@ -1,5 +1,5 @@
 interface LoadingSpinnerProps {
-  color: 'white' | 'accent';
+  color: 'white' | 'accent' | 'red';
 }
 
 export default function LoadingSpinner({ color }: LoadingSpinnerProps) {

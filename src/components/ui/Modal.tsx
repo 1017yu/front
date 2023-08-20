@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react';
 import Button from './Button';
 
 export default function Modal() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
