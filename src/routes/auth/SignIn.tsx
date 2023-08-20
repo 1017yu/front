@@ -11,7 +11,6 @@ import { useUser } from '@/hooks/useUser';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
 import { signin } from '@/api/auth/signin';
 import customToast from '@/utils/customToast';
-import MyToast from '@/components/ui/MyToast';
 
 export default function SignIn() {
   const navigate = useNavigate();
