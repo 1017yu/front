@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ADMIN_NAV_ITEMS } from '@/data/constants';
+import Popple from '../ui/Popple';
 
 const AdminNav = () => {
   const location = useLocation();
@@ -8,7 +9,7 @@ const AdminNav = () => {
   return (
     <div className="flex h-[56px] w-full items-center justify-between bg-white pr-3 sm:h-full sm:w-[200px] sm:min-w-[200px] sm:flex-col sm:px-5 sm:py-10">
       <Link to="/">
-        <img src="/popple.jpg" alt="main-logo" className="h-10" />
+        <Popple />
       </Link>
       <ul className="flex gap-5 sm:mt-10 sm:flex sm:w-full sm:flex-col sm:gap-5">
         {ADMIN_NAV_ITEMS.map((item) => (

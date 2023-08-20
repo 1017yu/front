@@ -11,7 +11,7 @@ import {
 
 const Community = (): JSX.Element => {
   const navigate = useNavigate();
-  const totalPostCount: number = 100;
+  const totalPostCount = 100;
   const dummyData: IDummyData_PostList[] = [
     {
       id: 1,

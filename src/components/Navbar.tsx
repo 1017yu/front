@@ -2,11 +2,37 @@ import { NAV_ITEMS } from '@/data/constants';
 import { Link } from 'react-router-dom';
 import Popple from './ui/Popple';
 import { useUser } from '@/hooks/useUser';
+import dummyProfile from '@/assets/dummy-profile.png';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import LoadingSpinner from './ui/LoadingSpinner';
+import { logout } from '@/api/auth/logout';
+import customToast from '@/utils/customToast';
 
 export default function Navbar() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+
+  const [isLoggingout, setIsLoggingout] = useState(false);
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem('user')
+      ? JSON.parse(localStorage.getItem('user') as string).refreshToken
+      : null;
+    try {
+      setIsLoggingout(true);
+      await logout(refreshToken);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 통신에 성공하든 실패하든 전역상태 삭제, 로컬저장소 삭제
+      customToast('안녕히가세요 🖐️🖐️', 'success');
+      setUser(null);
+      localStorage.removeItem('user');
+      setIsLoggingout(false);
+    }
+  };
+
   return (
-    <header className="container mx-auto flex items-center justify-between px-10 py-5">
+    <header className="container mx-auto flex items-center justify-between px-10 py-2 shadow-lg">
       <div className="flex items-center gap-10">
         <Popple />
         <ul className="flex gap-3">
@@ -26,18 +52,26 @@ export default function Navbar() {
 
           {user ? (
             <>
-              <li className="text-subTextAndBorder">{user.email}님</li>
+              <li className="text-subTextAndBorder">{user.nickname}님</li>
               <li>
                 <img
                   src={
                     `${user.profileImgUrl}` === 'profileDefaultImageUrl'
-                      ? '/dummy-profile.png'
+                      ? dummyProfile
                       : user.profileImgUrl
                   }
                   alt="profile"
                   className="w-8 rounded-full"
                 />
               </li>
+              <Button
+                color="error"
+                variant="outlined"
+                size="small"
+                onClick={handleLogout}
+              >
+                {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
+              </Button>
             </>
           ) : (
             <>

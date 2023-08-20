@@ -7,26 +7,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
-import { EMAIL_REGEX } from '@/data/constants';
-import ValidationMessage from '@/components/ui/ValidationMessage';
-import signin from '@/api/auth/signin';
 import { useUser } from '@/hooks/useUser';
-import { toast } from 'react-toastify';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
+import { signin } from '@/api/auth/signin';
+import customToast from '@/utils/customToast';
 
-export default function Signin() {
+export default function SignIn() {
   const navigate = useNavigate();
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isSeller, setIsSeller] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [loginInput, setLoginInput] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState('');
 
   const { setUser } = useUser();
-
-  const handleToggle = () => {
-    setIsSeller((prev) => !prev);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -39,29 +31,9 @@ export default function Signin() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // 이전 타임아웃 초기화
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-
     // 이메일, 비번 입력안한경우
     if (!loginInput.email.trim() || !loginInput.password.trim()) {
-      setMessage('이메일과 비밀번호를 입력해주세요');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
-      return;
-    }
-
-    // 이메일 형식 옳지 않은 경우
-    if (!EMAIL_REGEX.test(loginInput.email)) {
-      setMessage('유효한 이메일 형식이 아닙니다');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+      customToast('이메일과 비밀번호를 입력해주세요', 'error');
       return;
     }
 
@@ -72,9 +44,9 @@ export default function Signin() {
         email: loginInput.email,
         password: loginInput.password,
       });
-      if (response.status === 200) {
-        // nickname이 안옴
-        const serverUserData: IServerUser = response.data.data;
+      if (response.statusCode === 200) {
+        const serverUserData = response.data as IServerUser;
+        // 로컬 유져데이터 변수 선언
         const localUserData: ILocalUser = {
           email: serverUserData.email,
           nickname: serverUserData.nickname,
@@ -82,27 +54,18 @@ export default function Signin() {
           accessToken: serverUserData.accessToken,
           refreshToken: serverUserData.refreshToken,
         };
+        // 전역 사용자 지정
         setUser(localUserData);
+        // 로컬저장소 저장
         localStorage.setItem('user', JSON.stringify(localUserData));
+        // 홈으로 이동
         navigate('/');
-        toast.success(`${localUserData.email}님 반가워요🖐️🖐️`, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        // 성공메세지 토스트
+        customToast(`${localUserData.nickname}님 반가워요🖐️🖐️`, 'success');
       }
-    } catch (error) {
-      console.log(error);
-      setMessage('서버로부터 온 메세지!');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+    } catch (error: any) {
+      console.error(error);
+      customToast(error.message, 'error');
     } finally {
       setIsSending(false);
     }
@@ -121,7 +84,10 @@ export default function Signin() {
           <Title text="로그인" />
           <div className="flex items-center gap-2">
             <span>판매자</span>
-            <Toggle enabled={isSeller} onToggle={handleToggle} />
+            <Toggle
+              enabled={isSeller}
+              onToggle={() => setIsSeller((prev) => !prev)}
+            />
           </div>
         </div>
         <div className="space-y-2">
@@ -140,7 +106,6 @@ export default function Signin() {
             type="password"
           />
         </div>
-        <ValidationMessage message={message} />
         <div className="flex flex-col gap-2">
           <Button
             contents={isSending ? <LoadingSpinner color="white" /> : '로그인'}
