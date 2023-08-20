@@ -16,6 +16,7 @@ import ForgotPassword from '@/routes/auth/ForgotPassword';
 import SignIn from './routes/auth/SignIn';
 import ConfirmSignup from './routes/auth/ConfirmSignUp';
 import MyToast from './components/ui/MyToast';
+import PostEvent from '@/routes/seller/PostEvent';
 
 export default function App() {
   return (
@@ -29,6 +30,8 @@ export default function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/community/:id" element={<Post />} />
           <Route path="/auth/kakao/callback" element={<Kakao />} />
+          <Route path="/seller/new" element={<PostEvent />} />
+
           {/* not found */}
           <Route path="/*" element={<NotFound />} />
         </Route>

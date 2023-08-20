@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import { AdressState } from '@/states/AdressState';
 import EventLayout from '@/components/EventLayout';
 import { ThemeProvider } from '@mui/material/styles';
-import { fetchEvents } from '@/api/events/eventsRequests';
+import { fetchEvents } from '@/api/events/events';
 import { IEvents, IEventsPagination } from '@/types/IEvents';
 import { COUNT_PER_EVENTS_PAGE, EVENTS_THEME } from '@/data/constants';
 
