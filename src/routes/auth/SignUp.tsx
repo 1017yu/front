@@ -95,6 +95,10 @@ export default function SignUp() {
     } catch (error: any) {
       // 중도포기 통신 에러
       console.error(error);
+      if (error.errorCode === 409) {
+        customToast(error.message, 'error');
+        return;
+      }
       try {
         // 선이동, 후메일보내기
         navigate('/confirmsignup', {
