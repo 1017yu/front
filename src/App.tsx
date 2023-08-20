@@ -15,29 +15,33 @@ import NewPost from '@/routes/NewPost';
 import ForgotPassword from '@/routes/auth/ForgotPassword';
 import SignIn from './routes/auth/SignIn';
 import ConfirmSignup from './routes/auth/ConfirmSignUp';
+import MyToast from './components/ui/MyToast';
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/events/:id" element={<Event />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/:id" element={<Post />} />
-        <Route path="/auth/kakao/callback" element={<Kakao />} />
-        {/* not found */}
-        <Route path="/*" element={<NotFound />} />
-      </Route>
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/community/new" element={<NewPost />} />
-      <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="/confirmsignup" element={<ConfirmSignup />} />
-      <Route element={<AdminLayout />}>
-        <Route path="/admin/survey" element={<AdminSurvey />} />
-        <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />
-      </Route>
-    </Routes>
+    <>
+      <MyToast />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<Event />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/:id" element={<Post />} />
+          <Route path="/auth/kakao/callback" element={<Kakao />} />
+          {/* not found */}
+          <Route path="/*" element={<NotFound />} />
+        </Route>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/community/new" element={<NewPost />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/confirmsignup" element={<ConfirmSignup />} />
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/survey" element={<AdminSurvey />} />
+          <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />
+        </Route>
+      </Routes>
+    </>
   );
 }

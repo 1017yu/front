@@ -2,7 +2,6 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Popple from '@/components/ui/Popple';
 import Title from '@/components/ui/Title';
-import ValidationMessage from '@/components/ui/ValidationMessage';
 import { EMAIL_REGEX } from '@/data/constants';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -67,7 +66,6 @@ export default function ForgotPassword() {
             name="email"
           />
         </div>
-        <ValidationMessage message={message} />
 
         <Button contents={'비밀번호 재설정'} submit />
         <p className="mt-3 text-xs text-subTextAndBorder">
