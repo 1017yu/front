@@ -1,45 +1,71 @@
-import { verifyEemail } from '@/api/auth/signup';
+import { regenerateRegisterToken, verifyEemail } from '@/api/auth/signup';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import MyToast from '@/components/ui/MyToast';
 import Popple from '@/components/ui/Popple';
 import Title from '@/components/ui/Title';
-import ValidationMessage from '@/components/ui/ValidationMessage';
+import customToast from '@/utils/customToast';
 import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function ConfirmSignup() {
+  const navigate = useNavigate();
+
   const {
     state: { email, isProceeded },
   } = useLocation();
+
   const [registerCodeInput, setRegisterCodeInput] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [message, setMessage] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!registerCodeInput.trim()) {
-      setMessage('승인코드를 입력해주세요');
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
+      customToast('승인코드를 입력해주세요', 'error');
       return;
     }
-    setIsSending(true);
     try {
-      const response = verifyEemail(email, registerCodeInput);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      setIsSending(true);
+      const response = await verifyEemail(email, registerCodeInput);
+      if (response.status === 200) {
+        customToast(
+          `인증이 완료되었습니다! 로그인 화면으로 이동합니다`,
+          'success',
+        );
+        setTimeout(() => {
+          navigate('/signin');
+        }, 2000);
+      }
+      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      customToast(error.message, 'error');
     } finally {
       setIsSending(false);
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterCodeInput(event.target.value);
+  const handleRegenerateRegisterToken = async () => {
+    if (
+      confirm('승인코드를 재전송하시겠습니까? (스팸함에 있을 수도 있어요...)')
+    ) {
+      try {
+        const response = await toast.promise(regenerateRegisterToken(email), {
+          pending: '승인코드 재전송 중... 🕊️',
+          success: '전송이 완료되었습니다 👌',
+          error: '승인코드 전송에 실패하였습니다 🤯',
+        });
+        if (response.statusCode === 200) {
+          return;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   if (!email) {
@@ -67,13 +93,12 @@ export default function ConfirmSignup() {
 
         <div>
           <Input
-            onChange={handleChange}
+            onChange={(e) => setRegisterCodeInput(e.target.value)}
             value={registerCodeInput}
             label="승인코드"
             name="email"
           />
         </div>
-        <ValidationMessage message={message} />
 
         <Button
           contents={
@@ -81,9 +106,20 @@ export default function ConfirmSignup() {
           }
           submit
         />
-        <p className="mt-3 text-xs text-subTextAndBorder">
-          승인코드가 오지 않았나요?{' '}
-        </p>
+        <div className="space-y-1 text-xs text-subTextAndBorder">
+          <div>
+            승인코드가 오지 않았나요?
+            <br />
+            조금 더 기다리거나 스팸함을 확인해주세요
+            <br />
+          </div>
+          <span
+            className="cursor-pointer transition hover:text-black"
+            onClick={handleRegenerateRegisterToken}
+          >
+            승인코드 재전송
+          </span>
+        </div>
       </form>
     </div>
   );
