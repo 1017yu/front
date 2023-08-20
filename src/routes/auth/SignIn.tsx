@@ -7,20 +7,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import KakoaButton from '@/components/ui/KakoaButton';
 import Popple from '@/components/ui/Popple';
-import { EMAIL_REGEX } from '@/data/constants';
-import ValidationMessage from '@/components/ui/ValidationMessage';
 import { useUser } from '@/hooks/useUser';
 import { ILocalUser, IServerUser } from '@/types/ISignin';
 import { signin } from '@/api/auth/signin';
 import customToast from '@/utils/customToast';
+import MyToast from '@/components/ui/MyToast';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isSeller, setIsSeller] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [loginInput, setLoginInput] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState('');
 
   const { setUser } = useUser();
 
@@ -35,29 +32,9 @@ export default function SignIn() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // 이전 타임아웃 초기화
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-
     // 이메일, 비번 입력안한경우
     if (!loginInput.email.trim() || !loginInput.password.trim()) {
-      setMessage('이메일과 비밀번호를 입력해주세요');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
-      return;
-    }
-
-    // 이메일 형식 옳지 않은 경우
-    if (!EMAIL_REGEX.test(loginInput.email)) {
-      setMessage('유효한 이메일 형식이 아닙니다');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+      customToast('이메일과 비밀번호를 입력해주세요', 'error');
       return;
     }
 
@@ -88,12 +65,8 @@ export default function SignIn() {
         customToast(`${localUserData.nickname}님 반가워요🖐️🖐️`, 'success');
       }
     } catch (error: any) {
-      console.log(error);
-      setMessage(error.message);
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+      console.error(error);
+      customToast(error.message, 'error');
     } finally {
       setIsSending(false);
     }
@@ -134,7 +107,6 @@ export default function SignIn() {
             type="password"
           />
         </div>
-        <ValidationMessage message={message} />
         <div className="flex flex-col gap-2">
           <Button
             contents={isSending ? <LoadingSpinner color="white" /> : '로그인'}
