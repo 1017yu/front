@@ -17,7 +17,6 @@ import {
 } from '@/data/constants';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import MyToast from '@/components/ui/MyToast';
 import customToast from '@/utils/customToast';
 
 export default function SignUp() {

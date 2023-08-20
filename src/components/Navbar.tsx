@@ -70,7 +70,7 @@ export default function Navbar() {
                 size="small"
                 onClick={handleLogout}
               >
-                {isLoggingout ? <LoadingSpinner color="accent" /> : '로그아웃'}
+                {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
               </Button>
             </>
           ) : (
