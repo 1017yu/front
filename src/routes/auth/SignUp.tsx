@@ -209,12 +209,15 @@ export default function SignUp() {
   };
 
   // 도시 선택
-  const citySelectOptions = useMemo(() => {
-    ADRESS_SELECT_OPTIONS.map((option) => ({
-      name: option.city,
-      value: option.city,
-    }));
-  }, []);
+  const citySelectOptions = useMemo(
+    () =>
+      ADRESS_SELECT_OPTIONS.map((option) => ({
+        name: option.city,
+        value: option.city,
+      })),
+    [],
+  );
+
   // 구선택
   const districtSelectOptions = useMemo(
     () =>
