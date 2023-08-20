@@ -5,15 +5,16 @@ import AdminSurvey from '@/routes/admin/AdminSurvey';
 import AdminSurveyDetail from '@/routes/admin/AdminSurveyDetail';
 import Home from '@/routes/Home';
 import NotFound from '@/routes/NotFound';
-import Signin from './routes/Signin';
-import SignUp from './routes/SignUp';
-import Kakao from './routes/Kakao';
+import SignUp from './routes/auth/SignUp';
+import Kakao from './routes/auth/Kakao';
 import Events from '@/routes/events/Events';
 import Event from '@/routes/events/Event';
-import ForgotPassword from './routes/ForgotPassword';
 import Community from '@/routes/Community';
 import Post from '@/routes/Post';
 import NewPost from '@/routes/NewPost';
+import ForgotPassword from '@/routes/auth/ForgotPassword';
+import SignIn from './routes/auth/SignIn';
+import ConfirmSignup from './routes/auth/ConfirmSignUp';
 
 export default function App() {
   return (
@@ -28,11 +29,11 @@ export default function App() {
         {/* not found */}
         <Route path="/*" element={<NotFound />} />
       </Route>
-      {/* 로그인 회원가입은 Navbar, Footer 없이 */}
-      <Route path="/signin" element={<Signin />} />
+      <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/community/new" element={<NewPost />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
+      <Route path="/confirmsignup" element={<ConfirmSignup />} />
       <Route element={<AdminLayout />}>
         <Route path="/admin/survey" element={<AdminSurvey />} />
         <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />
