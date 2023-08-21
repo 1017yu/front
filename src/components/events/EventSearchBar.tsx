@@ -17,7 +17,7 @@ export default function EventSearchBar() {
 
   // 선택된 지역에 따른 시-군-구 filtering
   const filteredStates = EVENT_STATE_ITEMS.filter(
-    (state) => state[selected.region as string],
+    (value) => value[selected.region as string],
   );
 
   // region을 업데이트하기 위한 이벤트 핸들러
@@ -45,7 +45,7 @@ export default function EventSearchBar() {
   };
 
   return (
-    <div className="container mx-auto  sm:flex  sm:px-20">
+    <div className="container mx-auto sm:flex sm:px-20">
       <div className="ml-8 flex w-full gap-2 sm:m-0 sm:gap-4  sm:pb-4">
         {/* 드롭다운 버튼 - region */}
         <Listbox value={selected.region} onChange={handleRegionChange}>
