@@ -18,9 +18,12 @@ import {
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customToast from '@/utils/customToast';
+import Toggle from '@/components/ui/Toggle';
+import { AddressDaum } from './AddressDaum';
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [isSeller, setIsSeller] = useState(false);
 
   // 통신 로딩상태 저장 state
   const [isCheckingProceedAndDupEmail, setIsCheckingProceedAndDupEmail] =
@@ -34,14 +37,27 @@ export default function SignUp() {
   });
 
   // form에 실시간으로 입력되는 값들
-  const [signupInput, setSignupInput] = useState({
-    email: '',
-    password: '',
-    passwordCheck: '',
-    nickname: '',
-    city: '',
-    district: '',
-  });
+  const [signupInput, setSignupInput] = useState(
+    isSeller
+      ? {
+          email: '',
+          password: '',
+          passwordCheck: '',
+          address: '',
+          nickname: '',
+          shopName: '',
+          businessNumber: '',
+          categories: '',
+        }
+      : {
+          email: '',
+          password: '',
+          passwordCheck: '',
+          nickname: '',
+          city: '',
+          district: '',
+        },
+  );
 
   // form 입력값을 바꿔주는 함수
   const handleChange = (
@@ -244,6 +260,13 @@ export default function SignUp() {
         </div>
         <div className="flex items-end gap-4">
           <div className="flex flex-1 flex-col gap-4">
+            <div className="flex items-center justify-end gap-2">
+              <span>판매자 회원</span>
+              <Toggle
+                enabled={isSeller}
+                onToggle={() => setIsSeller((prev) => !prev)}
+              />
+            </div>
             <div className="flex items-end gap-2">
               <Input
                 label="이메일*"
@@ -329,37 +352,71 @@ export default function SignUp() {
           value={signupInput.passwordCheck}
           type="password"
         />
-        <div className="flex gap-2">
-          <div className="flex-1">
-            <Select
-              name="city"
-              label="도, 시*"
+
+        {isSeller ? (
+          <>
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Input
+                  label="상호명"
+                  name="shopName"
+                  onChange={handleChange}
+                  value={signupInput.password}
+                />
+              </div>
+              <div className="flex flex-1 items-end gap-2">
+                <Input
+                  label="사업자등록번호"
+                  name="shopName"
+                  onChange={handleChange}
+                  value={signupInput.password}
+                />
+                <div className="w-32">
+                  <Button contents="검색" secondary />
+                </div>
+              </div>
+            </div>
+            <Input
+              label="상품 카테고리"
+              name="categories"
               onChange={handleChange}
-              options={[{ name: '도, 시', value: '' }, ...citySelectOptions]}
-              value={signupInput.city}
+              value={signupInput.password}
             />
+          </>
+        ) : (
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Select
+                name="city"
+                label="도, 시*"
+                onChange={handleChange}
+                options={[{ name: '도, 시', value: '' }, ...citySelectOptions]}
+                value={signupInput.city as string}
+              />
+            </div>
+            <div className="flex-1">
+              <Select
+                disabled={!signupInput.city}
+                name="district"
+                label="구, 군*"
+                onChange={handleChange}
+                options={
+                  !signupInput.city
+                    ? [{ name: '구, 군', value: '' }]
+                    : [
+                        { name: '구, 군', value: '' },
+                        ...(districtSelectOptions as {
+                          name: string;
+                          value: string;
+                        }[]),
+                      ]
+                }
+                value={signupInput.district as string}
+              />
+            </div>
           </div>
-          <div className="flex-1">
-            <Select
-              disabled={!signupInput.city}
-              name="district"
-              label="구, 군*"
-              onChange={handleChange}
-              options={
-                !signupInput.city
-                  ? [{ name: '구, 군', value: '' }]
-                  : [
-                      { name: '구, 군', value: '' },
-                      ...(districtSelectOptions as {
-                        name: string;
-                        value: string;
-                      }[]),
-                    ]
-              }
-              value={signupInput.district}
-            />
-          </div>
-        </div>
+        )}
+
         <div className="mt-5 flex-1">
           <Button contents="회원가입" submit />
         </div>
