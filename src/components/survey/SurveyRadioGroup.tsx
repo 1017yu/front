@@ -5,7 +5,7 @@ export interface IRadioOption {
   content: string;
 }
 
-type SurveyRadioGroupProps<> = {
+type SurveyRadioGroupProps = {
   group: string;
   options: IRadioOption[];
   checked: number;

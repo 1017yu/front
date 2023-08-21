@@ -53,4 +53,11 @@ export const modalData = {
       '수요조사 수정 중 오류가 발생했습니다. 데이터를 다시 확인해주세요.',
     cancelButton: '확인',
   },
+  LOGIN_REQUIRED: {
+    type: 'twoButton',
+    title: '로그인',
+    content: '로그인이 필요한 서비스입니다.\n로그인하시겠습니까?',
+    okButton: '로그인',
+    cancelButton: '닫기',
+  },
 };

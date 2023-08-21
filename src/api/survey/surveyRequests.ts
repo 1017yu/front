@@ -7,21 +7,12 @@ import { ISurveyRequest, ISurveyResponse } from '@/types/ISurvey';
 export const fetchActiveSurvey = async (): Promise<
   IResponse<ISurveyResponse>
 > => {
-  const response = await apiInstance.get(`/survey/active`, {
-    headers: {
-      Authorization: null,
-    },
-  });
+  const response = await apiInstance.get(`/survey/active`);
   return response.data;
 };
 
 // * 수요조사 답변 제출
 export const submitSurvey = async (params: ISurveyRequest) => {
-  const response = await apiInstance.post('/survey', params, {
-    headers: {
-      Authorization:
-        'Bearer eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJpZCI6MjYsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjkyMzcwMDE5LCJleHAiOjE4MDAxNjkyMzcwMDE5fQ.SqWl3hCmevmBZBZ7vVi5ajLMY0FEKTRefzO-DBxwoF0',
-    },
-  });
+  const response = await apiInstance.post('/survey', params);
   return response.data;
 };
