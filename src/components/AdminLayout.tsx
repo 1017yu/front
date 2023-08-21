@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
-import { AdminModal } from '@/components/admin/AdminModal';
+import { CommonModal } from '@/components/ui/CommonModal';
 import { RecoilRoot } from 'recoil';
 
 const AdminLayout = () => {
@@ -9,7 +9,7 @@ const AdminLayout = () => {
       <div className="flex flex-col sm:flex-row">
         <AdminNav />
         <Outlet />
-        <AdminModal />
+        <CommonModal />
       </div>
     </RecoilRoot>
   );
