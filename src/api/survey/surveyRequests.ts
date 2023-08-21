@@ -21,3 +21,9 @@ export const fetchSurveyResults = async () => {
   const response = await apiInstance.get('/survey/result');
   return response.data;
 };
+
+// * 수요조사 상세 조회
+export const getSurveyResultDetail = async (surveyId: number) => {
+  const response = await apiInstance.get(`/survey/result/${surveyId}`);
+  return response.data;
+};

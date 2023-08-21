@@ -1,5 +1,6 @@
 import React from 'react';
 import { ISurveyResultResponse } from '@/types/ISurvey';
+import { useNavigate } from 'react-router-dom';
 
 type SurveyResultItem = {
   survey: ISurveyResultResponse;
@@ -7,8 +8,14 @@ type SurveyResultItem = {
 };
 
 const SurveyResultItem = React.memo(({ survey, isLast }: SurveyResultItem) => {
+  const navigate = useNavigate();
+
+  const moveDetail = () => {
+    navigate(`/survey-results/${survey.id}`, { replace: true });
+  };
+
   return (
-    <tr className="cursor-pointer bg-white">
+    <tr className="cursor-pointer bg-white" onClick={moveDetail}>
       <th
         scope="row"
         className={`${
