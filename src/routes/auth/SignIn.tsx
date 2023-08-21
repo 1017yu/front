@@ -40,10 +40,13 @@ export default function SignIn() {
     // 통신 시작
     setIsSending(true);
     try {
-      const response = await signin({
-        email: loginInput.email,
-        password: loginInput.password,
-      });
+      const response = await signin(
+        {
+          email: loginInput.email,
+          password: loginInput.password,
+        },
+        isSeller,
+      );
       if (response.statusCode === 200) {
         const serverUserData = response.data as IServerUser;
         // 로컬 유져데이터 변수 선언

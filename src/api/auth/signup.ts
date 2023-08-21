@@ -8,8 +8,8 @@ export async function signup(signupData: ISignupRequestBody) {
 
 export async function verifyEmailOrNickname(email?: string, nickname?: string) {
   const url = email
-    ? `/auth/check-duplication/?email=${email}`
-    : `/auth/check-duplication/?nickname=${nickname}`;
+    ? `/auth/check-duplication?email=${email}`
+    : `/auth/check-duplication?nickname=${nickname}`;
   const response = await apiInstance(url);
   return response.data;
 }
