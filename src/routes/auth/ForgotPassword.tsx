@@ -1,46 +1,48 @@
+import { forgotpassword } from '@/api/auth/forgotpassword';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Popple from '@/components/ui/Popple';
 import Title from '@/components/ui/Title';
 import { EMAIL_REGEX } from '@/data/constants';
+import customToast from '@/utils/customToast';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
   const [emailInput, setEmailInput] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
-
-    if (emailInput.trim()) {
-      setMessage('이메일을 입력해주세요');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+    if (!emailInput.trim()) {
+      customToast('이메일을 입력해주세요', 'error');
       return;
     }
     if (!EMAIL_REGEX.test(emailInput)) {
-      setMessage('올바른 이메일을 입력해주세요');
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 2000);
-      setTimeoutId(id);
+      customToast('올바른 이메일을 입력해주세요', 'error');
       return;
     }
-    console.log(emailInput);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailInput(event.target.value);
+    try {
+      setIsSubmitting(true);
+      const response = await toast.promise(forgotpassword(emailInput), {
+        pending: '임시비밀번호 전송 중... 🕊️',
+        success: '로그인 후 비밀번호를 변경해주세요 👌',
+      });
+      if (response.statusCode === 200) {
+        navigate('/signin');
+        return;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      customToast(error.message, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,22 +57,31 @@ export default function ForgotPassword() {
         <Title text="비밀번호를 잊으셨나요?" />
         <p className="text-sm text-subTextAndBorder dark:text-gray-400">
           이메일을 입력해주시면 <br />
-          비밀번호를 재설정하는 링크를 보내드릴게요.
+          임시비밀번호를 전달해드리겠습니다
         </p>
 
         <div>
           <Input
-            onChange={handleChange}
-            value=""
+            onChange={(e) => setEmailInput(e.target.value)}
+            value={emailInput}
             label="등록한 이메일"
             name="email"
           />
         </div>
 
-        <Button contents={'비밀번호 재설정'} submit />
+        <Button
+          contents={
+            isSubmitting ? (
+              <LoadingSpinner color="white" />
+            ) : (
+              '임시비밀번호 발급'
+            )
+          }
+          submit
+        />
         <p className="mt-3 text-xs text-subTextAndBorder">
           비밀번호가 생각이 나셨나요?{' '}
-          <Link to="/login" className="transition hover:text-black">
+          <Link to="/signin" className="transition hover:text-black">
             로그인
           </Link>
         </p>
