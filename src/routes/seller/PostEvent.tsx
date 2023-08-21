@@ -1,5 +1,10 @@
-// URL/seller/new
+import { RecoilRoot } from 'recoil';
+import PostForm from '@/components/seller/PostForm';
 
 export default function PostEvent() {
-  return <div>PostEvent</div>;
+  return (
+    <RecoilRoot>
+      <PostForm />
+    </RecoilRoot>
+  );
 }
