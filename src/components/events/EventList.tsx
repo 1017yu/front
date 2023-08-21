@@ -51,8 +51,8 @@ export default function EventList() {
                   id={event.id}
                   name={event.name}
                   location={event.location}
-                  thumbnail_url={event.thumbnail_url}
-                  category={event.category}
+                  thumbnailUrl={event?.thumbnailUrl}
+                  category={event?.category}
                   status={event.status}
                   bookmark={event.bookmark}
                 />

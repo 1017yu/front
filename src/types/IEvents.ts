@@ -13,9 +13,9 @@ export interface IEvents {
   id: number;
   name: string;
   location: string;
-  thumbnail_url?: string;
+  thumbnailUrl?: string;
   status: string;
-  category: string;
+  category?: string;
   bookmark: boolean;
 }
 
