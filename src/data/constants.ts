@@ -15,6 +15,10 @@ export const NAV_ITEMS = [
     label: '회원 커뮤니티',
     href: '/community',
   },
+  {
+    label: '수요조사 결과',
+    href: '/survey-results',
+  },
   // {
   //   label: '임차대행',
   //   href: '/rent',

@@ -15,3 +15,11 @@ export interface ISurveyRequest {
   surveyOptionId: number;
   age: number;
 }
+
+export interface ISurveyResultResponse {
+  id: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+}
