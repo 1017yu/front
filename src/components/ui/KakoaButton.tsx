@@ -7,7 +7,8 @@ interface KakoaButtonProps {
 export default function KakoaButton({ disabled }: KakoaButtonProps) {
   return (
     <a
-      href="https://kauth.kakao.com/oauth/authorize?client_id=921fbdc50a1c510a40df3bebfcf15573&redirect_uri=http://localhost:5173/auth/kakao/callback&response_type=code"
+      // 나중에 숨기거나 추출 해야함
+      href="https://kauth.kakao.com/oauth/authorize?client_id=510e09592b1197652bfa854b34a2592d&redirect_uri=http://localhost:5173/auth/kakao/callback&response_type=code"
       className={`${disabled ? 'pointer-events-none' : ''}`}
     >
       <button

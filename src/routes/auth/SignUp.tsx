@@ -17,7 +17,6 @@ import {
 } from '@/data/constants';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import MyToast from '@/components/ui/MyToast';
 import customToast from '@/utils/customToast';
 
 export default function SignUp() {
@@ -108,7 +107,7 @@ export default function SignUp() {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         customToast(error.message, 'error');
       }
     } finally {
