@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import { AdressState } from '@/states/AdressState';
 import EventLayout from '@/components/EventLayout';
 import { ThemeProvider } from '@mui/material/styles';
-import { fetchEvents } from '@/api/events/eventsRequests';
+import { fetchEvents } from '@/api/events/events';
 import { IEvents, IEventsPagination } from '@/types/IEvents';
 import { COUNT_PER_EVENTS_PAGE, EVENTS_THEME } from '@/data/constants';
 
@@ -51,8 +51,8 @@ export default function EventList() {
                   id={event.id}
                   name={event.name}
                   location={event.location}
-                  thumbnail_url={event.thumbnail_url}
-                  category={event.category}
+                  thumbnailUrl={event?.thumbnailUrl}
+                  category={event?.category}
                   status={event.status}
                   bookmark={event.bookmark}
                 />

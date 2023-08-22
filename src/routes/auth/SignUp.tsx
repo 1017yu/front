@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Popple from '@/components/ui/Popple';
-import Select from '@/components/ui/Seletct';
+import Select from '@/components/ui/Select';
 import {
   ADRESS_SELECT_OPTIONS,
   EMAIL_REGEX,

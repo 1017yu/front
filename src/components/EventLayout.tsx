@@ -17,7 +17,7 @@ function EventLayout({ ...props }: IEvents) {
         <img
           className=" h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={
-            props.thumbnail_url
+            props.thumbnailUrl
               ? 'http://via.placeholder.com/640x400'
               : 'http://via.placeholder.com/640x400'
           }
