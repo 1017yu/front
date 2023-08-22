@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSurveyResultDetail } from '@/api/survey/surveyRequests';
 import SurveyBarChart from '@/components/survey/SurveyBarChart';
-import { IChart, IChartArea } from '@/types/IChart';
-import { ISurveyResultDetail } from '@/types/ISurvey';
-import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
+import { IChart, IChartAge, IChartArea } from '@/types/IChart';
+import { ISurveyAnswer, ISurveyResultDetail } from '@/types/ISurvey';
+import { ADRESS_SELECT_OPTIONS, AGE_OPTIONS } from '@/data/constants';
+import SurveyPieChart from '@/components/survey/SurveyPieChart';
+import SurveyGroupChart from '@/components/survey/SurveyGroupChart';
 
 const SurveyResultDetail = () => {
   const params = useParams();
@@ -19,9 +21,8 @@ const SurveyResultDetail = () => {
     if (surveyDetail) {
       surveyDetail.options.map((option) => {
         totalScoreList.push({
-          id: option.id as number,
-          title: option.content,
-          totalNum: answers.filter((answer) => answer.optionId === option.id)
+          name: option.content,
+          value: answers.filter((answer) => answer.optionId === option.id)
             .length,
         });
       });
@@ -33,20 +34,35 @@ const SurveyResultDetail = () => {
   const areaList = useMemo(() => {
     const areaScoreList = [] as IChartArea[];
     if (surveyDetail) {
-      ADRESS_SELECT_OPTIONS.map((address) => address.city).map(
-        (city, index) => {
-          areaScoreList.push({
-            id: index,
-            city: city,
-            answers: answers.filter((answer) => answer.area === city),
-          });
-        },
-      );
-      console.log(areaScoreList);
+      ADRESS_SELECT_OPTIONS.map((address) => address.city).map((city) => {
+        const areaData = { name: city } as IChartArea;
+        const filterAnswers = answers.filter((answer) => answer.area === city);
+        surveyDetail.options.map((option) => {
+          areaData[option.content] = filterAnswers.filter(
+            (answer) => answer.optionId === option.id,
+          ).length;
+        });
+        areaScoreList.push(areaData);
+      });
       return areaScoreList;
     }
 
     return areaScoreList;
+  }, [answers, surveyDetail]);
+
+  const ageList = useMemo(() => {
+    const ageScoreList = [] as IChartAge[];
+    if (surveyDetail) {
+      AGE_OPTIONS.map((age) => {
+        ageScoreList.push({
+          id: age.id,
+          age: age.content,
+          answers: answers.filter((answer) => answer.age === age.id),
+        });
+      });
+      return ageScoreList;
+    }
+    return ageScoreList;
   }, [answers, surveyDetail]);
 
   const getSurveyDetailData = (id: number) => {
@@ -66,7 +82,7 @@ const SurveyResultDetail = () => {
   return (
     <div className="container mx-auto py-10">
       {surveyDetail && (
-        <div className="mx-5 rounded bg-white py-5 sm:mx-20">
+        <div className="mx-5 rounded bg-white py-5 sm:mx-10 md:mx-20 ">
           <h2 className="text-center text-lg font-medium sm:text-2xl">
             {surveyDetail.title}
           </h2>
@@ -79,24 +95,36 @@ const SurveyResultDetail = () => {
             <SurveyBarChart datas={totalScore} title="전체" />
 
             <h6 className="mt-10 text-sm">2. 지역별 응답 결과</h6>
-            <div className="grid grid-cols-2 gap-4">
-              {areaList.map((data) => {
-                const scoreList = [] as IChart[];
-                surveyDetail.options.map((option) => {
-                  scoreList.push({
-                    id: option.id as number,
-                    title: option.content,
-                    totalNum: data.answers.filter(
-                      (answer) => answer.optionId === option.id,
-                    ).length,
-                  });
-                });
-                console.log(scoreList);
-                return <SurveyBarChart datas={scoreList} title={data.city} />;
-              })}
+            <div className="grid grid-cols-1 gap-4">
+              <SurveyGroupChart
+                title="지역"
+                datas={areaList}
+                options={surveyDetail.options.map((option) => option.content)}
+              />
             </div>
 
             <h6 className="mt-10 text-sm">3. 연령별 응답 결과</h6>
+            <div className="grid grid-cols-2 gap-4">
+              {ageList.map((data) => {
+                const scoreList = [] as IChart[];
+                surveyDetail.options.map((option) => {
+                  scoreList.push({
+                    name: option.content,
+                    value: data.answers.filter(
+                      (answer: ISurveyAnswer) => answer.optionId === option.id,
+                    ).length,
+                  });
+                });
+
+                return (
+                  <SurveyPieChart
+                    key={data.id}
+                    datas={scoreList}
+                    title={data.age}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       )}

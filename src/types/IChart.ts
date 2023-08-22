@@ -1,13 +1,17 @@
 import { ISurveyAnswer } from '@/types/ISurvey';
 
 export interface IChart {
-  id: number;
-  title: string;
-  totalNum: number;
+  name: string;
+  value: number;
 }
 
 export interface IChartArea {
+  name: string;
+  [key: string]: number | string;
+}
+
+export interface IChartAge {
   id: number;
-  city: string;
+  age: string;
   answers: ISurveyAnswer[];
 }
