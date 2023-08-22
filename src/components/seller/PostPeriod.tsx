@@ -1,9 +1,9 @@
 import moment from 'moment';
-import Datepicker from 'react-tailwindcss-datepicker';
 import { useRecoilState } from 'recoil';
-import { PostEventState } from '@/states/PostEventState';
 import { IDateValue } from '@/types/IDateValue';
-import { POST_INPUT_TITLE } from '@/data/postCategory';
+import { POST_INPUT_TITLE } from '@/data/constants';
+import Datepicker from 'react-tailwindcss-datepicker';
+import { PostEventState } from '@/states/PostEventState';
 
 export default function PostPeriod() {
   // 이벤트 등록 Recoil Atom

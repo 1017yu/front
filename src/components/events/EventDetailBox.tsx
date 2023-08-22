@@ -1,6 +1,7 @@
 import { IEvent } from '@/types/IEvent';
-import Button from '@/components/ui/Button';
+import { EVENT_PAGE_MESSAGE } from '@/data/constants';
 import { IoMdHeartEmpty, IoMdLink } from 'react-icons/io';
+import EventJoinButton from '@/components/events/EventJoinButton';
 
 export default function EventDetailBox({ ...rest }: IEvent) {
   const formatDate = (dateTimeString: string) => {
@@ -20,7 +21,7 @@ export default function EventDetailBox({ ...rest }: IEvent) {
           {rest.category}
         </div>
         <div className="sm:pb- pb-2 text-3xl sm:text-5xl">{rest.name}</div>
-        <div className="pb-2 text-sm sm:pb-4 sm:text-xl">{rest.location}</div>
+        <div className="pb-2 text-sm sm:pb-4 sm:text-xl">{rest.city}</div>
         <div className="sm-pb-8 pb-4 text-xl sm:text-2xl">{rest.hostName}</div>
         <div className="flex cursor-pointer gap-4 text-2xl sm:text-4xl md:gap-8">
           <IoMdHeartEmpty />
@@ -30,14 +31,19 @@ export default function EventDetailBox({ ...rest }: IEvent) {
       <div className="flex flex-col justify-between">
         <div>
           <div className="sm:pb-2 sm:text-xl">
-            행사 시작일: {formatDate(rest.startDate as string)}
+            {EVENT_PAGE_MESSAGE.startDate}
+            {formatDate(rest.startDate as string)}
           </div>
           <div className="mb-4 sm:mb-8 sm:text-xl">
-            행사 마감일: {formatDate(rest.endDate as string)}
+            {EVENT_PAGE_MESSAGE.endDate}
+            {formatDate(rest.endDate as string)}
           </div>
           <div className="text-2xl text-accent sm:text-4xl">{rest.status}</div>
         </div>
-        <Button contents={'신청하기'} />
+        <EventJoinButton
+          isOwner={rest.isOwner}
+          isParticipant={rest.isParticipant}
+        />
       </div>
     </div>
   );

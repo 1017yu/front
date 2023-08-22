@@ -4,7 +4,7 @@ import { ISurveyRequest, ISurveyResponse } from '@/types/ISurvey';
 import SurveyRadioGroup, {
   IRadioOption,
 } from '@/components/survey/SurveyRadioGroup';
-import surveyHeader from '/public/survey_header.png';
+import surveyHeader from '@/assets/survey_header.png';
 import { AGE_OPTIONS } from '@/data/constants';
 import { submitSurvey } from '@/api/survey/surveyRequests';
 

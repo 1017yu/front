@@ -1,6 +1,6 @@
+import Input from '@/components/ui/Input';
 import { useRecoilState } from 'recoil';
-import Input from '../ui/Input';
-import { POST_INPUT_TITLE } from '@/data/postCategory';
+import { POST_INPUT_TITLE } from '@/data/constants';
 import { PostEventState } from '@/states/PostEventState';
 
 export default function PostDescInput() {
