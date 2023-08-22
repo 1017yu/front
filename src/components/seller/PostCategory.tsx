@@ -1,4 +1,4 @@
-import { POST_INPUT_TITLE } from '@/data/postCategory';
+import { POST_INPUT_TITLE } from '@/data/constants';
 import PostDropDown from '@/components/seller/PostDropdown';
 
 export default function PostCategory() {
