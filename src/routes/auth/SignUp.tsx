@@ -1,6 +1,8 @@
 import {
   checkProceed,
+  confirmBusinessNumber,
   regenerateRegisterToken,
+  sellerSignup,
   signup,
   verifyEmailOrNickname,
 } from '@/api/auth/signup';
@@ -19,11 +21,15 @@ import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customToast from '@/utils/customToast';
 import Toggle from '@/components/ui/Toggle';
-import { AddressDaum } from './AddressDaum';
+import DaumPostcode from 'react-daum-postcode';
+import { MdOutlineCancel } from 'react-icons/md';
 
 export default function SignUp() {
+  // const { closeModal, modalDataState, openModal } = useModal();
+
   const navigate = useNavigate();
   const [isSeller, setIsSeller] = useState(false);
+  const [daumPostcodeOpen, setDaumPostcodeOpen] = useState(false);
 
   // 통신 로딩상태 저장 state
   const [isCheckingProceedAndDupEmail, setIsCheckingProceedAndDupEmail] =
@@ -37,27 +43,25 @@ export default function SignUp() {
   });
 
   // form에 실시간으로 입력되는 값들
-  const [signupInput, setSignupInput] = useState(
-    isSeller
-      ? {
-          email: '',
-          password: '',
-          passwordCheck: '',
-          address: '',
-          nickname: '',
-          shopName: '',
-          businessNumber: '',
-          categories: '',
-        }
-      : {
-          email: '',
-          password: '',
-          passwordCheck: '',
-          nickname: '',
-          city: '',
-          district: '',
-        },
-  );
+  const [signupInput, setSignupInput] = useState({
+    email: '',
+    password: '',
+    passwordCheck: '',
+    nickname: '',
+    city: '',
+    district: '',
+  });
+
+  const [sellerSignupInput, setSellerSignupInput] = useState({
+    email: '',
+    password: '',
+    passwordCheck: '',
+    address: '',
+    nickname: '',
+    shopName: '',
+    businessNumber: '',
+  });
+  console.log(sellerSignupInput);
 
   // form 입력값을 바꿔주는 함수
   const handleChange = (
@@ -66,6 +70,10 @@ export default function SignUp() {
     const { name, value } = event.target;
     setSignupInput({
       ...signupInput,
+      [name]: value,
+    });
+    setSellerSignupInput({
+      ...sellerSignupInput,
       [name]: value,
     });
   };
@@ -167,7 +175,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
@@ -249,11 +257,107 @@ export default function SignUp() {
     [signupInput.city],
   );
 
+  const [isBusinessNoConfirmed, setIsBusinessNoConfirmed] = useState(false);
+  const [isBusinessNoConfirming, setIsBusinessNoConfirming] = useState(false);
+  const handleBusinessNumber = async () => {
+    try {
+      setIsBusinessNoConfirming(true);
+      const response = await confirmBusinessNumber(
+        sellerSignupInput.businessNumber,
+      );
+      if (response.statusCode === 200) {
+        customToast('사업자 등록번호가 확인되었습니다.', 'success');
+        setIsBusinessNoConfirmed(true);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      customToast(error.message, 'error');
+    } finally {
+      setIsBusinessNoConfirming(false);
+    }
+  };
+
+  const handleSellerSignup = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    if (
+      !sellerSignupInput.email.trim() ||
+      !sellerSignupInput.password.trim() ||
+      !sellerSignupInput.nickname.trim() ||
+      !sellerSignupInput.password ||
+      !sellerSignupInput.passwordCheck ||
+      !sellerSignupInput.address ||
+      !sellerSignupInput.businessNumber
+    ) {
+      customToast('필수항목을 입력해주세요', 'error');
+      return;
+    }
+
+    // 이메일 중복확인을 하지 않은 경우
+    if (!isDuplicationVerified.email) {
+      customToast('이메일 중복을 확인하세요', 'error');
+      return;
+    }
+
+    // 닉네임 중복확인을 하지 않은 경우
+    if (!isDuplicationVerified.nickname) {
+      customToast('닉네임 중복을 확인하세요', 'error');
+      return;
+    }
+
+    // 비밀번호 형식 옳지 않은 경우
+    if (!PASSWORD_REGEX.test(sellerSignupInput.password)) {
+      customToast('비밀번호는 영문 숫자 조합 8자리 이상', 'error');
+      return;
+    }
+
+    // 비밀번호 2개가 서로 일치하지 않는 경우
+    if (sellerSignupInput.password !== sellerSignupInput.passwordCheck) {
+      customToast('비밀번호를 확인해주세요', 'error');
+      return;
+    }
+    // 사업자 등록번호 검증을 하지 않은 경우
+    if (!isBusinessNoConfirmed) {
+      customToast('사업자 등록번호를 검증해주세요', 'error');
+      return;
+    }
+
+    try {
+      const response = await sellerSignup({
+        address: sellerSignupInput.address,
+        businessNumber: sellerSignupInput.businessNumber,
+        email: sellerSignupInput.email,
+        nickname: sellerSignupInput.nickname,
+        password: sellerSignupInput.password,
+        shopName: sellerSignupInput.shopName,
+        categories: [1, 2, 3],
+      });
+      if (response.status === 200) {
+        customToast(
+          `판매자 회원가입이 완료되었습니다! 로그인 화면으로 이동합니다`,
+          'success',
+        );
+        setTimeout(() => {
+          navigate('/signin');
+        }, 2000);
+      }
+      return;
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      customToast(error.message, 'error');
+    }
+  };
+
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10 bg-slate-100">
       <form
-        className="flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-sm sm:w-[600px] sm:gap-4"
-        onSubmit={handleSubmit}
+        className="relative flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-sm sm:w-[600px] sm:gap-4"
+        onSubmit={isSeller ? handleSellerSignup : handleSignup}
       >
         <div className="mx-auto w-32">
           <Popple />
@@ -338,50 +442,92 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-        <Input
-          label="비밀번호* (영문, 숫자 조합 8자리 이상)"
-          name="password"
-          onChange={handleChange}
-          value={signupInput.password}
-          type="password"
-        />
-        <Input
-          label="비밀번호 확인*"
-          name="passwordCheck"
-          onChange={handleChange}
-          value={signupInput.passwordCheck}
-          type="password"
-        />
+        <div className="flex items-end gap-2">
+          <Input
+            label="비밀번호* (영문, 숫자 8자리 이상)"
+            name="password"
+            onChange={handleChange}
+            value={signupInput.password}
+            type="password"
+          />
+          <Input
+            label="비밀번호 확인*"
+            name="passwordCheck"
+            onChange={handleChange}
+            value={signupInput.passwordCheck}
+            type="password"
+          />
+        </div>
 
         {isSeller ? (
           <>
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Input
-                  label="상호명"
-                  name="shopName"
-                  onChange={handleChange}
-                  value={signupInput.password}
+            <Input
+              label="상호명*"
+              name="shopName"
+              onChange={handleChange}
+              value={sellerSignupInput.shopName}
+            />
+            <div className="flex items-end gap-2">
+              <Input
+                label="사업자 등록번호* ( - 없이)"
+                name="businessNumber"
+                onChange={handleChange}
+                value={sellerSignupInput.businessNumber}
+                disabled={isBusinessNoConfirmed}
+              />
+              <div className="w-32">
+                <Button
+                  disabled={isBusinessNoConfirming}
+                  contents={
+                    isBusinessNoConfirming ? (
+                      <LoadingSpinner color="accent" />
+                    ) : isBusinessNoConfirmed ? (
+                      '변경하기'
+                    ) : (
+                      '확인하기'
+                    )
+                  }
+                  secondary
+                  onClick={
+                    isBusinessNoConfirmed
+                      ? () => setIsBusinessNoConfirmed(false)
+                      : handleBusinessNumber
+                  }
                 />
-              </div>
-              <div className="flex flex-1 items-end gap-2">
-                <Input
-                  label="사업자등록번호"
-                  name="shopName"
-                  onChange={handleChange}
-                  value={signupInput.password}
-                />
-                <div className="w-32">
-                  <Button contents="검색" secondary />
-                </div>
               </div>
             </div>
-            <Input
-              label="상품 카테고리"
-              name="categories"
-              onChange={handleChange}
-              value={signupInput.password}
-            />
+            <div className="flex items-end gap-2">
+              <Input
+                label="사업장 주소*"
+                name="address"
+                onChange={handleChange}
+                value={sellerSignupInput.address}
+                disabled
+              />
+              <div className="w-32">
+                <Button
+                  contents={daumPostcodeOpen ? '닫기' : '주소검색'}
+                  secondary
+                  onClick={() => setDaumPostcodeOpen((prev) => !prev)}
+                />
+              </div>
+              {daumPostcodeOpen ? (
+                <div className="absolute right-5 top-[20%] mx-auto w-3/4 rounded-md border-2 border-accent bg-white py-4">
+                  <DaumPostcode
+                    onComplete={(data) => {
+                      setSellerSignupInput((prev) => ({
+                        ...prev,
+                        address: data.address,
+                      }));
+
+                      setDaumPostcodeOpen(false);
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </>
         ) : (
           <div className="flex gap-2">

@@ -28,6 +28,7 @@ export default function Home() {
       <div>이메일 : {user?.email}</div>
       <div>닉네임 : {user?.nickname}</div>
       <div>프로필이미지url : {user?.profileImgUrl}</div>
+      <div>프로필이미지url : {user?.role}</div>
       {/* {user?.accessToken} */}
       {activeSurvey &&
         !activeSurvey.isDone &&

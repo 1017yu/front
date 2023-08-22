@@ -1,4 +1,4 @@
-import { ISignupRequestBody } from '@/types/ISignUp';
+import { ISellerSignupRequestBody, ISignupRequestBody } from '@/types/ISignUp';
 import { apiInstance } from '../axios';
 
 export async function signup(signupData: ISignupRequestBody) {
@@ -35,4 +35,16 @@ export async function regenerateRegisterToken(email: string) {
     email,
   });
   return response.data;
+}
+
+export async function confirmBusinessNumber(businessNumber: string) {
+  const response = await apiInstance.post('/auth/validate-business-number', {
+    b_no: [businessNumber],
+  });
+  return response.data;
+}
+
+export async function sellerSignup(signupData: ISellerSignupRequestBody) {
+  const response = await apiInstance.post('/auth/signup/seller', signupData);
+  return response;
 }
