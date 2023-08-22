@@ -1,4 +1,7 @@
 import { useRecoilValue } from 'recoil';
+import Button from '@/components/ui/Button';
+import customToast from '@/utils/customToast';
+import { postEvent } from '@/api/seller/postEvent';
 import PostDesc from '@/components/seller/PostDesc';
 import PostTitle from '@/components/seller/PostTitle';
 import PostPeriod from '@/components/seller/PostPeriod';
@@ -6,9 +9,6 @@ import { PostEventState } from '@/states/PostEventState';
 import PostLocation from '@/components/seller/PostLocation';
 import PostCategory from '@/components/seller/PostCategory';
 import PostEventName from '@/components/seller/PostEventName';
-import { postEvent } from '@/api/seller/postEvent';
-import Button from '../ui/Button';
-import customToast from '@/utils/customToast';
 
 export default function PostForm() {
   const postEventData = useRecoilValue(PostEventState);
