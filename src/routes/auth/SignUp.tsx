@@ -1,4 +1,5 @@
 import {
+  checkBusinessNumberDup,
   checkProceed,
   confirmBusinessNumber,
   regenerateRegisterToken,
@@ -22,19 +23,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import customToast from '@/utils/customToast';
 import Toggle from '@/components/ui/Toggle';
 import DaumPostcode from 'react-daum-postcode';
-import { MdOutlineCancel } from 'react-icons/md';
 
 export default function SignUp() {
-  // const { closeModal, modalDataState, openModal } = useModal();
-
   const navigate = useNavigate();
   const [isSeller, setIsSeller] = useState(false);
   const [daumPostcodeOpen, setDaumPostcodeOpen] = useState(false);
-
-  // 통신 로딩상태 저장 state
-  const [isCheckingProceedAndDupEmail, setIsCheckingProceedAndDupEmail] =
-    useState(false);
-  const [isNicknameDupChecking, setIsNicknameDupChecking] = useState(false);
 
   // 중복체크가 완료되었는지
   const [isDuplicationVerified, setIsDuplicationVerified] = useState({
@@ -42,7 +35,6 @@ export default function SignUp() {
     nickname: false,
   });
 
-  // form에 실시간으로 입력되는 값들
   const [signupInput, setSignupInput] = useState({
     email: '',
     password: '',
@@ -61,9 +53,7 @@ export default function SignUp() {
     shopName: '',
     businessNumber: '',
   });
-  console.log(sellerSignupInput);
 
-  // form 입력값을 바꿔주는 함수
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -78,6 +68,8 @@ export default function SignUp() {
     });
   };
 
+  const [isCheckingProceedAndDupEmail, setIsCheckingProceedAndDupEmail] =
+    useState(false);
   // 중도포기(최종 메일검증 과정을 하지 않은 사용자) 여부 확인 및 이메일 중복검사 함수... 변수명 극혐
   const handleCheckProceedAndVerifyDuplicateEmail = async () => {
     // 이메일을 입력하지 않은 경우
@@ -98,7 +90,8 @@ export default function SignUp() {
           // 이메일 중복확인
           const response2 = await verifyEmailOrNickname(
             signupInput.email,
-            undefined, //닉넴은 안보냄
+            undefined, //닉넴은 보내지 않음
+            isSeller,
           );
           if (response2.statusCode === 200) {
             customToast('사용 가능한 이메일입니다', 'success');
@@ -122,6 +115,7 @@ export default function SignUp() {
         customToast(error.message, 'error');
         return;
       }
+      // 중도 포기를 한 경우
       try {
         // 선이동, 후메일보내기
         navigate('/confirmsignup', {
@@ -139,6 +133,7 @@ export default function SignUp() {
     }
   };
 
+  const [isNicknameDupChecking, setIsNicknameDupChecking] = useState(false);
   // 닉네임 중복검사 함수
   const handleVerifyDuplicateNickname = async () => {
     // 닉네임을 입력하지 않은 경우
@@ -155,11 +150,12 @@ export default function SignUp() {
       setIsNicknameDupChecking(true);
       const response = await verifyEmailOrNickname(
         undefined, //이멜 안보냄
-        signupInput.nickname, //닉넴 보냄
+        signupInput.nickname,
+        isSeller,
       );
       if (response.statusCode === 200) {
         customToast('사용 가능한 닉네임입니다', 'success');
-        // 닉네임 중복확인 완료 여부를 true
+
         setIsDuplicationVerified((prev) => ({
           ...prev,
           nickname: true,
@@ -177,7 +173,6 @@ export default function SignUp() {
 
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (
       !signupInput.email.trim() ||
       !signupInput.password.trim() ||
@@ -262,16 +257,27 @@ export default function SignUp() {
   const handleBusinessNumber = async () => {
     try {
       setIsBusinessNoConfirming(true);
-      const response = await confirmBusinessNumber(
+      const response = await checkBusinessNumberDup(
         sellerSignupInput.businessNumber,
       );
       if (response.statusCode === 200) {
-        customToast('사업자 등록번호가 확인되었습니다.', 'success');
-        setIsBusinessNoConfirmed(true);
+        try {
+          const response = await confirmBusinessNumber(
+            sellerSignupInput.businessNumber,
+          );
+          if (response.statusCode === 200) {
+            customToast('사업자 등록번호가 확인되었습니다.', 'success');
+            setIsBusinessNoConfirmed(true);
+          }
+          return;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          console.error(error);
+          customToast(error.message, 'error');
+        }
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error(error);
+      console.log(error);
       customToast(error.message, 'error');
     } finally {
       setIsBusinessNoConfirming(false);
@@ -333,7 +339,6 @@ export default function SignUp() {
         nickname: sellerSignupInput.nickname,
         password: sellerSignupInput.password,
         shopName: sellerSignupInput.shopName,
-        categories: [1, 2, 3],
       });
       if (response.status === 200) {
         customToast(
@@ -368,7 +373,13 @@ export default function SignUp() {
               <span>판매자 회원</span>
               <Toggle
                 enabled={isSeller}
-                onToggle={() => setIsSeller((prev) => !prev)}
+                onToggle={() => {
+                  setIsSeller((prev) => !prev);
+                  setIsDuplicationVerified({
+                    email: false,
+                    nickname: false,
+                  });
+                }}
               />
             </div>
             <div className="flex items-end gap-2">
