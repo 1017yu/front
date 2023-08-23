@@ -89,42 +89,49 @@ const SurveyResultDetail = () => {
           <p className="my-10 px-5 text-right">
             조사 기간 : {surveyDetail.startDate} ~ {surveyDetail.endDate}
           </p>
+          {surveyDetail.answers.length !== 0 ? (
+            <div className="mx-10">
+              <h6 className="text-sm">1. 전체 응답 결과</h6>
+              <SurveyBarChart datas={totalScore} title="전체" />
 
-          <div className="mx-10">
-            <h6 className="text-sm">1. 전체 응답 결과</h6>
-            <SurveyBarChart datas={totalScore} title="전체" />
+              <h6 className="mt-10 text-sm">2. 지역별 응답 결과</h6>
+              <div className="grid grid-cols-1 gap-4">
+                <SurveyGroupChart
+                  datas={areaList}
+                  options={surveyDetail.options.map((option) => option.content)}
+                />
+              </div>
 
-            <h6 className="mt-10 text-sm">2. 지역별 응답 결과</h6>
-            <div className="grid grid-cols-1 gap-4">
-              <SurveyGroupChart
-                title="지역"
-                datas={areaList}
-                options={surveyDetail.options.map((option) => option.content)}
-              />
-            </div>
-
-            <h6 className="mt-10 text-sm">3. 연령별 응답 결과</h6>
-            <div className="grid grid-cols-2 gap-4">
-              {ageList.map((data) => {
-                const scoreList = [] as IChart[];
-                surveyDetail.options.map((option) => {
-                  scoreList.push({
-                    name: option.content,
-                    value: data.answers.filter(
-                      (answer: ISurveyAnswer) => answer.optionId === option.id,
-                    ).length,
+              <h6 className="mt-10 text-sm">3. 연령별 응답 결과</h6>
+              <div className="grid grid-cols-2 gap-4">
+                {ageList.map((data) => {
+                  const scoreList = [] as IChart[];
+                  surveyDetail.options.map((option) => {
+                    scoreList.push({
+                      name: option.content,
+                      value: data.answers.filter(
+                        (answer: ISurveyAnswer) =>
+                          answer.optionId === option.id,
+                      ).length,
+                    });
                   });
-                });
-                return (
-                  <SurveyPieChart
-                    key={data.id}
-                    datas={scoreList}
-                    title={data.age}
-                  />
-                );
-              })}
+                  return (
+                    <SurveyPieChart
+                      key={data.id}
+                      datas={scoreList}
+                      title={data.age}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className=" flex h-full w-full items-center justify-center">
+              <p className="my-14 text-base text-subTextAndBorder">
+                응답 결과가 없습니다.
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>

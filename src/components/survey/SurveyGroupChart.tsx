@@ -13,13 +13,12 @@ import {
 import { CHART_COLORS } from '@/data/constants';
 
 type TSurveyBarChartProps = {
-  title: string;
   datas: IChartArea[];
   options: string[];
 };
 
 const SurveyGroupChart = React.memo(
-  ({ title, datas, options }: TSurveyBarChartProps) => {
+  ({ datas, options }: TSurveyBarChartProps) => {
     return (
       <div className="h-[350px] w-full text-xs">
         <ResponsiveContainer width="100%" height="100%">
