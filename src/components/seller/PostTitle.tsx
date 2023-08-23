@@ -1,4 +1,4 @@
-import { POST_TITLE } from '@/data/postCategory';
+import { POST_TITLE } from '@/data/constants';
 
 export default function PostTitle() {
   return (

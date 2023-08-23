@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { Listbox } from '@headlessui/react';
 import { IoIosArrowDown } from 'react-icons/io';
-import { POST_CATERGORY } from '@/data/postCategory';
+import { POST_CATERGORY } from '@/data/constants';
 import { PostEventState } from '@/states/PostEventState';
 
 export default function EventSearchBar() {

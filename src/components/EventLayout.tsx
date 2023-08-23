@@ -4,7 +4,8 @@ import { IEvents } from '@/types/IEvents';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 
 function EventLayout({ ...props }: IEvents) {
-  const [bookmarked, setBookmarked] = useState<boolean>(false); // 북마크 state
+  // 북마크 state
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();

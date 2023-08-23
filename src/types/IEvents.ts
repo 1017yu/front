@@ -1,5 +1,5 @@
 // 모든 이벤트 조회 응답 데이터 타입
-export interface IEventResponse<T> {
+export interface IEventsResponse<T> {
   data: {
     content: T;
     totalElements: number;
