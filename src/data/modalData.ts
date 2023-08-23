@@ -60,4 +60,10 @@ export const modalData = {
     okButton: '로그인',
     cancelButton: '닫기',
   },
+  SURVEY_RESULT_FETCH_FAILURE: {
+    type: 'basic',
+    title: '수요조사 결과 조회',
+    content: '수요조사 결과 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
+    cancelButton: '확인',
+  },
 };

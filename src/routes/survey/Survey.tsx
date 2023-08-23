@@ -1,5 +1,8 @@
+import { useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import customToast from '@/utils/customToast';
 import { ISurveyRequest, ISurveyResponse } from '@/types/ISurvey';
 import SurveyRadioGroup, {
   IRadioOption,
@@ -7,10 +10,6 @@ import SurveyRadioGroup, {
 import surveyHeader from '/public/survey_header.png';
 import { AGE_OPTIONS } from '@/data/constants';
 import { submitSurvey } from '@/api/survey/surveyRequests';
-
-import { useCallback, useMemo, useState } from 'react';
-import Button from '@/components/ui/Button';
-import customToast from '@/utils/customToast';
 
 const Survey = () => {
   const location = useLocation();
@@ -44,7 +43,7 @@ const Survey = () => {
         customToast('수요조사 답변이 제출되었습니다!', 'success');
         navigate(-1);
       },
-      (error) => {
+      () => {
         customToast('수요조사 답변 제출 중 오류가 발생했습니다.', 'error');
       },
     );

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSurveyResultDetail } from '@/api/survey/surveyRequests';
 import SurveyBarChart from '@/components/survey/SurveyBarChart';
@@ -7,8 +7,11 @@ import { ISurveyAnswer, ISurveyResultDetail } from '@/types/ISurvey';
 import { ADRESS_SELECT_OPTIONS, AGE_OPTIONS } from '@/data/constants';
 import SurveyPieChart from '@/components/survey/SurveyPieChart';
 import SurveyGroupChart from '@/components/survey/SurveyGroupChart';
+import { modalData } from '@/data/modalData';
+import { useModal } from '@/hooks/useModal';
 
 const SurveyResultDetail = () => {
+  const { openModal } = useModal();
   const params = useParams();
   const surveyId = params.surveyId;
   const [surveyDetail, setSurveyDetail] = useState<ISurveyResultDetail | null>(
@@ -65,20 +68,26 @@ const SurveyResultDetail = () => {
     return ageScoreList;
   }, [answers, surveyDetail]);
 
-  const getSurveyDetailData = (id: number) => {
-    getSurveyResultDetail(id).then(
-      (res) => {
-        setSurveyDetail(res.data as ISurveyResultDetail);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
-  };
+  const getSurveyDetailData = useCallback(
+    (id: number) => {
+      getSurveyResultDetail(id).then(
+        (res) => {
+          setSurveyDetail(res.data as ISurveyResultDetail);
+        },
+        (error) => {
+          openModal({
+            ...modalData.SURVEY_RESULT_FETCH_FAILURE,
+            content: `${modalData.SURVEY_RESULT_FETCH_FAILURE.content}\n${error.message}`,
+          });
+        },
+      );
+    },
+    [openModal],
+  );
 
   useEffect(() => {
     getSurveyDetailData(Number(surveyId));
-  }, [surveyId]);
+  }, [surveyId, getSurveyDetailData]);
   return (
     <div className="container mx-auto py-10">
       {surveyDetail && (

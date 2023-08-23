@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
 
@@ -16,7 +15,7 @@ type TSurveyBarChartProps = {
   datas: IChart[];
 };
 
-const SurveyBarChart = React.memo(({ title, datas }: TSurveyBarChartProps) => {
+const SurveyBarChart = React.memo(({ datas }: TSurveyBarChartProps) => {
   const maxSize = useMemo(
     () =>
       Math.ceil(Math.max(...datas.map((data) => data.value)) / 20) * 20 + 20,

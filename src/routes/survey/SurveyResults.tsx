@@ -1,24 +1,31 @@
+import { useCallback, useEffect, useState } from 'react';
 import { fetchSurveyResults } from '@/api/survey/surveyRequests';
 import SurveyResultItem from '@/components/survey/SurveyResultItem';
 import { ISurveyResultResponse } from '@/types/ISurvey';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { modalData } from '@/data/modalData';
+import { useModal } from '@/hooks/useModal';
 
 const SurveyResults = () => {
   const [results, setResults] = useState<ISurveyResultResponse[]>([]);
-  const getSurveyResults = () => {
+  const { openModal } = useModal();
+
+  const getSurveyResults = useCallback(() => {
     fetchSurveyResults().then(
       (res) => {
         setResults(res.data as ISurveyResultResponse[]);
       },
       (error) => {
-        console.log(error);
+        openModal({
+          ...modalData.SURVEY_RESULT_FETCH_FAILURE,
+          content: `${modalData.SURVEY_RESULT_FETCH_FAILURE.content}\n${error.message}`,
+        });
       },
     );
-  };
+  }, [openModal]);
+
   useEffect(() => {
     getSurveyResults();
-  }, []);
+  }, [getSurveyResults]);
 
   return (
     <div className="container px-5 sm:mx-auto sm:px-20">
