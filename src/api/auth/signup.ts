@@ -46,5 +46,13 @@ export async function confirmBusinessNumber(businessNumber: string) {
 
 export async function sellerSignup(signupData: ISellerSignupRequestBody) {
   const response = await apiInstance.post('/auth/signup/seller', signupData);
+  // reponse.data에 안담아줬음
   return response;
+}
+
+export async function checkBusinessNumberDup(businessNumber: string) {
+  const response = await apiInstance.post('/auth/seller/check-businessNumber', {
+    businessNumber,
+  });
+  return response.data;
 }
