@@ -17,5 +17,4 @@ export interface ISellerSignupRequestBody {
   nickname: string;
   shopName: string;
   businessNumber: string;
-  categories: [1, 2, 3]; // 임시
 }
