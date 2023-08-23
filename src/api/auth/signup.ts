@@ -6,10 +6,16 @@ export async function signup(signupData: ISignupRequestBody) {
   return response.data;
 }
 
-export async function verifyEmailOrNickname(email?: string, nickname?: string) {
+export async function verifyEmailOrNickname(
+  email?: string,
+  nickname?: string,
+  isSeller?: boolean,
+) {
   const url = email
-    ? `/auth/check-duplication?email=${email}`
-    : `/auth/check-duplication?nickname=${nickname}`;
+    ? `/auth/check-duplication?email=${email}&role=${isSeller ? 'seller' : ''}`
+    : `/auth/check-duplication?nickname=${nickname}&role=${
+        isSeller ? 'seller' : ''
+      }`;
   const response = await apiInstance(url);
   return response.data;
 }
