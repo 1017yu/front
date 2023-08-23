@@ -4,7 +4,8 @@ import { IEvents } from '@/types/IEvents';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 
 function EventLayout({ ...props }: IEvents) {
-  const [bookmarked, setBookmarked] = useState<boolean>(false); // 북마크 state
+  // 북마크 state
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -17,7 +18,7 @@ function EventLayout({ ...props }: IEvents) {
         <img
           className=" h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={
-            props.thumbnail_url
+            props.thumbnailUrl
               ? 'http://via.placeholder.com/640x400'
               : 'http://via.placeholder.com/640x400'
           }

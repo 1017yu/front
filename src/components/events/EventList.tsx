@@ -1,16 +1,14 @@
-import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
+import Button from '@/components/ui/Button';
+import { fetchEvents } from '@/api/events/events';
 import Pagination from '@mui/material/Pagination';
-import { AdressState } from '@/states/AdressState';
 import EventLayout from '@/components/EventLayout';
 import { ThemeProvider } from '@mui/material/styles';
-import { fetchEvents } from '@/api/events/eventsRequests';
 import { IEvents, IEventsPagination } from '@/types/IEvents';
 import { COUNT_PER_EVENTS_PAGE, EVENTS_THEME } from '@/data/constants';
 
 export default function EventList() {
   const [page, setPage] = useState(1); // 페이지 번호
-  const selected = useRecoilValue(AdressState); // 검색된 조건
   const [numOfEvents, setNumOfEvents] = useState(0); // 등록된 이벤트의 개수
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
@@ -24,7 +22,13 @@ export default function EventList() {
     window.scroll(0, 0);
   };
 
+  // 공고 등록 페이지로 이동
+  const handleMovePostEvent = () => {
+    location.assign('/seller/new');
+  };
+
   useEffect(() => {
+    // 모든 이벤트 조회
     fetchEvents().then((res) => {
       try {
         setEventsList(res.data.content);
@@ -34,13 +38,33 @@ export default function EventList() {
         alert(error);
       }
     });
+
+    // 로컬스토리지에서 유저 role get
+    const getUserRole = localStorage.getItem('user');
+
+    // 로컬 스토리지에 user 값이 존재할 때
+    if (getUserRole) {
+      const userRole = JSON.parse(getUserRole).role;
+
+      // userRole이 셀러일 때만 button render
+      userRole === 'ROLE_SELLER'
+        ? setIsSeller((prev) => !prev)
+        : setIsSeller(false);
+    }
   }, []);
 
   return (
     <ThemeProvider theme={EVENTS_THEME}>
       <div className="container mx-auto px-8 sm:px-20">
-        <div className="mt-[-3rem] flex h-40 items-center text-2xl sm:mt-0 sm:text-5xl">
+        <div className="mt-[-3rem] flex h-40 items-center justify-between text-2xl sm:mt-0 sm:text-5xl">
           {listTitle}
+          {isSeller ? (
+            <div className="sm:max-w-[10rem]">
+              <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         <section className="body-font text-gray-600">
           <div className="container mx-auto ">
@@ -51,8 +75,8 @@ export default function EventList() {
                   id={event.id}
                   name={event.name}
                   location={event.location}
-                  thumbnail_url={event.thumbnail_url}
-                  category={event.category}
+                  thumbnailUrl={event?.thumbnailUrl}
+                  category={event?.category}
                   status={event.status}
                   bookmark={event.bookmark}
                 />

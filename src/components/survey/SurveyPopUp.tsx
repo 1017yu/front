@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import CheckBox from '@/components/ui/CheckBox';
 import { ISurveyResponse } from '@/types/ISurvey';
-import surveyBg from '/public/survey_bg.png';
+import surveyBg from '@/assets/survey_bg.png';
 import { useUser } from '@/hooks/useUser';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
