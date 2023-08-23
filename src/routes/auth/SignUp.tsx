@@ -284,6 +284,7 @@ export default function SignUp() {
     }
   };
 
+  const [isSellerSignupSending, setIsSellerSignupSending] = useState(false);
   const handleSellerSignup = async (
     event: React.FormEvent<HTMLFormElement>,
   ) => {
@@ -332,6 +333,7 @@ export default function SignUp() {
     }
 
     try {
+      setIsSellerSignupSending(true);
       const response = await sellerSignup({
         address: sellerSignupInput.address,
         businessNumber: sellerSignupInput.businessNumber,
@@ -355,6 +357,8 @@ export default function SignUp() {
     } catch (error: any) {
       console.error(error);
       customToast(error.message, 'error');
+    } finally {
+      setIsSellerSignupSending(false);
     }
   };
 
@@ -575,7 +579,16 @@ export default function SignUp() {
         )}
 
         <div className="mt-5 flex-1">
-          <Button contents="회원가입" submit />
+          <Button
+            contents={
+              isSellerSignupSending ? (
+                <LoadingSpinner color="white" />
+              ) : (
+                '회원가입'
+              )
+            }
+            submit
+          />
         </div>
         <p className="mt-3 text-xs text-subTextAndBorder">
           이미 POPPLE 회원이시간요?{' '}
