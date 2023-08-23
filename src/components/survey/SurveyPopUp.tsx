@@ -51,12 +51,15 @@ const SurveyPopUp = React.memo(
     }, [navigate, surveyData, openModal, closePopUp, user]);
 
     return (
-      <div className="z-1000 fixed bottom-0 left-0 right-0 top-0 m-auto h-[440px] w-[400px] drop-shadow-md">
+      <div className="z-1000 absolute bottom-0 left-0 right-0 m-auto aspect-square w-full sm:top-0 sm:h-[440px] sm:w-[400px] sm:drop-shadow-md">
         <div
-          className="h-[400px] w-full overflow-hidden rounded-t-2xl"
+          className="w-full overflow-hidden rounded-t-2xl object-contain sm:h-[400px] sm:w-[400px]"
           onClick={handleClickSurvey}
         >
-          <img src={surveyBg} className="drag-none cursor-pointer" />
+          <img
+            src={surveyBg}
+            className="drag-none aspect-square w-full cursor-pointer "
+          />
           <div className="absolute top-12 w-full px-10 text-center text-xl font-bold">
             {surveyData.title}
           </div>
