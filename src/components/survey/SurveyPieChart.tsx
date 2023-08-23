@@ -22,25 +22,34 @@ const SurveyPieChart = React.memo(({ title, datas }: TSurveyPieChartProps) => {
         {title}
       </h2>
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie data={datas} dataKey="value" outerRadius={100} fill="#8884d8">
-            {datas.map((data, index) => (
-              <Cell
-                style={{ outline: 'none' }}
-                name={data.name}
-                key={`cell-${index}`}
-                fill={PIE_COLORS[index % PIE_COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Legend
-            verticalAlign="bottom"
-            iconSize={12}
-            align="center"
-            fontSize={10}
-          />
-          <Tooltip />
-        </PieChart>
+        {datas.find((data) => data.value !== 0) ? (
+          <PieChart>
+            <Pie data={datas} dataKey="value" outerRadius={100} fill="#8884d8">
+              {datas.map((data, index) => (
+                <Cell
+                  style={{ outline: 'none' }}
+                  name={data.name}
+                  key={`cell-${index}`}
+                  fill={PIE_COLORS[index % PIE_COLORS.length]}
+                />
+              ))}
+            </Pie>
+
+            <Legend
+              verticalAlign="bottom"
+              iconSize={12}
+              align="center"
+              fontSize={10}
+            />
+            <Tooltip />
+          </PieChart>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <p className="text-base text-subTextAndBorder">
+              응답 결과가 없습니다.
+            </p>
+          </div>
+        )}
       </ResponsiveContainer>
     </div>
   );

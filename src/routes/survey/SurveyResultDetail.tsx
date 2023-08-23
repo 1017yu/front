@@ -115,7 +115,6 @@ const SurveyResultDetail = () => {
                     ).length,
                   });
                 });
-
                 return (
                   <SurveyPieChart
                     key={data.id}
