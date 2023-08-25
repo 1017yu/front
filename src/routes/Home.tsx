@@ -5,6 +5,15 @@ import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
 import { ISurveyResponse } from '@/types/ISurvey';
 import { useUser } from '@/hooks/useUser';
 import moment from 'moment';
+import { fetchEvents } from '@/api/events/events';
+import EventLayout from '@/components/EventLayout';
+import { IEvents } from '@/types/IEvents';
+import main_bg from '@/assets/main_bg.png';
+import { mainData } from '@/data/constants';
+import Button from '@/components/ui/Button';
+
+import ReactS3Client from 'react-aws-s3-typescript';
+import { boardConfig } from '@/data/s3configs';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -12,6 +21,9 @@ export default function Home() {
   );
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const { user } = useUser();
+  const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchActiveSurvey().then((res) => {
@@ -23,21 +35,140 @@ export default function Home() {
     setActiveSurvey(null);
   }, []);
 
+  // 전체 이벤트 페이지로 이동
+  const handleMoveEventsPage = () => {
+    location.assign('/events');
+  };
+
+  useEffect(() => {
+    // 모든 이벤트 조회
+    fetchEvents().then((res) => {
+      try {
+        setEventsList(res.data.content);
+      } catch (error) {
+        alert(error);
+      }
+    });
+  }, []);
+
+  const recentList = eventsList.reverse().slice(0, 4);
+
+  const beautyList = eventsList.filter((value) =>
+    value.category.includes('뷰티'),
+  );
+
+  const uploadImage = async (file: File) => {
+    const s3 = new ReactS3Client(boardConfig);
+    try {
+      const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
+        file.name.split('.')[0]
+      }`;
+      const res = await s3.uploadFile(file, fileName);
+      setImageFile(null);
+      console.log(res.location);
+    } catch (error) {
+      // TODO : 파일 업로드 실패 예외처리
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (imageFile !== null) {
+      uploadImage(imageFile);
+    }
+  }, [imageFile]);
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      if (file.size > 5000000) {
+        // TODO 파일 사이즈 제한 예외처리
+        return;
+      }
+
+      setImageFile(file);
+    }
+  };
+
   return (
-    <Container>
-      <div>이메일 : {user?.email}</div>
-      <div>닉네임 : {user?.nickname}</div>
-      <div>프로필이미지url : {user?.profileImgUrl}</div>
-      <div>프로필이미지url : {user?.role}</div>
-      {/* {user?.accessToken} */}
-      {activeSurvey &&
-        !activeSurvey.isDone &&
-        moment().format('YYYY-MM-DD') !== closeTodayDate && (
-          <SurveyPopUp
-            surveyData={activeSurvey}
-            closePopUp={closeSurveyPopUp}
-          />
-        )}
-    </Container>
+    <>
+      <img
+        src={main_bg}
+        alt="main_banner"
+        className="mx-auto h-96 object-cover md:w-full"
+      />
+
+      <Container>
+        <div>이메일 : {user?.email}</div>
+        <div>닉네임 : {user?.nickname}</div>
+        <div>프로필이미지url : {user?.profileImgUrl}</div>
+        {/* 이미지 업로드 S3 테스트 */}
+        <form>
+          <input type="file" accept="image/*" onChange={onChangeFile} />
+        </form>
+        {/* {user?.accessToken} */}
+        {activeSurvey &&
+          !activeSurvey.isDone &&
+          moment().format('YYYY-MM-DD') !== closeTodayDate && (
+            <SurveyPopUp
+              surveyData={activeSurvey}
+              closePopUp={closeSurveyPopUp}
+            />
+          )}
+        <div className="container mx-auto">
+          <div className="block justify-between sm:flex">
+            <div className="my-8 flex items-center justify-between text-2xl sm:mt-0 sm:h-40 sm:text-5xl">
+              {mainData.MAIN_RECENT_STORE.title}
+            </div>
+            <div className="mb-4 flex max-w-[20rem] items-center sm:mb-0">
+              <Button contents={'더 알아보기'} onClick={handleMoveEventsPage} />
+            </div>
+          </div>
+          <section className="body-font text-gray-600">
+            <div className="container mx-auto">
+              <div className="flex flex-wrap gap-10">
+                {recentList.map((event) => (
+                  <EventLayout
+                    key={event.id}
+                    id={event.id}
+                    name={event.name}
+                    city={event.city}
+                    district={event.district}
+                    thumbnailUrl={event?.thumbnailUrl}
+                    category={event?.category}
+                    status={event.status}
+                    bookmark={event.bookmark}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+        <div className="container mx-auto">
+          <div className="mt-8 flex items-center justify-between text-2xl sm:mt-0 sm:mt-0 sm:h-40 sm:text-5xl">
+            {mainData.MAIN_BEAUTY_STORE.title}
+          </div>
+          <section className="body-font text-gray-600">
+            <div className="container mx-auto">
+              <div className="flex flex-wrap gap-9">
+                {beautyList.map((event) => (
+                  <EventLayout
+                    key={event.id}
+                    id={event.id}
+                    name={event.name}
+                    city={event.city}
+                    district={event.district}
+                    thumbnailUrl={event?.thumbnailUrl}
+                    category={event?.category}
+                    status={event.status}
+                    bookmark={event.bookmark}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      </Container>
+    </>
   );
 }

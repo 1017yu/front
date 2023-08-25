@@ -7,5 +7,5 @@ export const fetchEvent = async (
   eventId: string,
 ): Promise<IEventResponse<IEvent>> => {
   const response = await apiInstance.get(`/events/${eventId}`);
-  return response.data as IEventResponse<IEvent>;
+  return response.data;
 };

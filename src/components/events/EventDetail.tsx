@@ -1,8 +1,10 @@
+import { useRecoilValue } from 'recoil';
 import { IEvent } from '@/types/IEvent';
 import NotFound from '@/routes/NotFound';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchEvent } from '@/api/events/event';
+import { ParticipateState } from '@/states/ParticipateState';
 import EventDetailBox from '@/components/events/EventDetailBox';
 import EventDetailDesc from '@/components/events/EventDetailDesc';
 import EventDetailSeller from '@/components/events/EventDetailSeller';
@@ -10,7 +12,12 @@ import EventDetailSeller from '@/components/events/EventDetailSeller';
 export default function EventDetail() {
   // 행사 id 값 선언
   const { id } = useParams();
-  const [eventData, setEventData] = useState<IEvent>(); // 모든 이벤트 목록
+
+  // 행사 참여 여부 recoil atom 구독
+  const isParticipate = useRecoilValue(ParticipateState);
+
+  // 모든 이벤트 목록
+  const [eventData, setEventData] = useState<IEvent>();
 
   useEffect(() => {
     // id 값이 존재할 때, fetchEvent
@@ -23,17 +30,17 @@ export default function EventDetail() {
         }
       });
     }
-  }, [id]);
+  }, [id, isParticipate]);
 
   return (
-    <div className="container mx-auto sm:px-20">
+    <div className="container mx-auto pb-16 sm:px-20">
       {eventData ? (
         <>
           <EventDetailBox
             id={id}
             thumbnailUrl={eventData.thumbnailUrl}
             name={eventData.name}
-            hostName={eventData.hostName}
+            nickname={eventData.nickname}
             city={eventData.city}
             district={eventData.district}
             category={eventData.category}
@@ -46,7 +53,7 @@ export default function EventDetail() {
             isParticipant={eventData.isParticipant}
           />
           <EventDetailDesc description={eventData.description} />
-          <EventDetailSeller />
+          <EventDetailSeller participants={eventData.participants} />
         </>
       ) : (
         <NotFound />

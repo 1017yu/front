@@ -1,6 +1,6 @@
-export const timeFormatChange = (timeData: number) => {
+export const timeFormatChange = (timeData: string) => {
   const year = new Date(timeData).getFullYear();
-  const month = new Date(timeData).getMonth();
+  const month = new Date(timeData).getMonth() + 1;
   const date = new Date(timeData).getDate();
   const hours = new Date(timeData).getHours();
   const mins = new Date(timeData).getMinutes();
