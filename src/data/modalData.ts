@@ -88,11 +88,19 @@ export const modalData = {
     okButton: '참가',
     cancleButton: '취소',
   },
+
   SELLER_CANCEL_CHECK: {
     type: 'twoButton',
     title: '참가 예정 행사 취소',
     content: '참가 예정인 행사를 참가 취소하시겠습니까?',
     okButton: '확인',
     cancleButton: '뒤로 가기',
-  },  
+  },
+  SELLER_MODIFY_CHECK: {
+    type: 'twoButton',
+    title: '등록된 스토어 수정',
+    content: '수정하시겠습니까?',
+    okButton: '수정',
+    cancleButton: '취소',
+  },
 };
