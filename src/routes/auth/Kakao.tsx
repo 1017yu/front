@@ -30,6 +30,7 @@ export default function Kakao() {
             const response2 = await kakaologin(response1.data.access_token);
             if (response2.statusCode === 200) {
               const localUserData: ILocalUser = {
+                role: response2.data.role,
                 email: response2.data.email,
                 nickname: response2.data.nickname,
                 profileImgUrl: response2.data.profileImgUrl,
