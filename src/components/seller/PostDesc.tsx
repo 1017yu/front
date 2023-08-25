@@ -1,11 +1,11 @@
 import Input from '@/components/ui/Input';
 import { useRecoilState } from 'recoil';
 import { POST_INPUT_TITLE } from '@/data/constants';
-import { PostEventState } from '@/states/PostEventState';
+import { postEventState } from '@/states/Events';
 
 export default function PostDescInput() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventState, setEventState] = useRecoilState(postEventState);
 
   // 행사 상세 설명 핸들러
   const handleDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -2,11 +2,11 @@ import { useRecoilState } from 'recoil';
 import { Listbox } from '@headlessui/react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { POST_CATERGORY } from '@/data/constants';
-import { PostEventState } from '@/states/PostEventState';
+import { postEventState } from '@/states/Events';
 
 export default function EventSearchBar() {
   // recoil state
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventState, setEventState] = useRecoilState(postEventState);
 
   // 행사 제목 핸들러
   const handleCategoryChange = (value: string) => {

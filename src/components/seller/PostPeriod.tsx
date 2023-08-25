@@ -1,13 +1,13 @@
 import moment from 'moment';
 import { useRecoilState } from 'recoil';
 import { IDateValue } from '@/types/IDateValue';
+import { postEventState } from '@/states/Events';
 import { POST_INPUT_TITLE } from '@/data/constants';
 import Datepicker from 'react-tailwindcss-datepicker';
-import { PostEventState } from '@/states/PostEventState';
 
 export default function PostPeriod() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventState, setEventState] = useRecoilState(postEventState);
   const today = new Date();
 
   // 시작일자와 종료일자를 등록 및 변경

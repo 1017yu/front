@@ -4,7 +4,7 @@ import NotFound from '@/routes/NotFound';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchEvent } from '@/api/events/event';
-import { ParticipateState } from '@/states/ParticipateState';
+import { participateState } from '@/states/Events';
 import EventDetailBox from '@/components/events/EventDetailBox';
 import EventDetailDesc from '@/components/events/EventDetailDesc';
 import EventDetailSeller from '@/components/events/EventDetailSeller';
@@ -14,7 +14,7 @@ export default function EventDetail() {
   const { id } = useParams();
 
   // 행사 참여 여부 recoil atom 구독
-  const isParticipate = useRecoilValue(ParticipateState);
+  const isParticipate = useRecoilValue(participateState);
 
   // 모든 이벤트 목록
   const [eventData, setEventData] = useState<IEvent>();

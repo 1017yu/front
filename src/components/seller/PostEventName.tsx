@@ -2,11 +2,11 @@ import { ChangeEvent } from 'react';
 import { useRecoilState } from 'recoil';
 import Input from '@/components/ui/Input';
 import { POST_INPUT_TITLE } from '@/data/constants';
-import { PostEventState } from '@/states/PostEventState';
+import { postEventState } from '@/states/Events';
 
 export default function PostEventName() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventState, setEventState] = useRecoilState(postEventState);
 
   const handleEventNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEventState((prev) => ({

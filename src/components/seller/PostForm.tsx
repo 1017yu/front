@@ -6,14 +6,14 @@ import { postEvent } from '@/api/seller/postEvent';
 import PostDesc from '@/components/seller/PostDesc';
 import PostTitle from '@/components/seller/PostTitle';
 import PostPeriod from '@/components/seller/PostPeriod';
-import { PostEventState } from '@/states/PostEventState';
+import { postEventState } from '@/states/Events';
 import PostLocation from '@/components/seller/PostLocation';
 import PostCategory from '@/components/seller/PostCategory';
 import PostEventName from '@/components/seller/PostEventName';
 
 export default function PostForm() {
   const navigate = useNavigate();
-  const postEventData = useRecoilValue(PostEventState);
+  const postEventData = useRecoilValue(postEventState);
 
   // 폼 제출 핸들러
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +31,7 @@ export default function PostForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="container mx-auto mb-10 flex flex-col gap-8 bg-gray-100 px-10 sm:mb-0 sm:px-40"
+      className="container mx-auto mb-10 flex flex-col gap-4 bg-gray-100 px-10 sm:mb-0 sm:px-40"
     >
       <PostTitle />
       <PostCategory />
