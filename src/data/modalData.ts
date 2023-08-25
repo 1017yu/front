@@ -60,4 +60,33 @@ export const modalData = {
     okButton: '로그인',
     cancelButton: '닫기',
   },
+  SELLER_POST_CHECK: {
+    type: 'twoButton',
+    title: '스토어 등록',
+    content: '스토어를 등록하시겠습니까?',
+    okButton: '등록',
+    cancleButton: '닫기',
+  },
+  SELLER_DELETE_CHECK: {
+    type: 'twoButton',
+    title: '등록된 스토어 삭제',
+    content:
+      '⚠️ 해당 스토어를 삭제하시겠습니까? \n삭제된 게시글은 복구 되지 않습니다.',
+    okButton: '삭제',
+    cancleButton: '취소',
+  },
+  SELLER_JOIN_CHECK: {
+    type: 'twoButton',
+    title: '행사에 셀러로 참가',
+    content: '해당 스토어에 참가하시겠습니까?',
+    okButton: '참가',
+    cancleButton: '취소',
+  },
+  SELLER_CANCEL_CHECK: {
+    type: 'twoButton',
+    title: '참가 예정 행사 취소',
+    content: '참가 예정인 행사를 참가 취소하시겠습니까?',
+    okButton: '확인',
+    cancleButton: '뒤로 가기',
+  },
 };

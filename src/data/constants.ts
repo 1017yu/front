@@ -53,6 +53,15 @@ export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 // 닉네임 정규식(영어, 숫자, 특수기호( . , _ , - 만 허용) 2~10글자)
 export const NICKNAME_REGEX = /^[a-z0-9._-]{2,10}$/;
 
+export const EVENT_CATEGORY_OPTIONS = [
+  '레저',
+  '패션',
+  '식품',
+  '스포츠',
+  '아트',
+  '뷰티',
+];
+
 export const ADRESS_SELECT_OPTIONS = [
   {
     city: '서울특별시',
@@ -436,4 +445,26 @@ export const POST_INPUT_TITLE = {
 
 export const POST_TITLE = '행사 등록';
 
-export const PARTICIPANT_SELLER = '참여하는 셀러';
+export const EVENTS_DESCRIPTION = {
+  discription: '상세 설명',
+  map: '스토어 위치',
+};
+
+export const JOIN_SELLER = '참여하는 셀러';
+
+export const JOIN_BUTTON_CONTENT = {
+  join: '참가하기',
+  cancelJoin: '참가 취소',
+  deleteEvent: '행사 삭제',
+};
+
+export const mainData = {
+  MAIN_RECENT_STORE: {
+    title: '✨ 최근 등록된 스토어',
+    content: '수요조사 목록 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
+  },
+  MAIN_BEAUTY_STORE: {
+    title: '💅 뷰티 스토어',
+    content: '수요조사가 등록되었습니다.',
+  },
+};
