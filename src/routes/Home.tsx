@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
-import Container from '@/components/ui/Container';
-import SurveyPopUp from '@/components/survey/SurveyPopUp';
-import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
-import { ISurveyResponse } from '@/types/ISurvey';
-import { useUser } from '@/hooks/useUser';
 import moment from 'moment';
-import { fetchEvents } from '@/api/events/events';
-import EventLayout from '@/components/EventLayout';
+import Hr from '@/components/ui/Hr';
+import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
 import main_bg from '@/assets/main_bg.png';
-import { mainData } from '@/data/constants';
-import Button from '@/components/ui/Button';
-
-import ReactS3Client from 'react-aws-s3-typescript';
+import { eventData } from '@/data/constants';
 import { boardConfig } from '@/data/s3configs';
+import Container from '@/components/ui/Container';
+import { ISurveyResponse } from '@/types/ISurvey';
+import { fetchEvents } from '@/api/events/events';
+import EventLayout from '@/components/EventLayout';
+import ReactS3Client from 'react-aws-s3-typescript';
+import EventTitle from '@/components/events/EventTitle';
+import { useCallback, useEffect, useState } from 'react';
+import SurveyPopUp from '@/components/survey/SurveyPopUp';
+import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -115,18 +115,21 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className="container mx-auto">
-          <div className="block justify-between sm:flex">
-            <div className="my-8 flex items-center justify-between text-2xl sm:mt-0 sm:h-40 sm:text-5xl">
-              {mainData.MAIN_RECENT_STORE.title}
-            </div>
+        <div className="container mx-auto mb-8 mt-16 sm:mb-16 sm:mt-8">
+          <div className="block sm:flex">
+            <EventTitle title={eventData.EVENT_RECENT_STORE.title} />
             <div className="mb-4 flex max-w-[20rem] items-center sm:mb-0">
-              <Button contents={'더 알아보기'} onClick={handleMoveEventsPage} />
+              <button
+                className="transition-all hover:scale-110 hover:transform hover:shadow-xl sm:ml-8"
+                onClick={handleMoveEventsPage}
+              >
+                {eventData.EVENT_RECENT_STORE.content}
+              </button>
             </div>
           </div>
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-10">
+              <div className="flex flex-wrap gap-10 sm:mt-8">
                 {recentList.map((event) => (
                   <EventLayout
                     key={event.id}
@@ -143,14 +146,13 @@ export default function Home() {
               </div>
             </div>
           </section>
+          <Hr />
         </div>
-        <div className="container mx-auto">
-          <div className="mt-8 flex items-center justify-between text-2xl sm:mt-0 sm:mt-0 sm:h-40 sm:text-5xl">
-            {mainData.MAIN_BEAUTY_STORE.title}
-          </div>
+        <div className="container mx-auto mt-16 sm:mt-8">
+          <EventTitle title={eventData.EVENT_BEAUTY_STORE.title} />
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-9">
+              <div className="mt-4 flex flex-wrap gap-9 sm:mt-8">
                 {beautyList.map((event) => (
                   <EventLayout
                     key={event.id}
