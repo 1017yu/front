@@ -60,6 +60,12 @@ export const modalData = {
     okButton: '로그인',
     cancelButton: '닫기',
   },
+  SURVEY_RESULT_FETCH_FAILURE: {
+    type: 'basic',
+    title: '수요조사 결과 조회',
+    content: '수요조사 결과 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
+    cancelButton: '확인',
+  },
   SELLER_POST_CHECK: {
     type: 'twoButton',
     title: '스토어 등록',
@@ -88,5 +94,5 @@ export const modalData = {
     content: '참가 예정인 행사를 참가 취소하시겠습니까?',
     okButton: '확인',
     cancleButton: '뒤로 가기',
-  },
+  },  
 };

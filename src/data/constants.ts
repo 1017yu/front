@@ -15,6 +15,10 @@ export const NAV_ITEMS = [
     label: '회원 커뮤니티',
     href: '/community',
   },
+  {
+    label: '수요조사 결과',
+    href: '/survey-results',
+  },
   // {
   //   label: '임차대행',
   //   href: '/rent',
@@ -420,6 +424,33 @@ export const AGE_OPTIONS = [
   },
 ];
 
+// 차트 컬러
+export const CHART_COLORS = [
+  '#00C9A7',
+  '#00b496',
+  '#00a085',
+  '#008c74',
+  '#007864',
+  '#006453',
+  '#005042',
+  '#003c32',
+  '#002821',
+  '#001410',
+];
+
+// 파이 차트 컬러
+export const PIE_COLORS = [
+  '#0088FE',
+  '#00C9A7',
+  '#FFBB28',
+  '#FF8042',
+  '#845EC2',
+  '#BDE0FE',
+  '#FF4262',
+  '#4E5B68',
+  '#FE0088',
+  '#42FF80',
+];
 export const EVENT_PAGE_MESSAGE = {
   startDate: '행사 시작일: ',
   endDate: '행사 마감일: ',

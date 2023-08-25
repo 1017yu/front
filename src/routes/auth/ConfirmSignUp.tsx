@@ -2,7 +2,6 @@ import { regenerateRegisterToken, verifyEemail } from '@/api/auth/signup';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import MyToast from '@/components/ui/MyToast';
 import Popple from '@/components/ui/Popple';
 import Title from '@/components/ui/Title';
 import customToast from '@/utils/customToast';
