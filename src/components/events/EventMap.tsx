@@ -9,8 +9,8 @@ declare global {
 export default function MapTest() {
   useEffect(() => {
     const mapScript = document.createElement('script');
-    mapScript.src = `${import.meta.env.VITE_MAP_BASE_URL}?appkey=${
-      import.meta.env.VITE_MAP_APP_KEY
+    mapScript.src = `${import.meta.env.VITE_KAKAO_MAP_BASE_URL}?appkey=${
+      import.meta.env.VITE_KAKAO_MAP_API_KEY
     }&autoload=false`;
 
     mapScript.addEventListener('load', () => {
