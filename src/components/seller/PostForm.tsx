@@ -1,6 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import Button from '@/components/ui/Button';
 import customToast from '@/utils/customToast';
+import { useNavigate } from 'react-router-dom';
 import { postEvent } from '@/api/seller/postEvent';
 import PostDesc from '@/components/seller/PostDesc';
 import PostTitle from '@/components/seller/PostTitle';
@@ -11,6 +12,7 @@ import PostCategory from '@/components/seller/PostCategory';
 import PostEventName from '@/components/seller/PostEventName';
 
 export default function PostForm() {
+  const navigate = useNavigate();
   const postEventData = useRecoilValue(PostEventState);
 
   // 폼 제출 핸들러
@@ -20,6 +22,7 @@ export default function PostForm() {
     try {
       await postEvent(postEventData);
       customToast('행사가 등록되었습니다!', 'success');
+      navigate('/events');
     } catch (error) {
       customToast('모든 항목을 기입해주세요!', 'error');
     }

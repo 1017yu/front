@@ -1,9 +1,20 @@
+import EventMap from './EventMap';
 import { IEvent } from '@/types/IEvent';
+import { EVENTS_DESCRIPTION } from '@/data/constants';
+import EventDetailTitle from '@/components/events/EventDetailTitle';
 
 export default function EventDetailDesc({ description }: IEvent) {
   return (
-    <div className="mb-12 min-h-[60rem] border border-subTextAndBorder sm:min-h-[60rem] sm:px-16 sm:py-16">
-      {description}
-    </div>
+    <>
+      <EventDetailTitle title={EVENTS_DESCRIPTION.discription} />
+      <div className="m-4 min-h-[6rem] rounded-sm text-center text-lg text-gray-600 sm:m-4 sm:min-h-[10rem]">
+        {description}
+      </div>
+
+      <EventDetailTitle title={EVENTS_DESCRIPTION.map} />
+      <div className="flex justify-center">
+        <EventMap />
+      </div>
+    </>
   );
 }

@@ -1,9 +1,15 @@
-import { PARTICIPANT_SELLER } from '@/data/constants';
+import { IEvent } from '@/types/IEvent';
+import { JOIN_SELLER } from '@/data/constants';
+import Participants from '@/components/ui/Participants';
+import EventDetailTitle from '@/components/events/EventDetailTitle';
 
-export default function EventDetailSeller() {
+export default function EventDetailSeller({ participants }: IEvent) {
   return (
-    <div className="mb-12 flex justify-center bg-slate-300 sm:min-h-[30rem] sm:px-16 sm:py-16">
-      <div className="sm:text-4xl">{PARTICIPANT_SELLER}</div>
+    <div>
+      <EventDetailTitle title={JOIN_SELLER} />
+      <div>
+        <Participants participants={participants} />
+      </div>
     </div>
   );
 }
