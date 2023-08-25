@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import IDummyData_PostList from '@/types/IDummyData_PostList';
+import axios from 'axios';
+
+// Types
+import IPostListItem from '@/types/IPostListItem';
+
+// Components
 import Button from '@/components/ui/Button';
 import PostItem from '@/components/community/PostItem';
 import PaginationComponent from '@/components/community/Pagination';
+
 import {
   ITEMS_COUNT_PER_COMMUNITY_PAGE,
   PAGE_RANGE_DISPLAY,
@@ -11,129 +17,34 @@ import {
 
 const Community = (): JSX.Element => {
   const navigate = useNavigate();
-  const totalPostCount = 100;
-  const dummyData: IDummyData_PostList[] = [
-    {
-      id: 1,
-      nickname: 'guest1',
-      title: 'Title1',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
-      commentCount: 1,
-    },
-    {
-      id: 2,
-      nickname: 'guest2',
-      title: 'Title2',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 1000000,
-      updatedAt: new Date().getTime() + 1000000,
-      commentCount: 3,
-    },
-    {
-      id: 3,
-      nickname: 'guest3',
-      title: 'Title3',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 2220000,
-      updatedAt: new Date().getTime() + 2220000,
-      commentCount: 2,
-    },
-    {
-      id: 4,
-      nickname: 'guest4',
-      title: 'Title4',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 3000000,
-      updatedAt: new Date().getTime() + 3000000,
-      commentCount: 5,
-    },
-    {
-      id: 5,
-      nickname: 'guest5',
-      title: 'Title5',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 3500000,
-      updatedAt: new Date().getTime() + 3500000,
-      commentCount: 3,
-    },
-    {
-      id: 6,
-      nickname: 'guest6',
-      title: 'Title6',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 5000000,
-      updatedAt: new Date().getTime() + 7000000,
-      commentCount: 2,
-    },
-    {
-      id: 7,
-      nickname: 'guest7',
-      title: 'Title7',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 6000000,
-      updatedAt: new Date().getTime() + 6000000,
-      commentCount: 2,
-    },
-    {
-      id: 8,
-      nickname: 'guest8',
-      title: 'Title8',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 7000000,
-      updatedAt: new Date().getTime() + 7000000,
-      commentCount: 2,
-    },
-    {
-      id: 9,
-      nickname: 'guest9',
-      title: 'Title9',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 8000000,
-      updatedAt: new Date().getTime() + 8000000,
-      commentCount: 2,
-    },
-    {
-      id: 10,
-      nickname: 'guest10',
-      title: 'Title10',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 9000000,
-      updatedAt: new Date().getTime() + 9000000,
-      commentCount: 2,
-    },
-    {
-      id: 11,
-      nickname: 'guest11',
-      title: 'Title11',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 10000000,
-      updatedAt: new Date().getTime() + 10000000,
-      commentCount: 2,
-    },
-    {
-      id: 12,
-      nickname: 'guest12',
-      title: 'Title12',
-      content: 'Summary of the content...',
-      createdAt: new Date().getTime() + 11000000,
-      updatedAt: new Date().getTime() + 11000000,
-      commentCount: 2,
-    },
-  ];
-  const [data, setData] = useState(dummyData);
+  const [totalPost, setTotalPost] = useState();
+  const [data, setData] = useState<IPostListItem[]>([]);
   const [page, setPage] = useState(1);
+
   const handlePageChange = (page: number) => {
     setPage(page);
-    console.log(page);
-    // page를 쿼리로 API 호출한 후
-    // setData()에다가 넣기
+    axios
+      .get(`http://15.164.205.25:8080/api/board?page=${page - 1}`)
+      .then((response) => {
+        setData(response.data.data);
+      })
+      .catch((error) => {
+        console.log('Error fetching data', error);
+      });
   };
 
   useEffect(() => {
     const title = document.getElementsByTagName('title')[0];
     title.innerHTML = 'POPPLe - 회원 커뮤니티';
+    axios
+      .get('http://15.164.205.25:8080/api/board')
+      .then((response) => {
+        setData(response.data.data);
+        setTotalPost(response.data.totalPosts);
+      })
+      .catch((error) => {
+        console.log('Error fetching data', error);
+      });
   }, []);
 
   return (
@@ -154,14 +65,14 @@ const Community = (): JSX.Element => {
         </div>
       </div>
       <div className={'flex flex-col gap-10'}>
-        {data.map((item, index) => (
-          <PostItem key={index} data={item} />
+        {data.map((item) => (
+          <PostItem key={item.id} data={item} />
         ))}
       </div>
       <div className={'mx-auto mt-[30px] flex justify-center md:w-[70%]'}>
         <PaginationComponent
           page={page}
-          totalPostCount={totalPostCount}
+          totalPostCount={totalPost || 0}
           itemsCountPerPage={ITEMS_COUNT_PER_COMMUNITY_PAGE}
           pageRangeDisplayed={PAGE_RANGE_DISPLAY}
           onChange={handlePageChange}
