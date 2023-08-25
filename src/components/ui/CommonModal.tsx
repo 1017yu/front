@@ -60,7 +60,7 @@ export const CommonModal = () => {
                         {modalDataState.content}
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex justify-end gap-2">
                       {modalDataState.type === 'twoButton' ? (
                         <div className="mt-4 w-20">
                           <Button
@@ -71,6 +71,7 @@ export const CommonModal = () => {
                       ) : null}
                       <div className="mt-4 w-20">
                         <Button
+                          secondary
                           contents={modalDataState.cancelButton || '취소'}
                           onClick={handleCancelClick}
                         />

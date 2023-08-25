@@ -20,7 +20,7 @@ import PostEvent from '@/routes/seller/PostEvent';
 import Survey from '@/routes/survey/Survey';
 import SurveyResults from '@/routes/survey/SurveyResults';
 import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
-
+import MyAccount from './routes/auth/MyAccount';
 
 export default function App() {
   return (
@@ -29,6 +29,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/myaccount" element={<MyAccount />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<Event />} />
           <Route path="/community" element={<Community />} />

@@ -52,17 +52,21 @@ export default function Navbar() {
 
           {user ? (
             <>
-              <li className="text-subTextAndBorder">{user.nickname}님</li>
+              <li className="text-subTextAndBorder">
+                <Link to="/myaccount">{user.nickname}님</Link>
+              </li>
               <li>
-                <img
-                  src={
-                    `${user.profileImgUrl}` === 'profileDefaultImageUrl'
-                      ? dummyProfile
-                      : user.profileImgUrl
-                  }
-                  alt="profile"
-                  className="w-8 rounded-full"
-                />
+                <Link to="/myaccount">
+                  <img
+                    src={
+                      `${user.profileImgUrl}` === 'profileDefaultImageUrl'
+                        ? dummyProfile
+                        : user.profileImgUrl
+                    }
+                    alt="profile"
+                    className="w-8 rounded-full"
+                  />
+                </Link>
               </li>
               <Button
                 color="error"
