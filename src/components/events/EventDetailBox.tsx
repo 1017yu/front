@@ -1,9 +1,8 @@
 import { IEvent } from '@/types/IEvent';
 import { EVENT_PAGE_MESSAGE } from '@/data/constants';
-import { IoMdHeartEmpty, IoMdLink } from 'react-icons/io';
 import EventJoinButton from '@/components/events/EventJoinButton';
 
-export default function EventDetailBox({ ...rest }: IEvent) {
+export default function EventDetailBox({ ...props }: IEvent) {
   const formatDate = (dateTimeString: string) => {
     const dateObj = new Date(dateTimeString);
 
@@ -15,34 +14,39 @@ export default function EventDetailBox({ ...rest }: IEvent) {
   };
 
   return (
-    <div className="mb-4 mt-6 flex min-h-[15rem] justify-between border border-black px-4 py-8 sm:my-8 sm:h-[20rem] sm:px-32 sm:py-12">
+    <div className="mb-4 mt-6 flex min-h-[15rem] justify-between border border-subTextAndBorder px-4 py-8 sm:my-8 sm:h-[20rem] sm:px-8 sm:py-12 lg:px-32">
       <div className="flex w-1/2 flex-col">
         <div className="pb-2 text-sm text-subTextAndBorder sm:pb-2 sm:text-xl">
-          {rest.category}
+          {props.category}
         </div>
-        <div className="sm:pb- pb-2 text-3xl sm:text-5xl">{rest.name}</div>
-        <div className="pb-2 text-sm sm:pb-4 sm:text-xl">{rest.city}</div>
-        <div className="sm-pb-8 pb-4 text-xl sm:text-2xl">{rest.hostName}</div>
-        <div className="flex cursor-pointer gap-4 text-2xl sm:text-4xl md:gap-8">
-          <IoMdHeartEmpty />
-          <IoMdLink />
+        <div className="pb-2 text-3xl font-bold sm:text-4xl lg:text-5xl">
+          {props.name}
+        </div>
+        <div className="pb-2 text-sm text-gray-500 sm:pb-4 lg:text-xl">
+          {props.city}
+        </div>
+        <div className="mb-2 border-accent text-2xl text-accent sm:mb-4 lg:text-4xl">
+          {props.status}
         </div>
       </div>
-      <div className="flex flex-col justify-between">
+
+      <div className="flex flex-col">
         <div>
-          <div className="sm:pb-2 sm:text-xl">
+          <div className="pb-2 text-xl font-semibold sm:text-2xl">
+            {props.nickname}
+          </div>
+          <div className="sm:mb-2 sm:text-base lg:text-xl">
             {EVENT_PAGE_MESSAGE.startDate}
-            {formatDate(rest.startDate as string)}
+            {formatDate(props.startDate as string)}
           </div>
-          <div className="mb-4 sm:mb-8 sm:text-xl">
+          <div className="mb-4 sm:mb-6 sm:text-base lg:text-xl">
             {EVENT_PAGE_MESSAGE.endDate}
-            {formatDate(rest.endDate as string)}
+            {formatDate(props.endDate as string)}
           </div>
-          <div className="text-2xl text-accent sm:text-4xl">{rest.status}</div>
         </div>
         <EventJoinButton
-          isOwner={rest.isOwner}
-          isParticipant={rest.isParticipant}
+          isOwner={props.isOwner}
+          isParticipant={props.isParticipant}
         />
       </div>
     </div>
