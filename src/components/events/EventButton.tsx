@@ -6,20 +6,21 @@ import customToast from '@/utils/customToast';
 import { IEventJoinProps } from '@/types/IEvent';
 import { joinEvent } from '@/api/seller/joinEvent';
 import { cancelEvent } from '@/api/seller/cancelEvent';
-import { JOIN_BUTTON_CONTENT } from '@/data/constants';
+import { eventData } from '@/data/constants';
 import { deleteEvent } from '@/api/seller/deleteEvent';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ParticipateState } from '@/states/ParticipateState';
+import { numberOfEventState, participateState } from '@/states/Events';
 
-export default function EventJoinButton({
+export default function EventButton({
   isOwner,
   isParticipant,
 }: IEventJoinProps) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { openModal } = useModal();
-  const setIsJoined = useSetRecoilState(ParticipateState);
+  const setIsJoined = useSetRecoilState(participateState);
+  const setNumOfEvents = useSetRecoilState(numberOfEventState);
 
   // 상세페이지에 접근한 유저의 role을 관리
   const [userRole, setUserRole] = useState(null);
@@ -56,11 +57,17 @@ export default function EventJoinButton({
       ...modalData.SELLER_DELETE_CHECK,
       okCallback: () => {
         if (id) deleteEvent(id);
+        setNumOfEvents((v) => v - 1);
         navigate('/events', { replace: true });
         customToast('등록한 스토어가 삭제되었습니다!', 'success');
       },
     });
-  }, [navigate, openModal, id]);
+  }, [openModal, id, setNumOfEvents, navigate]);
+
+  // 참가한 행사 수정 handler
+  const handleModifyChange = () => {
+    navigate('/');
+  };
 
   // 참가한 행사 취소 handler
   const handleCancelChange = useCallback(() => {
@@ -77,13 +84,16 @@ export default function EventJoinButton({
   // userRole이 셀러이고, 미참여 중이라면
   if (userRole === 'ROLE_SELLER' && !isParticipant) {
     return (
-      <Button contents={JOIN_BUTTON_CONTENT.join} onClick={handleJoinChange} />
+      <Button
+        contents={eventData.EVENT_BUTTON_CONTENT.join}
+        onClick={handleJoinChange}
+      />
     );
     // useRole이 셀러이고, 참여중이며, 글 작성자가 아니라면
   } else if (userRole === 'ROLE_SELLER' && isParticipant && !isOwner) {
     return (
       <Button
-        contents={JOIN_BUTTON_CONTENT.cancelJoin}
+        contents={eventData.EVENT_BUTTON_CONTENT.cancel}
         onClick={handleCancelChange}
         secondary
       />
@@ -92,11 +102,17 @@ export default function EventJoinButton({
     // 글 작성자라면
   } else if (isOwner) {
     return (
-      <Button
-        contents={JOIN_BUTTON_CONTENT.deleteEvent}
-        onClick={handleDeleteChange}
-        secondary
-      />
+      <div className="flex gap-8 sm:gap-48">
+        <Button
+          contents={eventData.EVENT_BUTTON_CONTENT.modify}
+          onClick={handleModifyChange}
+        />
+        <Button
+          contents={eventData.EVENT_BUTTON_CONTENT.delete}
+          onClick={handleDeleteChange}
+          secondary
+        />
+      </div>
     );
     // 셀러 이외의 role을 가졌다면
   } else {
