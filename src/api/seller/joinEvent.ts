@@ -1,11 +1,12 @@
 import { apiInstance } from '@/api/axios';
-import { SELLER_ACCESS_TOKEN } from '@/data/test';
 
 // * POST 셀러의 이벤트 참여
-export const postEvent = async (eventId: string) => {
-  const response = await apiInstance.post(`/events/${eventId}`, {
+export const joinEvent = async (eventId: string) => {
+  const getUser = localStorage.getItem('user');
+  const accessToken = JSON.parse(getUser as string).accessToken;
+  const response = await apiInstance.post(`/events/join/${eventId}`, {
     headers: {
-      Authorization: `Bearer ${SELLER_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response.data;
