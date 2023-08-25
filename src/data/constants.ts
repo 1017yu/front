@@ -451,10 +451,6 @@ export const PIE_COLORS = [
   '#FE0088',
   '#42FF80',
 ];
-export const EVENT_PAGE_MESSAGE = {
-  startDate: '행사 시작일: ',
-  endDate: '행사 마감일: ',
-};
 
 export const POST_CATERGORY = [
   '레저',
@@ -474,28 +470,38 @@ export const POST_INPUT_TITLE = {
   descripton: ['상세 설명', '행사 상세 설명을 입력해주세요.'],
 };
 
-export const POST_TITLE = '행사 등록';
-
-export const EVENTS_DESCRIPTION = {
-  discription: '상세 설명',
-  map: '스토어 위치',
-};
-
-export const JOIN_SELLER = '참여하는 셀러';
-
-export const JOIN_BUTTON_CONTENT = {
-  join: '참가하기',
-  cancelJoin: '참가 취소',
-  deleteEvent: '행사 삭제',
-};
-
-export const mainData = {
-  MAIN_RECENT_STORE: {
-    title: '✨ 최근 등록된 스토어',
-    content: '수요조사 목록 조회 중 오류가 발생했습니다. 다시 시도해주세요.',
+export const eventData = {
+  EVENT_POST_TITLE: '행사 등록',
+  EVENT_JOIN_SELLER: '참여하는 셀러',
+  EVENT_BUTTON_CONTENT: {
+    join: '참가하기',
+    cancel: '참가 취소',
+    delete: '행사 삭제',
+    modify: '행사 수정',
   },
-  MAIN_BEAUTY_STORE: {
-    title: '💅 뷰티 스토어',
-    content: '수요조사가 등록되었습니다.',
+  EVENT_RECENT_STORE: {
+    title: '최근 등록된 스토어',
+    content: '+ 더보기',
+  },
+  EVENT_BEAUTY_STORE: {
+    title: '뷰티 스토어',
+  },
+  EVENT_DETAIL_DESCRIPTION: {
+    title: '상세 설명',
+  },
+  EVENT_DETAIL_MAP: {
+    title: '스토어 위치',
+  },
+  EVENT_STATUS_READY: {
+    title: '시작전',
+    color: 'bg-statusReady',
+  },
+  EVENT_STATUS_INPROGRESS: {
+    title: '진행중',
+    color: 'bg-accent',
+  },
+  EVENT_STATUS_DONE: {
+    title: '마감',
+    color: 'bg-subTextAndBorder',
   },
 };

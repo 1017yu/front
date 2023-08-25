@@ -13,6 +13,7 @@ export default {
         secondary: '#B39CD0',
         accent: '#00C9A7',
         subTextAndBorder: '#9ca3af',
+        statusReady: '#FF9F2E',
       },
       gridTemplateColumns: {
         surveyItems: '2fr 1fr 1fr 120px 50px',

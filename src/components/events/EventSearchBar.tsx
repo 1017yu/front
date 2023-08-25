@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
-import { SearchOptionState } from '@/states/SearchOptionState';
+import { searchOptionState } from '@/states/Events';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import {
   ADRESS_SELECT_OPTIONS,
@@ -10,10 +10,10 @@ import {
 
 export default function EventSearchBar() {
   // 선택 옵션 recoil state를 모두 reset
-  const resetList = useResetRecoilState(SearchOptionState);
+  const resetList = useResetRecoilState(searchOptionState);
 
   // 선택된 옵션 recoil state
-  const [searchOption, setSearchOption] = useRecoilState(SearchOptionState);
+  const [searchOption, setSearchOption] = useRecoilState(searchOptionState);
 
   // 선택한 옵션 값 바꿔주는 함수
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,7 +66,7 @@ export default function EventSearchBar() {
   };
 
   return (
-    <div className="container mx-auto px-8 sm:flex sm:gap-4 sm:px-20">
+    <div className="container mx-auto px-8 sm:mb-8 sm:flex sm:gap-4 sm:px-20">
       <div className="my-4 flex-1 sm:mt-4">
         <Select
           name="city"

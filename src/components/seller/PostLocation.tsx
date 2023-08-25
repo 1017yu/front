@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import Select from '@/components/ui/Select';
-import { PostEventState } from '@/states/PostEventState';
+import { postEventState } from '@/states/Events';
 import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 
 export default function PostLocation() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventState, setEventState] = useRecoilState(postEventState);
 
   // 행사 위치 핸들러
   const handleLocationChange = (
