@@ -7,7 +7,7 @@ export interface IEvent {
   id?: string;
   thumbnailUrl?: string;
   name?: string;
-  hostName?: string;
+  nickname?: string;
   city?: string;
   district?: string;
   description?: string;
@@ -19,9 +19,20 @@ export interface IEvent {
   status?: string; // 진행중/마감
   isOwner?: boolean;
   isParticipant?: boolean;
+  participants?: IParticipants[];
 }
 
 export interface IEventJoinProps {
   isOwner?: boolean;
   isParticipant?: boolean;
+}
+
+export interface IParticipants {
+  nickname: string;
+  profileImgUrl: string;
+  sellerId: string;
+}
+
+export interface IEventDetailTitle {
+  title: string;
 }

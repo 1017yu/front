@@ -1,7 +1,6 @@
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import Title from '@/components/ui/Title';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
@@ -84,15 +83,12 @@ export default function SignIn() {
         <div className="mx-auto w-32">
           <Popple />
         </div>
-        <div className="flex items-center justify-between">
-          <Title text="로그인" />
-          <div className="flex items-center gap-2">
-            <span>판매자</span>
-            <Toggle
-              enabled={isSeller}
-              onToggle={() => setIsSeller((prev) => !prev)}
-            />
-          </div>
+        <div className="flex items-center justify-end gap-2">
+          <span>판매자</span>
+          <Toggle
+            enabled={isSeller}
+            onToggle={() => setIsSeller((prev) => !prev)}
+          />
         </div>
         <div className="space-y-2">
           <Input

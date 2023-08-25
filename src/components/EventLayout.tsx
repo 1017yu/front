@@ -16,7 +16,7 @@ function EventLayout({ ...props }: IEvents) {
     <Link to={`/events/${props.id}`} className="mb-8 w-auto">
       <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 hover:shadow-lg">
         <img
-          className=" h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
+          className="h-48 w-full object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={
             props.thumbnailUrl
               ? 'http://via.placeholder.com/640x400'
@@ -42,7 +42,10 @@ function EventLayout({ ...props }: IEvents) {
           <h1 className="title-font mb-3 text-lg font-medium text-gray-900">
             {props.name}
           </h1>
-          <p className="mb-3 leading-relaxed">{props.location}</p>
+          <p className="mb-3 leading-relaxed">
+            {props.city} {props.district}
+          </p>
+          <p className="mb-3 leading-relaxed">{props.category}</p>
         </div>
       </div>
     </Link>

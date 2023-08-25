@@ -12,10 +12,11 @@ export interface IEventsResponse<T> {
 export interface IEvents {
   id: number;
   name: string;
-  location: string;
+  city: string;
+  district: string;
   thumbnailUrl?: string;
   status: string;
-  category?: string;
+  category: string;
   bookmark: boolean;
 }
 
