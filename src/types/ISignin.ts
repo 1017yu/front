@@ -11,6 +11,7 @@ export interface IServerUser {
   accessToken: string;
   refreshToken: string;
   role: 'ROLE_USER' | 'ROLE_SELLER';
+  platform: 'BASIC' | 'KAKAO';
 }
 
 export type ILocalUser = Omit<IServerUser, 'userId'>;

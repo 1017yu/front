@@ -13,7 +13,7 @@ export default function KakoaButton({ disabled }: KakoaButtonProps) {
     >
       <button
         disabled={disabled}
-        className="flex w-full items-center justify-center rounded-md border-2 border-[#ffe812] bg-[#ffe812] px-3 py-2 text-sm font-bold ring-black ring-offset-2 transition hover:opacity-80 focus:ring-2 active:scale-95 disabled:pointer-events-none disabled:opacity-30"
+        className="flex w-full items-center justify-center rounded-md border-2 border-[#ffe812] bg-[#ffe812] px-3 py-2 text-xs font-bold ring-black ring-offset-2 transition hover:opacity-80 focus:ring-2 active:scale-95 disabled:pointer-events-none disabled:opacity-30 sm:text-sm "
         type="button"
       >
         <div className="flex items-center gap-2">

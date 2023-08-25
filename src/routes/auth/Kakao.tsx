@@ -36,6 +36,7 @@ export default function Kakao() {
                 profileImgUrl: response2.data.profileImgUrl,
                 accessToken: response2.data.accessToken,
                 refreshToken: response2.data.refreshToken,
+                platform: response2.data.platform,
               };
 
               setUser(localUserData);

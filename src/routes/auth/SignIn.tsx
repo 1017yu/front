@@ -56,6 +56,7 @@ export default function SignIn() {
           accessToken: serverUserData.accessToken,
           refreshToken: serverUserData.refreshToken,
           role: serverUserData.role,
+          platform: serverUserData.platform,
         };
         // 전역 사용자 지정
         setUser(localUserData);

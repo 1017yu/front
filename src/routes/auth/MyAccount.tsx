@@ -58,21 +58,42 @@ export default function MyAccount() {
     <div className="container mx-auto flex justify-center px-10 py-2">
       <div className="mt-20 w-80">
         <div className="overflow-hidden rounded-md bg-white shadow-lg">
-          <div className="relative flex flex-col items-center bg-accent p-6">
+          <div
+            className={`relative flex flex-col items-center p-6 ${
+              user?.platform === 'KAKAO' ? 'bg-[#ffe812]' : 'bg-accent'
+            }`}
+          >
             <div className="absolute right-4 top-3 text-xs font-semibold text-gray-100 shadow-2xl">
               {user?.role === 'ROLE_SELLER' ? '판매자' : ''}
             </div>
             <img src={profile} alt="profile" className="w-40 rounded-full" />
-            <p className="pt-2 text-lg font-semibold text-gray-50">
+
+            <p
+              className={`pt-2 text-lg font-semibold ${
+                user?.platform === 'KAKAO' ? '' : 'text-gray-100'
+              }`}
+            >
               {user?.nickname}
             </p>
-            <p className="text-sm text-gray-100">{user?.email}</p>
+            <p
+              className={`text-sm ${
+                user?.platform === 'KAKAO' ? '' : 'text-gray-100'
+              }`}
+            >
+              {user?.email}
+            </p>
 
             <Link
               to="/myaccount/edit"
-              className="group mt-2 rounded-full border-2 px-4 py-2 text-xs font-semibold text-gray-100"
+              className={`group mt-2 rounded-full border-2 border-gray-800 px-4 py-2 text-xs font-semibold hover:opacity-70 
+              ${
+                user?.platform === 'KAKAO'
+                  ? ''
+                  : 'border-gray-100 text-gray-100'
+              }
+              `}
             >
-              <div className="transition group-hover:opacity-70">
+              <div className="transition group-hover:opacity-60">
                 회원 정보 수정
               </div>
             </Link>
