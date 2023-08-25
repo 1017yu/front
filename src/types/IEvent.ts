@@ -33,6 +33,7 @@ export interface IParticipants {
   sellerId: string;
 }
 
-export interface IEventDetailTitle {
+export interface IEventTitle {
   title: string;
+  center?: boolean;
 }
