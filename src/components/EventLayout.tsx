@@ -25,7 +25,7 @@ function EventLayout({ ...props }: IEvents) {
           alt="Thumbnail"
         />
         <button
-          className="absolute right-3 top-3 text-2xl hover:scale-150 hover:transform hover:shadow-2xl"
+          className="absolute right-3 top-3 text-2xl transition-all hover:scale-125 hover:transform hover:shadow-2xl"
           onClick={handleClick}
         >
           {bookmarked ? (
