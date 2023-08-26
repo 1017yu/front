@@ -1,5 +1,5 @@
 export type TEventForm = {
-  eventId: string;
+  id: string;
   name: string;
   description: string;
   city: string;

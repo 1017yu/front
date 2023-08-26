@@ -5,7 +5,7 @@ import { TEventForm } from '@/types/TEventForm';
 export const eventFormState = atom<TEventForm>({
   key: 'eventFormState',
   default: {
-    eventId: '',
+    id: '',
     name: '',
     description: '',
     city: '',
