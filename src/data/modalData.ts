@@ -103,4 +103,10 @@ export const modalData = {
     okButton: '수정',
     cancleButton: '취소',
   },
+  SELLER_MODIFY_IMAGE: {
+    type: 'twoButton',
+    title: '현재 등록된 이미지',
+    okButton: '변경하기',
+    cancleButton: '유지하기',
+  },
 };
