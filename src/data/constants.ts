@@ -461,18 +461,22 @@ export const POST_CATERGORY = [
   '뷰티',
 ];
 
-export const POST_INPUT_TITLE = {
-  catergory: '카테고리',
-  name: ['행사 이름', '행사 이름을 입력해주세요.'],
-  city: '도, 시',
-  district: '구, 군',
-  period: '행사 기간',
-  descripton: ['상세 설명', '행사 상세 설명을 입력해주세요.'],
-};
-
 export const eventData = {
-  EVENT_POST_TITLE: '행사 등록',
+  EVENT_POST_STORE: {
+    title: '행사 등록',
+    label: {
+      catergory: '카테고리',
+      name: ['행사 이름', '행사 이름을 입력해주세요.'],
+      city: '도, 시',
+      district: '구, 군',
+      period: '행사 기간',
+      descripton: ['상세 설명', '행사 상세 설명을 입력해주세요.'],
+    },
+  },
+
+  EVENT_MODIFY_STORE: '행사 수정',
   EVENT_JOIN_SELLER: '참여하는 셀러',
+  EVENT_LIST_TITLE: '🔎 모든 스토어 조회',
   EVENT_BUTTON_CONTENT: {
     join: '참가하기',
     cancel: '참가 취소',
@@ -480,18 +484,13 @@ export const eventData = {
     modify: '행사 수정',
   },
   EVENT_RECENT_STORE: {
-    title: '최근 등록된 스토어',
+    title: '⏰ 최근 등록된 스토어',
     content: '+ 더보기',
   },
-  EVENT_BEAUTY_STORE: {
-    title: '뷰티 스토어',
-  },
-  EVENT_DETAIL_DESCRIPTION: {
-    title: '상세 설명',
-  },
-  EVENT_DETAIL_MAP: {
-    title: '스토어 위치',
-  },
+  EVENT_BEAUTY_STORE: '💅 뷰티 스토어',
+  EVENT_DETAIL_DESCRIPTION: '상세 설명',
+  EVENT_DETAIL_MAP: '스토어 위치',
+
   EVENT_STATUS_READY: {
     title: '시작전',
     color: 'bg-statusReady',

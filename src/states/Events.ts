@@ -1,15 +1,16 @@
 import { atom } from 'recoil';
 import { TSearchOptions } from '@/types/TSearchOptions';
-import { TPostEventType } from '@/types/TPostEventType';
+import { TEventForm } from '@/types/TEventForm';
 
-export const postEventState = atom<TPostEventType>({
-  key: 'postEventState',
+export const eventFormState = atom<TEventForm>({
+  key: 'eventFormState',
   default: {
+    id: '',
     name: '',
     description: '',
-    city: '도, 시',
-    district: '구, 군',
-    category: '레저',
+    city: '',
+    district: '',
+    category: '카테고리',
     thumbnailUrl: '',
     startDate: '',
     endDate: '',

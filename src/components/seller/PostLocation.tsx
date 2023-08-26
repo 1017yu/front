@@ -1,20 +1,20 @@
 import { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import Select from '@/components/ui/Select';
-import { postEventState } from '@/states/Events';
+import { eventFormState } from '@/states/Events';
 import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 
 export default function PostLocation() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(postEventState);
+  const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
 
   // 행사 위치 핸들러
   const handleLocationChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target;
-    setEventState({
-      ...eventState,
+    setEventFormValue({
+      ...eventFormValue,
       [name]: value,
     });
   };
@@ -32,7 +32,7 @@ export default function PostLocation() {
   // 행정구 선택
   const districtSelectOptions = useMemo(() => {
     const selectedOption = ADRESS_SELECT_OPTIONS.find(
-      (option) => option.city === eventState.city,
+      (option) => option.city === eventFormValue.city,
     );
 
     // 선택한 city에 대한 district 도출
@@ -44,7 +44,7 @@ export default function PostLocation() {
     } else {
       return [];
     }
-  }, [eventState.city]);
+  }, [eventFormValue.city]);
 
   return (
     <div className="flex flex-col rounded-md">
@@ -55,17 +55,17 @@ export default function PostLocation() {
             label="도, 시*"
             onChange={handleLocationChange}
             options={[{ name: '도, 시', value: '' }, ...citySelectOptions]}
-            value={eventState.city as string}
+            value={eventFormValue.city}
           />
         </div>
         <div className="flex-1">
           <Select
-            disabled={!eventState.city}
+            disabled={!eventFormValue.city}
             name="district"
             label="구, 군*"
             onChange={handleLocationChange}
             options={
-              !eventState.city
+              !eventFormValue.city
                 ? [{ name: '구, 군', value: '' }]
                 : [
                     { name: '구, 군', value: '' },
@@ -75,7 +75,7 @@ export default function PostLocation() {
                     }[]),
                   ]
             }
-            value={eventState.district as string}
+            value={eventFormValue.district}
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Hr from '@/components/ui/Hr';
+import Title from '@/components/ui/Title';
 import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
 import main_bg from '@/assets/main_bg.png';
@@ -10,7 +11,6 @@ import { ISurveyResponse } from '@/types/ISurvey';
 import { fetchEvents } from '@/api/events/events';
 import EventLayout from '@/components/EventLayout';
 import ReactS3Client from 'react-aws-s3-typescript';
-import EventTitle from '@/components/events/EventTitle';
 import { useCallback, useEffect, useState } from 'react';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
@@ -117,10 +117,10 @@ export default function Home() {
           )}
         <div className="container mx-auto mb-8 mt-16 sm:mb-16 sm:mt-8">
           <div className="block sm:flex">
-            <EventTitle title={eventData.EVENT_RECENT_STORE.title} />
-            <div className="mb-4 flex max-w-[20rem] items-center sm:mb-0">
+            <Title text={eventData.EVENT_RECENT_STORE.title} />
+            <div className="mb-4 flex max-w-[12rem] items-center justify-center sm:mb-0 sm:justify-start">
               <button
-                className="transition-all hover:scale-110 hover:transform hover:shadow-xl sm:ml-8"
+                className="hidden text-xl transition-all hover:scale-110 hover:transform hover:shadow-xl sm:ml-8 sm:block"
                 onClick={handleMoveEventsPage}
               >
                 {eventData.EVENT_RECENT_STORE.content}
@@ -129,7 +129,7 @@ export default function Home() {
           </div>
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-10 sm:mt-8">
+              <div className="flex flex-wrap gap-1 sm:mt-8 sm:flex-nowrap sm:gap-10">
                 {recentList.map((event) => (
                   <EventLayout
                     key={event.id}
@@ -149,7 +149,7 @@ export default function Home() {
           <Hr />
         </div>
         <div className="container mx-auto mt-16 sm:mt-8">
-          <EventTitle title={eventData.EVENT_BEAUTY_STORE.title} />
+          <Title text={eventData.EVENT_BEAUTY_STORE} />
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
               <div className="mt-4 flex flex-wrap gap-9 sm:mt-8">

@@ -1,7 +1,8 @@
-import { IEvent } from '@/types/IEvent';
+import { IParticipantsProps } from '@/types/IEvent';
 import profileImg from '@/assets/dummy-profile.png';
 
-export default function Participants({ participants }: IEvent) {
+export default function Participants(props: IParticipantsProps) {
+  const { participants } = props;
   return (
     <div className="flex justify-center gap-4 px-4 sm:gap-8">
       {participants?.map((value, index) => (
