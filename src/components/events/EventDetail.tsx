@@ -5,10 +5,11 @@ import { useParams } from 'react-router-dom';
 import { fetchEvent } from '@/api/events/event';
 import { eventFormState } from '@/states/Events';
 import { participateState } from '@/states/Events';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import EventMap from '@/components/events/EventMap';
 import EventDetailBox from '@/components/events/EventDetailBox';
 import EventDetailDesc from '@/components/events/EventDetailDesc';
 import EventDetailSeller from '@/components/events/EventDetailSeller';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function EventDetail() {
   // 행사 id 값 선언
@@ -22,6 +23,8 @@ export default function EventDetail() {
   const setEventFormValue = useSetRecoilState(eventFormState);
 
   useEffect(() => {
+    window.scroll(0, 0);
+
     // id 값이 존재할 때, fetchEvent
     if (id) {
       fetchEvent(id).then((res) => {
@@ -33,10 +36,10 @@ export default function EventDetail() {
         }
       });
     }
-  }, [id, isParticipate, setEventData]);
+  }, [id, isParticipate, setEventData, setEventFormValue]);
 
   return (
-    <div className="container mx-auto pb-16 sm:px-20">
+    <div className="container mx-auto my-12 rounded-lg bg-white pb-16 drop-shadow-md sm:max-w-[1250px] sm:p-16">
       {eventData ? (
         <>
           <EventDetailBox
@@ -57,6 +60,7 @@ export default function EventDetail() {
             description={eventData.description}
           />
           <EventDetailDesc description={eventData.description} />
+          <EventMap />
           <EventDetailSeller participants={eventData.participants} />
         </>
       ) : (
