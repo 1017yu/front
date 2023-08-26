@@ -9,7 +9,7 @@ import {
 import { BsBookmark } from 'react-icons/bs';
 import { useModal } from '@/hooks/useModal';
 import Input from '@/components/ui/Input';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { secession } from '@/api/auth/secession';
 import customToast from '@/utils/customToast';
 import { restUserProfile } from '@/api/auth/userProfile';
@@ -21,6 +21,7 @@ export default function MyAccount() {
 
   const { openModal } = useModal();
   const { user, setUser } = useUser();
+  const isSeller = useMemo(() => user?.role === 'ROLE_SELLER', [user?.role]);
 
   const handleSecession = () => {
     if (!password) {
@@ -59,15 +60,29 @@ export default function MyAccount() {
     city: '',
     district: '',
   });
+
+  const [sellerInfo, setSellerInfo] = useState({
+    shopName: '',
+    bio: '',
+    address: '',
+  });
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await restUserProfile();
+        const response = await restUserProfile(isSeller);
         if (response.statusCode === 200) {
-          setUserCityAndDistrict({
-            city: response.data.city,
-            district: response.data.district,
-          });
+          if (!isSeller) {
+            setUserCityAndDistrict({
+              city: response.data.city,
+              district: response.data.district,
+            });
+          } else {
+            setSellerInfo({
+              address: '와야함', // 와야함
+              bio: response.data.bio,
+              shopName: response.data.shopName,
+            });
+          }
         }
       } catch (error: any) {
         console.log(error);
@@ -75,7 +90,7 @@ export default function MyAccount() {
       }
     };
     getData();
-  }, []);
+  }, [user?.role]);
 
   return (
     <div className="container mx-auto flex justify-center px-10 py-2">
@@ -100,7 +115,7 @@ export default function MyAccount() {
                 user?.platform === 'KAKAO' ? '' : 'text-gray-100'
               }`}
             >
-              {user?.nickname}
+              {user?.nickname} {sellerInfo.shopName}
             </p>
             <p
               className={`text-sm ${
@@ -115,6 +130,7 @@ export default function MyAccount() {
               }`}
             >
               {userCityAndDistrict.city} {userCityAndDistrict.district}
+              {sellerInfo.address}
             </p>
 
             <Link
