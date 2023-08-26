@@ -1,44 +1,39 @@
 import Title from '@/components/ui/Title';
 import Button from '@/components/ui/Button';
+import { eventData } from '@/data/constants';
 import { fetchEvents } from '@/api/events/events';
-import Pagination from '@mui/material/Pagination';
 import EventLayout from '@/components/EventLayout';
 import { useEffect, useMemo, useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { IEvents, IEventsPagination } from '@/types/IEvents';
-import { numberOfEventState, searchOptionState } from '@/states/Events';
-import {
-  COUNT_PER_EVENTS_PAGE,
-  EVENTS_THEME,
-  eventData,
-} from '@/data/constants';
+import { IEvents } from '@/types/IEvents';
+import { totalEventsState, searchOptionState } from '@/states/Events';
+import PaginationComponent from '@/components/community/Pagination';
 
 export default function EventList() {
   const [page, setPage] = useState(1); // 페이지 번호
+  const [pagePerEvents, setPagePerEvents] = useState(1);
   const searchOption = useRecoilValue(searchOptionState);
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
-  const [numOfEvents, setNumOfEvents] = useRecoilState(numberOfEventState); // 등록된 이벤트의 개수
-  const totalPages = Math.ceil(numOfEvents / COUNT_PER_EVENTS_PAGE); // 총 페이지의 수
-
-  // page button click에 따른 현재 페이지 번호 핸들링
-  const handlePagination: IEventsPagination = (_event, value) => {
-    setPage(value);
-    window.scroll(0, 0);
-  };
+  const [totalEvents, setTotalEvents] = useRecoilState(totalEventsState); // 등록된 모든 이벤트의 개수
 
   // 공고 등록 페이지로 이동
   const handleMovePostEvent = () => {
     location.assign('/seller/new');
   };
 
+  const handleChange = (page: number) => {
+    setPage(page);
+  };
+
+  // TODO: 현재 12개를 초과하는 이벤트 조회가 안되고 있어서 페이지네이션 구현 불가능 (API 수정 요청 중)
   useEffect(() => {
     // 모든 이벤트 조회
     fetchEvents().then((res) => {
       try {
         setEventsList(res.data.content);
-        setNumOfEvents(res.data.totalElements);
+        setTotalEvents(res.data.totalElements);
+        setPagePerEvents(res.data.numberOfElements);
       } catch (error) {
         alert(error);
       }
@@ -54,7 +49,7 @@ export default function EventList() {
       // userRole이 셀러일 때만 button render
       userRole === 'ROLE_SELLER' ? setIsSeller(true) : setIsSeller(false);
     }
-  }, [setNumOfEvents, numOfEvents]);
+  }, [setTotalEvents, totalEvents]);
 
   // 검색 옵션에 따른 이벤트 조회
   const searchedList = useMemo(() => {
@@ -87,50 +82,43 @@ export default function EventList() {
   }, [eventsList, searchOption]);
 
   return (
-    <ThemeProvider theme={EVENTS_THEME}>
-      <div className="container mx-auto px-8 sm:px-20">
-        <div className="flex items-center justify-between">
-          <Title text={eventData.EVENT_LIST_TITLE} />
-          {isSeller ? (
-            <div className="sm:max-w-[10rem]">
-              <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="container mx-auto mt-8 sm:mt-16">
-          <div className="flex flex-wrap justify-between">
-            {searchedList.reverse().map((event) => (
-              <EventLayout
-                key={event.id}
-                id={event.id}
-                name={event.name}
-                city={event.city}
-                district={event.district}
-                thumbnailUrl={event?.thumbnailUrl}
-                category={event?.category}
-                status={event.status}
-                bookmark={event.bookmark}
-              />
-            ))}
+    <div className="container mx-auto px-8 sm:px-20">
+      <div className="flex items-center justify-between">
+        <Title text={eventData.EVENT_LIST_TITLE} />
+        {isSeller ? (
+          <div className="sm:max-w-[10rem]">
+            <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
           </div>
-        </div>
-        <div className="flex justify-center">
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handlePagination}
-            shape="rounded"
-            color="primary"
-            sx={{
-              '& .Mui-selected': {
-                color: '#fff',
-              },
-            }}
-          />
+        ) : (
+          ''
+        )}
+      </div>
+      <div className="container mx-auto mt-8 sm:mt-16">
+        <div className="flex flex-wrap justify-between">
+          {searchedList.map((event) => (
+            <EventLayout
+              key={event.id}
+              id={event.id}
+              name={event.name}
+              city={event.city}
+              district={event.district}
+              thumbnailUrl={event?.thumbnailUrl}
+              category={event?.category}
+              status={event.status}
+              bookmark={event.bookmark}
+            />
+          ))}
         </div>
       </div>
-    </ThemeProvider>
+      <div className="flex justify-center sm:my-16">
+        <PaginationComponent
+          page={page}
+          totalPostCount={totalEvents}
+          itemsCountPerPage={pagePerEvents}
+          pageRangeDisplayed={5}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
   );
 }
