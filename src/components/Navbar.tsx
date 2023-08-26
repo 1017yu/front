@@ -32,7 +32,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="container mx-auto flex items-center justify-between px-10 py-2 shadow-lg">
+    <header className="container mx-auto flex h-12 items-center justify-between border-b px-10 py-2 shadow-lg">
       <div className="flex items-center gap-10">
         <Popple />
         <ul className="flex gap-3">
