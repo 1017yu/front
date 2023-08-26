@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { eventFormState } from '@/states/Events';
 import { postEvent } from '@/api/seller/postEvent';
 import PostDesc from '@/components/seller/PostDesc';
+import PostImage from '@/components/seller/PostImage';
 import PostPeriod from '@/components/seller/PostPeriod';
 import PostLocation from '@/components/seller/PostLocation';
 import PostCategory from '@/components/seller/PostCategory';
@@ -45,7 +46,7 @@ export default function PostForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="container mx-auto mb-10 flex flex-col gap-4 bg-white px-10 sm:mx-24 sm:mt-16 sm:px-40 sm:py-12"
+      className="container mx-auto flex flex-col gap-2 rounded-lg bg-white px-10 py-12 drop-shadow-md sm:mt-16 sm:max-w-[768px] sm:px-40 sm:py-12"
     >
       <Title text={eventData.EVENT_POST_STORE.title} center />
       <PostCategory />
@@ -53,6 +54,7 @@ export default function PostForm() {
       <PostLocation />
       <PostPeriod />
       <PostDesc />
+      <PostImage value={eventFormValue.thumbnailUrl} label={'이미지 등록'} />
       <Button submit contents={'등록'} />
     </form>
   );
