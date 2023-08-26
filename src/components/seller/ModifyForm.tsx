@@ -1,13 +1,14 @@
 import { useRecoilValue } from 'recoil';
 import Title from '@/components/ui/Title';
 import Button from '@/components/ui/Button';
-import { eventFormState } from '@/states/Events';
 import { eventData } from '@/data/constants';
 import customToast from '@/utils/customToast';
 import { useNavigate } from 'react-router-dom';
+import { eventFormState } from '@/states/Events';
 import PostDesc from '@/components/seller/PostDesc';
 import { modifyEvent } from '@/api/seller/modifyEvent';
 import PostPeriod from '@/components/seller/PostPeriod';
+import ModifyImage from '@/components/seller/ModifyImage';
 import PostLocation from '@/components/seller/PostLocation';
 import PostCategory from '@/components/seller//PostCategory';
 import PostEventName from '@/components/seller/PostEventName';
@@ -25,7 +26,7 @@ export default function ModifyForm() {
     endDate: eventFormValue.endDate,
     description: eventFormValue.description,
     id: eventFormValue.id,
-    thumbnailUrl: 'test',
+    thumbnailUrl: eventFormValue.thumbnailUrl,
   };
 
   // 폼 제출 핸들러
@@ -44,14 +45,15 @@ export default function ModifyForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="container mx-auto mb-10 flex flex-col gap-4 rounded-md bg-white px-8 sm:mx-24 sm:mt-16 sm:px-24 sm:py-12"
+      className="container mx-auto flex flex-col gap-2 rounded-lg bg-white px-10 py-12 drop-shadow-md sm:mt-16 sm:max-w-[768px] sm:px-40 "
     >
-      <Title text={eventData.EVENT_MODIFY_STORE} />
+      <Title text={eventData.EVENT_MODIFY_STORE} center />
       <PostCategory />
       <PostEventName />
       <PostLocation />
       <PostPeriod />
       <PostDesc />
+      <ModifyImage value={modifyValue.thumbnailUrl} label={'이미지 변경'} />
       <Button submit contents={'수정'} />
     </form>
   );
