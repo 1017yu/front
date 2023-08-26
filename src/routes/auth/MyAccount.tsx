@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import profile from '@/assets/dummy-profile.png';
 import { useUser } from '@/hooks/useUser';
 import {
   AiOutlineShop,
@@ -10,9 +9,10 @@ import {
 import { BsBookmark } from 'react-icons/bs';
 import { useModal } from '@/hooks/useModal';
 import Input from '@/components/ui/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { secession } from '@/api/auth/secession';
 import customToast from '@/utils/customToast';
+import { restUserProfile } from '@/api/auth/userProfile';
 
 export default function MyAccount() {
   const navigate = useNavigate();
@@ -54,9 +54,32 @@ export default function MyAccount() {
       okButton: '탈퇴',
     });
   };
+
+  const [userCityAndDistrict, setUserCityAndDistrict] = useState({
+    city: '',
+    district: '',
+  });
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await restUserProfile();
+        if (response.statusCode === 200) {
+          setUserCityAndDistrict({
+            city: response.data.city,
+            district: response.data.district,
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+        customToast(error.message, 'error');
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <div className="container mx-auto flex justify-center px-10 py-2">
-      <div className="mt-20 w-80">
+      <div className="w-80">
         <div className="overflow-hidden rounded-md bg-white shadow-lg">
           <div
             className={`relative flex flex-col items-center p-6 ${
@@ -66,7 +89,11 @@ export default function MyAccount() {
             <div className="absolute right-4 top-3 text-xs font-semibold text-gray-100 shadow-2xl">
               {user?.role === 'ROLE_SELLER' ? '판매자' : ''}
             </div>
-            <img src={profile} alt="profile" className="w-40 rounded-full" />
+            <img
+              src={user?.profileImgUrl}
+              alt="profile"
+              className="h-40 w-40 rounded-full object-cover"
+            />
 
             <p
               className={`pt-2 text-lg font-semibold ${
@@ -82,13 +109,20 @@ export default function MyAccount() {
             >
               {user?.email}
             </p>
+            <p
+              className={`mt-1 text-xs ${
+                user?.platform === 'KAKAO' ? '' : 'text-gray-100'
+              }`}
+            >
+              {userCityAndDistrict.city} {userCityAndDistrict.district}
+            </p>
 
             <Link
               to="/myaccount/edit"
-              className={`group mt-2 rounded-full border-2 border-gray-800 px-4 py-2 text-xs font-semibold hover:opacity-70 
+              className={`group mt-2 rounded-full border-2 px-4 py-2 text-xs font-semibold hover:opacity-70 
               ${
                 user?.platform === 'KAKAO'
-                  ? ''
+                  ? 'border-black'
                   : 'border-gray-100 text-gray-100'
               }
               `}

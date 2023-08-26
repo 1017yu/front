@@ -1,5 +1,5 @@
 import { NAV_ITEMS } from '@/data/constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Popple from './ui/Popple';
 import { useUser } from '@/hooks/useUser';
 import dummyProfile from '@/assets/dummy-profile.png';
@@ -10,6 +10,7 @@ import { logout } from '@/api/auth/logout';
 import customToast from '@/utils/customToast';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { user, setUser } = useUser();
 
   const [isLoggingout, setIsLoggingout] = useState(false);
@@ -28,6 +29,7 @@ export default function Navbar() {
       setUser(null);
       localStorage.removeItem('user');
       setIsLoggingout(false);
+      navigate('/');
     }
   };
 
@@ -64,7 +66,7 @@ export default function Navbar() {
                         : user.profileImgUrl
                     }
                     alt="profile"
-                    className="w-8 rounded-full"
+                    className="h-8 w-8 rounded-full object-cover"
                   />
                 </Link>
               </li>

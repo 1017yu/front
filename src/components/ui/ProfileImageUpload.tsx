@@ -1,16 +1,20 @@
 /* eslint-disable no-unused-vars */
+import dummyProfile from '@/assets/dummy-profile.png';
 
 interface ImageUploadProps {
-  image: string | null;
+  imageURL?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function ImageUpload({ image, handleChange }: ImageUploadProps) {
+export default function ProfileImageUpload({
+  imageURL,
+  handleChange,
+}: ImageUploadProps) {
   return (
-    <div className="flex w-32 justify-center rounded-md border-2 border-accent transition hover:shadow-md active:scale-95">
-      <label className="flex cursor-pointer flex-col items-center rounded-lg   bg-white">
+    <div className="flex w-36 justify-center rounded-md border-2 border-accent transition hover:shadow-md active:scale-95">
+      <label className="flex w-32 cursor-pointer flex-col items-center rounded-lg bg-white">
         <img
-          src={image ?? '/dummy-profile.png'}
+          src={imageURL === 'profileDefaultImageUrl' ? dummyProfile : imageURL}
           alt="profile"
           className="m-6 h-20 w-20 rounded-full object-cover shadow-md"
         />
