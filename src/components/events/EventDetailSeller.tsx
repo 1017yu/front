@@ -1,12 +1,14 @@
-import { IEvent } from '@/types/IEvent';
+import { IParticipantsProps } from '@/types/IEvent';
+import Title from '@/components/ui/Title';
 import { eventData } from '@/data/constants';
 import Participants from '@/components/ui/Participants';
-import EventDetailTitle from '@/components/events/EventTitle';
 
-export default function EventDetailSeller({ participants }: IEvent) {
+export default function EventDetailSeller(props: IParticipantsProps) {
+  const { participants } = props;
+
   return (
     <div className="mt-8 sm:mt-16">
-      <EventDetailTitle title={eventData.EVENT_JOIN_SELLER} center />
+      <Title text={eventData.EVENT_JOIN_SELLER} center />
       <div className="mt-4">
         <Participants participants={participants} />
       </div>
