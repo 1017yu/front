@@ -2,12 +2,17 @@ import Title from '@/components/ui/Title';
 import Button from '@/components/ui/Button';
 import { eventData } from '@/data/constants';
 import { fetchEvents } from '@/api/events/events';
-import EventLayout from '@/components/EventLayout';
+import Pagination from '@mui/material/Pagination';
 import { useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { IEvents } from '@/types/IEvents';
-import { totalEventsState, searchOptionState } from '@/states/Events';
-import PaginationComponent from '@/components/community/Pagination';
+import EventLayout from '@/components/events/EventLayout';
+import { IEvents, IEventsPagination } from '@/types/IEvents';
+import { numberOfEventState, searchOptionState } from '@/states/Events';
+import {
+  COUNT_PER_EVENTS_PAGE,
+  EVENTS_THEME,
+  eventData,
+} from '@/data/constants';
 
 export default function EventList() {
   const [page, setPage] = useState(1); // 페이지 번호
@@ -59,7 +64,7 @@ export default function EventList() {
       searchOption.district === '' &&
       searchOption.category === ''
     ) {
-      return eventsList;
+      return [...eventsList].sort((a, b) => b.id - a.id);
     }
 
     // 검색 조건에 따른 이벤트 목록 조회
@@ -82,12 +87,33 @@ export default function EventList() {
   }, [eventsList, searchOption]);
 
   return (
-    <div className="container mx-auto px-8 sm:px-20">
-      <div className="flex items-center justify-between">
-        <Title text={eventData.EVENT_LIST_TITLE} />
-        {isSeller ? (
-          <div className="sm:max-w-[10rem]">
-            <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
+    <ThemeProvider theme={EVENTS_THEME}>
+      <div className="container mx-auto px-8 sm:px-20">
+        <div className="flex items-center justify-between">
+          <Title text={eventData.EVENT_LIST_TITLE} />
+          {isSeller ? (
+            <div className="sm:min-w-[12rem]">
+              <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+        <div className="container mx-auto mt-8 sm:mt-16">
+          <div className="flex flex-wrap justify-between">
+            {searchedList.map((event) => (
+              <EventLayout
+                key={event.id}
+                id={event.id}
+                name={event.name}
+                city={event.city}
+                district={event.district}
+                thumbnailUrl={event?.thumbnailUrl}
+                category={event?.category}
+                status={event.status}
+                bookmark={event.bookmark}
+              />
+            ))}
           </div>
         ) : (
           ''
