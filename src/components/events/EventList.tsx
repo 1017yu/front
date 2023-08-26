@@ -17,7 +17,7 @@ export default function EventList() {
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
   const [totalEvents, setTotalEvents] = useRecoilState(totalEventsState); // 등록된 모든 이벤트의 개수
-const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
+  const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
 
   // 공고 등록 페이지로 이동
   const handleMovePostEvent = () => {
@@ -124,4 +124,4 @@ const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
       </div>
     </div>
   );
-}
+
