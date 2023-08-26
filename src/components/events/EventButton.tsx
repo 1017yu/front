@@ -2,15 +2,19 @@ import { useSetRecoilState } from 'recoil';
 import { useModal } from '@/hooks/useModal';
 import Button from '@/components/ui/Button';
 import { modalData } from '@/data/modalData';
+import { eventData } from '@/data/constants';
 import customToast from '@/utils/customToast';
 import { IEventJoinProps } from '@/types/IEvent';
 import { joinEvent } from '@/api/seller/joinEvent';
 import { cancelEvent } from '@/api/seller/cancelEvent';
-import { eventData } from '@/data/constants';
 import { deleteEvent } from '@/api/seller/deleteEvent';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { numberOfEventState, participateState } from '@/states/Events';
+import {
+  eventFormState,
+  numberOfEventState,
+  participateState,
+} from '@/states/Events';
 
 export default function EventButton({
   isOwner,
@@ -21,6 +25,7 @@ export default function EventButton({
   const { openModal } = useModal();
   const setIsJoined = useSetRecoilState(participateState);
   const setNumOfEvents = useSetRecoilState(numberOfEventState);
+  const setEventFormValue = useSetRecoilState(eventFormState);
 
   // 상세페이지에 접근한 유저의 role을 관리
   const [userRole, setUserRole] = useState(null);
@@ -66,7 +71,18 @@ export default function EventButton({
 
   // 참가한 행사 수정 handler
   const handleModifyChange = () => {
-    navigate('/');
+    // 행사 id가 유효한 경우
+    if (id) {
+      navigate('/seller/modify');
+      setEventFormValue((prev) => ({
+        ...prev,
+        eventId: id,
+      }));
+      // 행사 id가 유효하지 않은 경우
+    } else {
+      customToast('유효하지 않은 스토어입니다!', 'error');
+      navigate('/events');
+    }
   };
 
   // 참가한 행사 취소 handler
@@ -74,12 +90,17 @@ export default function EventButton({
     openModal({
       ...modalData.SELLER_CANCEL_CHECK,
       okCallback: async () => {
-        await cancelEvent(id as string);
-        customToast('스토어 참여가 취소되었습니다!', 'success');
-        setIsJoined((prev) => !prev);
+        if (id) {
+          await cancelEvent(id);
+          customToast('스토어 참여가 취소되었습니다!', 'success');
+          setIsJoined((prev) => !prev);
+        } else {
+          customToast('유효하지 않은 스토어입니다!', 'error');
+          navigate('/events');
+        }
       },
     });
-  }, [openModal, id, setIsJoined]);
+  }, [openModal, id, setIsJoined, navigate]);
 
   // userRole이 셀러이고, 미참여 중이라면
   if (userRole === 'ROLE_SELLER' && !isParticipant) {
