@@ -7,7 +7,7 @@ export default function EventDetailBox({
   ...props
 }: Omit<IEvent, 'discription' | 'participants'>) {
   return (
-    <div className="mx-1 mb-4 mt-6 flex max-w-[1200px] flex-col justify-between rounded-md border border-subTextAndBorder px-4 py-8 sm:mx-auto sm:my-20  sm:px-8 sm:py-12 lg:px-16">
+    <div className="mx-1 mb-8 flex max-w-[1200px] flex-col justify-between rounded-md border border-subTextAndBorder px-4 py-8 drop-shadow-md sm:mx-auto sm:mb-16 sm:px-8 sm:py-12 lg:px-16">
       <div className="flex justify-between">
         <div className="flex flex-col">
           <div className="ml-1 pb-2 text-sm text-subTextAndBorder sm:pb-2 sm:text-xl">
@@ -17,8 +17,9 @@ export default function EventDetailBox({
             {props.name}
           </div>
           <div className="ml-1 pb-2 text-sm text-gray-500 sm:pb-4 lg:text-xl">
-            {props.city}
+            {props.city} {props.district}
           </div>
+
           <div className="ml-1 border-accent pb-2 text-base sm:mb-4 lg:text-xl">
             셀러 {props.nickname}
           </div>
