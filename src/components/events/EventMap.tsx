@@ -1,4 +1,7 @@
 import { useEffect } from 'react';
+import Title from '../ui/Title';
+import { eventData } from '@/data/constants';
+import Hr from '../ui/Hr';
 
 declare global {
   interface Window {
@@ -41,5 +44,13 @@ export default function MapTest() {
     document.head.appendChild(mapScript);
   }, []);
 
-  return <div id="map" className="h-[500px] w-[1000px]" />;
+  return (
+    <div className="hidden sm:block">
+      <Title text={eventData.EVENT_DETAIL_MAP} center />
+      <div className="mt-4 flex justify-center sm:mt-8">
+        <div id="map" className="h-[500px] w-[640px]" />
+      </div>
+      <Hr />
+    </div>
+  );
 }
