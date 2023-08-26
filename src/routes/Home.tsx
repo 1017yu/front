@@ -9,10 +9,10 @@ import { boardConfig } from '@/data/s3configs';
 import Container from '@/components/ui/Container';
 import { ISurveyResponse } from '@/types/ISurvey';
 import { fetchEvents } from '@/api/events/events';
-import EventLayout from '@/components/EventLayout';
 import ReactS3Client from 'react-aws-s3-typescript';
 import { useCallback, useEffect, useState } from 'react';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
+import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
 
 export default function Home() {
@@ -51,11 +51,14 @@ export default function Home() {
     });
   }, []);
 
-  const recentList = eventsList.reverse().slice(0, 4);
+  // 최근 등록된 이벤트 중 상위 4개
+  const recentList = [...eventsList].sort((a, b) => b.id - a.id).slice(0, 4);
 
-  const beautyList = eventsList.filter((value) =>
-    value.category.includes('뷰티'),
-  );
+  // 카테고리가 '뷰티'인 이벤트 중 상위 4개
+  const beautyList = [...eventsList]
+    .filter((value) => value.category.includes('뷰티'))
+    .sort((a, b) => b.id - a.id)
+    .slice(0, 4);
 
   const uploadImage = async (file: File) => {
     const s3 = new ReactS3Client(boardConfig);
@@ -129,7 +132,7 @@ export default function Home() {
           </div>
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-1 sm:mt-8 sm:flex-nowrap sm:gap-10">
+              <div className="flex flex-wrap justify-between sm:mt-8">
                 {recentList.map((event) => (
                   <EventLayout
                     key={event.id}
