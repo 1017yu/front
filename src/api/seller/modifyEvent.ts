@@ -8,7 +8,7 @@ export const modifyEvent = async (eventValue: TEventForm) => {
 
   if (accessToken) {
     const response = await apiInstance.put(
-      `/events/${eventValue.eventId}`,
+      `/events/${eventValue.id}`,
       eventValue,
       {
         headers: {
