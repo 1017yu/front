@@ -5,22 +5,23 @@ import AdminSurvey from '@/routes/admin/AdminSurvey';
 import AdminSurveyDetail from '@/routes/admin/AdminSurveyDetail';
 import Home from '@/routes/Home';
 import NotFound from '@/routes/NotFound';
-import SignUp from './routes/auth/SignUp';
-import Kakao from './routes/auth/Kakao';
+import SignUp from '@/routes/auth/SignUp';
+import Kakao from '@/routes/auth/Kakao';
 import Events from '@/routes/events/Events';
 import Event from '@/routes/events/Event';
 import Community from '@/routes/Community';
 import Post from '@/routes/Post';
 import NewPost from '@/routes/NewPost';
 import ForgotPassword from '@/routes/auth/ForgotPassword';
-import SignIn from './routes/auth/SignIn';
-import ConfirmSignup from './routes/auth/ConfirmSignUp';
-import MyToast from './components/ui/MyToast';
+import SignIn from '@/routes/auth/SignIn';
+import ConfirmSignup from '@/routes/auth/ConfirmSignUp';
+import MyToast from '@/components/ui/MyToast';
 import PostEvent from '@/routes/seller/PostEvent';
 import Survey from '@/routes/survey/Survey';
 import SurveyResults from '@/routes/survey/SurveyResults';
 import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
-import MyAccount from './routes/auth/MyAccount';
+import MyAccount from '@/routes/auth/MyAccount';
+import ModifyEvent from '@/routes/seller/ModifyEvent';
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/community/:id" element={<Post />} />
           <Route path="/auth/kakao/callback" element={<Kakao />} />
           <Route path="/seller/new" element={<PostEvent />} />
+          <Route path="/seller/modify" element={<ModifyEvent />} />
           <Route path="/survey" element={<Survey />} />
           <Route path="/survey-results" element={<SurveyResults />} />
           <Route
