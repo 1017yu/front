@@ -45,7 +45,6 @@ function EventLayout({ ...props }: IEvents) {
           <p className="mb-3 leading-relaxed">
             {props.city} {props.district}
           </p>
-          <p className="mb-3 leading-relaxed">{props.category}</p>
         </div>
       </div>
     </Link>
