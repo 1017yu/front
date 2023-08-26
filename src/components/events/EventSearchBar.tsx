@@ -105,8 +105,13 @@ export default function EventSearchBar() {
           value={searchOption.category}
         />
       </div>
-      <div className="my-4 flex flex-1 items-end sm:mt-4">
-        <Button contents={'옵션 초기화'} onClick={handleResetOptions} />
+
+      <div className="my-4 flex flex-1 items-end sm:mt-4 sm:max-w-[8rem]">
+        <Button
+          contents={'옵션 초기화'}
+          onClick={handleResetOptions}
+          secondary
+        />
       </div>
     </div>
   );
