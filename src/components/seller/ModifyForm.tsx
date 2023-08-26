@@ -24,7 +24,7 @@ export default function ModifyForm() {
     startDate: eventFormValue.startDate,
     endDate: eventFormValue.endDate,
     description: eventFormValue.description,
-    eventId: eventFormValue.eventId,
+    id: eventFormValue.id,
     thumbnailUrl: 'test',
   };
 
@@ -35,7 +35,7 @@ export default function ModifyForm() {
     try {
       await modifyEvent(modifyValue);
       customToast('행사가 수정되었습니다!', 'success');
-      navigate(`/events/${eventFormValue.eventId}`);
+      navigate(`/events/${eventFormValue.id}`);
     } catch (error) {
       customToast('모든 항목을 기입해주세요!', 'error');
     }
