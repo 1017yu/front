@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   eventFormState,
-  numberOfEventState,
+  totalEventsState,
   participateState,
 } from '@/states/Events';
 
@@ -24,7 +24,7 @@ export default function EventButton({
   const navigate = useNavigate();
   const { openModal } = useModal();
   const setIsJoined = useSetRecoilState(participateState);
-  const setNumOfEvents = useSetRecoilState(numberOfEventState);
+  const setTotalEvents = useSetRecoilState(totalEventsState);
   const setEventFormValue = useSetRecoilState(eventFormState);
 
   // 상세페이지에 접근한 유저의 role을 관리
@@ -62,12 +62,12 @@ export default function EventButton({
       ...modalData.SELLER_DELETE_CHECK,
       okCallback: () => {
         if (id) deleteEvent(id);
-        setNumOfEvents((v) => v - 1);
+        setTotalEvents((v) => v - 1);
         navigate('/events', { replace: true });
         customToast('등록한 스토어가 삭제되었습니다!', 'success');
       },
     });
-  }, [openModal, id, setNumOfEvents, navigate]);
+  }, [openModal, id, setTotalEvents, navigate]);
 
   // 참가한 행사 수정 handler
   const handleModifyChange = () => {
