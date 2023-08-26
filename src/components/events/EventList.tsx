@@ -2,10 +2,10 @@ import Title from '@/components/ui/Title';
 import Button from '@/components/ui/Button';
 import { fetchEvents } from '@/api/events/events';
 import Pagination from '@mui/material/Pagination';
-import EventLayout from '@/components/EventLayout';
 import { useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import EventLayout from '@/components/events/EventLayout';
 import { IEvents, IEventsPagination } from '@/types/IEvents';
 import { numberOfEventState, searchOptionState } from '@/states/Events';
 import {
@@ -64,7 +64,7 @@ export default function EventList() {
       searchOption.district === '' &&
       searchOption.category === ''
     ) {
-      return eventsList;
+      return [...eventsList].sort((a, b) => b.id - a.id);
     }
 
     // 검색 조건에 따른 이벤트 목록 조회
@@ -92,7 +92,7 @@ export default function EventList() {
         <div className="flex items-center justify-between">
           <Title text={eventData.EVENT_LIST_TITLE} />
           {isSeller ? (
-            <div className="sm:max-w-[10rem]">
+            <div className="sm:min-w-[12rem]">
               <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
             </div>
           ) : (
@@ -101,7 +101,7 @@ export default function EventList() {
         </div>
         <div className="container mx-auto mt-8 sm:mt-16">
           <div className="flex flex-wrap justify-between">
-            {searchedList.reverse().map((event) => (
+            {searchedList.map((event) => (
               <EventLayout
                 key={event.id}
                 id={event.id}
