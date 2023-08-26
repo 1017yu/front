@@ -4,6 +4,7 @@ export interface IEventsResponse<T> {
     content: T;
     totalElements: number;
     totalPages: number;
+    numberOfElements: number;
   };
   statusCode: number;
 }
@@ -18,9 +19,4 @@ export interface IEvents {
   status: string;
   category: string;
   bookmark: boolean;
-}
-
-//
-export interface IEventsPagination {
-  (event: React.ChangeEvent<unknown>, value: number): void;
 }
