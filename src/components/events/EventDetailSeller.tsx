@@ -7,11 +7,11 @@ export default function EventDetailSeller(props: IParticipantsProps) {
   const { participants } = props;
 
   return (
-    <div className="mt-8 sm:mt-16">
+    <>
       <Title text={eventData.EVENT_JOIN_SELLER} center />
-      <div className="mt-4">
+      <div className="mt-4 sm:mt-8">
         <Participants participants={participants} />
       </div>
-    </div>
+    </>
   );
 }
