@@ -12,7 +12,6 @@ function EventLayout({ ...props }: IEvents) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setBookmark((prev) => !prev); // 추후 수정(API 연동 후, 클릭 시 Bookmark POST)
-    // bookmarkApi(props.id, !bookmark);
 
     // LocalStorage에서 bookmark 목록 get
     const getBookmark = localStorage.getItem('bookmark');

@@ -31,7 +31,7 @@ export const participateState = atom({
   default: false,
 });
 
-export const numberOfEventState = atom({
-  key: 'numberOfEventState',
+export const totalEventsState = atom({
+  key: 'totalEventsState',
   default: 0,
 });
