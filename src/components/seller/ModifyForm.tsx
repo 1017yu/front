@@ -1,6 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import Title from '@/components/ui/Title';
 import Button from '@/components/ui/Button';
+import { useEffect, useState } from 'react';
 import { eventData } from '@/data/constants';
 import customToast from '@/utils/customToast';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +17,21 @@ import PostEventName from '@/components/seller/PostEventName';
 export default function ModifyForm() {
   const navigate = useNavigate();
   const eventFormValue = useRecoilValue(eventFormState);
+  const [tokenValue, setTokenValue] = useState('');
+
+  useEffect(() => {
+    // 로컬스토리지에서 user의 value get
+    const getUser = localStorage.getItem('user');
+
+    // 로컬 스토리지에 user 값이 존재할 때
+    if (getUser) {
+      // role value 파싱
+      const accessToken = JSON.parse(getUser).accessToken;
+
+      // state에 저장
+      setTokenValue(accessToken);
+    }
+  }, []);
 
   const modifyValue = {
     category: eventFormValue.category,
@@ -34,7 +50,7 @@ export default function ModifyForm() {
     event.preventDefault();
 
     try {
-      await modifyEvent(modifyValue);
+      await modifyEvent(modifyValue, tokenValue);
       customToast('행사가 수정되었습니다!', 'success');
       navigate(`/events/${eventFormValue.id}`);
     } catch (error) {

@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   eventFormState,
-  numberOfEventState,
+  totalEventsState,
   participateState,
 } from '@/states/Events';
 
@@ -23,24 +23,25 @@ export default function EventButton({
   const { id } = useParams();
   const navigate = useNavigate();
   const { openModal } = useModal();
-  const setIsJoined = useSetRecoilState(participateState);
-  const setNumOfEvents = useSetRecoilState(numberOfEventState);
-  const setEventFormValue = useSetRecoilState(eventFormState);
-
-  // 상세페이지에 접근한 유저의 role을 관리
   const [userRole, setUserRole] = useState(null);
+  const [tokenValue, setTokenValue] = useState('');
+  const setIsJoined = useSetRecoilState(participateState);
+  const setNumOfEvents = useSetRecoilState(totalEventsState);
+  const setEventFormValue = useSetRecoilState(eventFormState);
 
   useEffect(() => {
     // 로컬스토리지에서 user의 value get
-    const getUserRole = localStorage.getItem('user');
+    const getUser = localStorage.getItem('user');
 
     // 로컬 스토리지에 user 값이 존재할 때
-    if (getUserRole) {
+    if (getUser) {
       // role value 파싱
-      const parsedUserRole = JSON.parse(getUserRole).role;
+      const parsedUserRole = JSON.parse(getUser).role;
+      const accessToken = JSON.parse(getUser).accessToken;
 
       // state에 저장
       setUserRole(parsedUserRole);
+      setTokenValue(accessToken);
     }
   }, []);
 
@@ -49,25 +50,25 @@ export default function EventButton({
     openModal({
       ...modalData.SELLER_JOIN_CHECK,
       okCallback: async () => {
-        if (id) await joinEvent(id);
+        if (id) await joinEvent(id, tokenValue);
         customToast('스토어 참가가 등록되었습니다!', 'success');
         setIsJoined((prev) => !prev);
       },
     });
-  }, [id, openModal, setIsJoined]);
+  }, [id, openModal, setIsJoined, tokenValue]);
 
   // 등록된 행사 삭제 handler
   const handleDeleteChange = useCallback(() => {
     openModal({
       ...modalData.SELLER_DELETE_CHECK,
       okCallback: () => {
-        if (id) deleteEvent(id);
+        if (id) deleteEvent(id, tokenValue);
         setNumOfEvents((v) => v - 1);
         navigate('/events', { replace: true });
         customToast('등록한 스토어가 삭제되었습니다!', 'success');
       },
     });
-  }, [openModal, id, setNumOfEvents, navigate]);
+  }, [openModal, id, tokenValue, setNumOfEvents, navigate]);
 
   // 참가한 행사 수정 handler
   const handleModifyChange = () => {
@@ -91,7 +92,7 @@ export default function EventButton({
       ...modalData.SELLER_CANCEL_CHECK,
       okCallback: async () => {
         if (id) {
-          await cancelEvent(id);
+          await cancelEvent(id, tokenValue);
           customToast('스토어 참여가 취소되었습니다!', 'success');
           setIsJoined((prev) => !prev);
         } else {
@@ -100,7 +101,7 @@ export default function EventButton({
         }
       },
     });
-  }, [openModal, id, setIsJoined, navigate]);
+  }, [openModal, id, tokenValue, setIsJoined, navigate]);
 
   // userRole이 셀러이고, 미참여 중이라면
   if (userRole === 'ROLE_SELLER' && !isParticipant) {

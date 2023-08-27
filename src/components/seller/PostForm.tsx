@@ -1,6 +1,9 @@
 import { useRecoilValue } from 'recoil';
 import Title from '@/components/ui/Title';
+import { useModal } from '@/hooks/useModal';
+import { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
+import { modalData } from '@/data/modalData';
 import { eventData } from '@/data/constants';
 import customToast from '@/utils/customToast';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +17,24 @@ import PostCategory from '@/components/seller/PostCategory';
 import PostEventName from '@/components/seller/PostEventName';
 
 export default function PostForm() {
+  const { openModal } = useModal();
   const navigate = useNavigate();
+  const [tokenValue, setTokenValue] = useState('');
   const eventFormValue = useRecoilValue(eventFormState);
+
+  useEffect(() => {
+    // 로컬스토리지에서 user의 value get
+    const getUser = localStorage.getItem('user');
+
+    // 로컬 스토리지에 user 값이 존재할 때
+    if (getUser) {
+      // role value 파싱
+      const accessToken = JSON.parse(getUser).accessToken;
+
+      // state에 저장
+      setTokenValue(accessToken);
+    }
+  }, []);
 
   // 폼 제출 핸들러
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,11 +54,19 @@ export default function PostForm() {
     }
 
     try {
-      await postEvent(eventFormValue);
+      await postEvent(eventFormValue, tokenValue);
       customToast('행사가 등록되었습니다!', 'success');
       navigate('/events');
-    } catch (error) {
-      customToast('등록에 실패했습니다!', 'error');
+    } catch (error: any) {
+      // TOFIXED: alert는 작동하는데 왜 모달이 열리지 않을까
+      openModal({
+        ...modalData.SELLER_POST_RESPONSE_ERROR,
+        content: `${error.message}`,
+        cancelCallback: () => {
+          navigate('/signin');
+        },
+      });
+      alert(error.message);
     }
   };
 

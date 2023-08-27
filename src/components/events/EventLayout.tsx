@@ -12,7 +12,6 @@ function EventLayout({ ...props }: IEvents) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setBookmark((prev) => !prev); // 추후 수정(API 연동 후, 클릭 시 Bookmark POST)
-    // bookmarkApi(props.id, !bookmark);
 
     // LocalStorage에서 bookmark 목록 get
     const getBookmark = localStorage.getItem('bookmark');
@@ -45,7 +44,7 @@ function EventLayout({ ...props }: IEvents) {
 
   return (
     <Link to={`/events/${props.id}`} className="mb-8 w-auto">
-      <div className="relative overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 hover:shadow-lg">
+      <div className="relative mb-4 overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 drop-shadow-md hover:shadow-lg">
         <img
           className="h-48 w-[300px] object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={
