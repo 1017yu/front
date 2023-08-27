@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from 'react';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
 import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
+import { IBookmark } from '@/types/IBookmark';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -22,8 +23,8 @@ export default function Home() {
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const { user } = useUser();
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
-
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
 
   useEffect(() => {
     fetchActiveSurvey().then((res) => {
@@ -42,22 +43,40 @@ export default function Home() {
 
   useEffect(() => {
     // 모든 이벤트 조회
-    fetchEvents().then((res) => {
+    const fetchEventsData = async () => {
       try {
-        setEventsList(res.data.content);
+        const response = await fetchEvents();
+        setEventsList(response.data.content);
       } catch (error) {
         alert(error);
       }
-    });
+    };
+
+    fetchEventsData();
+
+    const getBookmark = localStorage.getItem('bookmark');
+
+    if (getBookmark) {
+      setLocalBookmarked(JSON.parse(getBookmark));
+    }
   }, []);
 
+  const bookmarkedList = eventsList
+    .map((event) => ({
+      ...event,
+      bookmark: localBookmarked.some(
+        (value) => value.id === event.id && value.bookmark,
+      ),
+    }))
+    // 3. 최근 등록된 이벤트 순으로 정렬
+    .sort((a, b) => b.id - a.id);
+
   // 최근 등록된 이벤트 중 상위 4개
-  const recentList = [...eventsList].sort((a, b) => b.id - a.id).slice(0, 4);
+  const recentList = [...bookmarkedList].slice(0, 4);
 
   // 카테고리가 '뷰티'인 이벤트 중 상위 4개
-  const beautyList = [...eventsList]
+  const beautyList = [...bookmarkedList]
     .filter((value) => value.category.includes('뷰티'))
-    .sort((a, b) => b.id - a.id)
     .slice(0, 4);
 
   const uploadImage = async (file: File) => {
