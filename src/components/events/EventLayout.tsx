@@ -2,44 +2,44 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IEvents } from '@/types/IEvents';
 import { BsBookmarkFill } from 'react-icons/bs';
-import { IBookmarked } from '@/types/IBookmarked';
+import { IBookmark } from '@/types/IBookmark';
 import default_thumbnail from '@/assets/default_thumbnail.jpg';
 
 function EventLayout({ ...props }: IEvents) {
   // 북마크 state
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [bookmark, setBookmark] = useState<boolean>(props.bookmark);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setBookmarked((prev) => !prev); // 추후 수정(API 연동 후, 클릭 시 Bookmark POST)
-    // bookmarkApi(props.id, !bookmarked);
+    setBookmark((prev) => !prev); // 추후 수정(API 연동 후, 클릭 시 Bookmark POST)
+    // bookmarkApi(props.id, !bookmark);
 
-    // LocalStorage에서 bookmarked 목록 get
-    const getBookmarked = localStorage.getItem('bookmarked');
-    let bookmarkedEvents: IBookmarked[] = [];
+    // LocalStorage에서 bookmark 목록 get
+    const getBookmark = localStorage.getItem('bookmark');
+    let bookmarkEvents: IBookmark[] = [];
 
     // 로컬 북마크 데이터 선언
     const localBookmarkData = {
       id: props.id,
-      bookmarked: !bookmarked,
+      bookmark: !bookmark,
     };
 
     // 기존 찜 목록을 배열로 담음
-    if (getBookmarked) {
-      bookmarkedEvents = JSON.parse(getBookmarked);
+    if (getBookmark) {
+      bookmarkEvents = JSON.parse(getBookmark);
     }
 
     // 이미 찜한 상품인 경우, 삭제(filter)
-    if (bookmarked) {
-      const updatedLikes = bookmarkedEvents.filter(
+    if (bookmark) {
+      const updatedLikes = bookmarkEvents.filter(
         (value) => value.id !== props.id,
       );
-      localStorage.setItem(`bookmarked`, JSON.stringify(updatedLikes));
+      localStorage.setItem(`bookmark`, JSON.stringify(updatedLikes));
 
       // 찜하지 않은 상품인 경우, 추가(push)
     } else {
-      bookmarkedEvents.push(localBookmarkData);
-      localStorage.setItem(`bookmarked`, JSON.stringify(bookmarkedEvents));
+      bookmarkEvents.push(localBookmarkData);
+      localStorage.setItem(`bookmark`, JSON.stringify(bookmarkEvents));
     }
   };
 
@@ -59,7 +59,7 @@ function EventLayout({ ...props }: IEvents) {
           className="absolute right-3 top-3 text-2xl transition-all hover:scale-125 hover:transform hover:shadow-2xl"
           onClick={handleClick}
         >
-          {bookmarked ? (
+          {bookmark ? (
             <BsBookmarkFill color="rgb(0 201 167)" />
           ) : (
             <BsBookmarkFill color="white" />
