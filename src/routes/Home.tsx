@@ -5,6 +5,8 @@ import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
 import main_bg from '@/assets/main_bg.png';
 import { eventData } from '@/data/constants';
+import { modalData } from '@/data/modalData';
+import { IBookmark } from '@/types/IBookmark';
 import { boardConfig } from '@/data/s3configs';
 import Container from '@/components/ui/Container';
 import { ISurveyResponse } from '@/types/ISurvey';
@@ -14,7 +16,6 @@ import { useCallback, useEffect, useState } from 'react';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
 import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
-import { IBookmark } from '@/types/IBookmark';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -48,7 +49,9 @@ export default function Home() {
         const response = await fetchEvents();
         setEventsList(response.data.content);
       } catch (error) {
-        alert(error);
+        openModal({
+          ...modalData.EVENT_RESPONSE_ERROR,
+        });
       }
     };
 
@@ -174,7 +177,7 @@ export default function Home() {
           <Title text={eventData.EVENT_BEAUTY_STORE} />
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="mt-4 flex flex-wrap gap-9 sm:mt-8">
+              <div className="flex flex-wrap justify-between sm:mt-8">
                 {beautyList.map((event) => (
                   <EventLayout
                     key={event.id}
@@ -195,4 +198,7 @@ export default function Home() {
       </Container>
     </>
   );
+}
+function openModal(arg0: any) {
+  throw new Error('Function not implemented.');
 }

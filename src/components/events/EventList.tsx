@@ -1,50 +1,43 @@
 import Title from '@/components/ui/Title';
+import { IEvents } from '@/types/IEvents';
+import { useModal } from '@/hooks/useModal';
 import Button from '@/components/ui/Button';
+import { eventData } from '@/data/constants';
+import { modalData } from '@/data/modalData';
+import { IBookmark } from '@/types/IBookmark';
 import { fetchEvents } from '@/api/events/events';
-import Pagination from '@mui/material/Pagination';
 import { useEffect, useMemo, useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import EventLayout from '@/components/events/EventLayout';
-import { IEvents, IEventsPagination } from '@/types/IEvents';
-import { numberOfEventState, searchOptionState } from '@/states/Events';
-import {
-  COUNT_PER_EVENTS_PAGE,
-  EVENTS_THEME,
-  eventData,
-} from '@/data/constants';
-import { IBookmark } from '@/types/IBookmark';
+import PaginationComponent from '@/components/community/Pagination';
+import { totalEventsState, searchOptionState } from '@/states/Events';
 
 export default function EventList() {
+  const { openModal } = useModal();
   const [page, setPage] = useState(1); // 페이지 번호
+  const [pagePerEvents, setPagePerEvents] = useState(1);
   const searchOption = useRecoilValue(searchOptionState); // 검색 옵션을 관리하는 recoil State
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
-  const [numOfEvents, setNumOfEvents] = useRecoilState(numberOfEventState); // 등록된 이벤트의 개수
-  const totalPages = Math.ceil(numOfEvents / COUNT_PER_EVENTS_PAGE); // 총 페이지의 수
+  const [totalEvents, setTotalEvents] = useRecoilState(totalEventsState); // 등록된 모든 이벤트의 개수
   const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
 
-  // page button click에 따른 현재 페이지 번호 핸들링
-  const handlePagination: IEventsPagination = (_event, value) => {
-    setPage(value);
-    window.scroll(0, 0);
-  };
-
-  // 공고 등록 페이지로 이동
-  const handleMovePostEvent = () => {
-    location.assign('/seller/new');
-  };
-
   useEffect(() => {
-    // 모든 이벤트 조회
-    fetchEvents().then((res) => {
+    // 모든 이벤트 조회 (쿼리 파라미터로 page)
+    const fetchEventsData = async () => {
       try {
-        setEventsList(res.data.content);
-        setNumOfEvents(res.data.totalElements);
+        const response = await fetchEvents(page - 1);
+        setEventsList(response.data.content);
+        setTotalEvents(response.data.totalElements);
+        setPagePerEvents(response.data.numberOfElements);
       } catch (error) {
-        alert(error);
+        openModal({
+          ...modalData.EVENT_RESPONSE_ERROR,
+        });
       }
-    });
+    };
+
+    fetchEventsData();
 
     // 로컬스토리지에서 유저 role get
     const getUserRole = localStorage.getItem('user');
@@ -61,7 +54,17 @@ export default function EventList() {
         setLocalBookmarked(JSON.parse(getBookmark));
       }
     }
-  }, [setNumOfEvents, numOfEvents]);
+  }, [openModal, page, setTotalEvents, totalEvents]);
+
+  // page button click에 따른 현재 페이지 번호 핸들링
+  const handleChange = (page: number) => {
+    setPage(page);
+  };
+
+  // 공고 등록 페이지로 이동
+  const handleMovePostEvent = () => {
+    location.assign('/seller/new');
+  };
 
   // 검색 옵션에 따른 이벤트 조회
   const searchedList = useMemo(() => {
@@ -90,38 +93,31 @@ export default function EventList() {
   }, [eventsList, localBookmarked, searchOption]);
 
   return (
-    <ThemeProvider theme={EVENTS_THEME}>
-      <div className="container mx-auto px-8 sm:px-20">
-        <div className="flex items-center justify-between">
-          <Title text={eventData.EVENT_LIST_TITLE} />
-          {isSeller && (
-            <div className="sm:min-w-[12rem]">
-              <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
-            </div>
-          )}
-        </div>
-        <div className="container mx-auto mt-8 sm:mt-16">
-          <div className="flex flex-wrap justify-between">
-            {searchedList.map((event) => (
-              <EventLayout key={event.id} {...event} />
-            ))}
+    <div className="container mx-auto px-8 sm:px-20">
+      <div className="flex items-center justify-between">
+        <Title text={eventData.EVENT_LIST_TITLE} />
+        {isSeller && (
+          <div className="sm:min-w-[12rem]">
+            <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
           </div>
-        </div>
-        <div className="flex justify-center">
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handlePagination}
-            shape="rounded"
-            color="primary"
-            sx={{
-              '& .Mui-selected': {
-                color: '#fff',
-              },
-            }}
-          />
+        )}
+      </div>
+      <div className="container mx-auto mt-8 sm:mt-16">
+        <div className="flex flex-wrap justify-between">
+          {searchedList.map((event) => (
+            <EventLayout key={event.id} {...event} />
+          ))}
         </div>
       </div>
-    </ThemeProvider>
+      <div className="flex justify-center sm:my-16">
+        <PaginationComponent
+          page={page}
+          totalPostCount={totalEvents}
+          itemsCountPerPage={pagePerEvents}
+          pageRangeDisplayed={5}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
   );
 }
