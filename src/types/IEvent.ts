@@ -1,6 +1,7 @@
 // 상세 이벤트 조회 Response interface
 export interface IEventResponse<T> {
   data: T;
+  statusCode: number;
 }
 
 export interface IEvent extends IParticipantsProps {

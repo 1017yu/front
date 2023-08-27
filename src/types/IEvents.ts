@@ -4,6 +4,7 @@ export interface IEventsResponse<T> {
     content: T;
     totalElements: number;
     totalPages: number;
+    numberOfElements: number;
   };
   statusCode: number;
 }
