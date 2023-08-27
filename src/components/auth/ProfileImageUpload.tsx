@@ -11,7 +11,7 @@ export default function ProfileImageUpload({
   handleChange,
 }: ImageUploadProps) {
   return (
-    <div className="flex w-36 justify-center rounded-md border-2 border-accent transition hover:shadow-md active:scale-95">
+    <div className="flex w-36 justify-center rounded-md border-2 border-subTextAndBorder transition hover:border-accent hover:shadow-md active:scale-95">
       <label className="flex w-32 cursor-pointer flex-col items-center rounded-lg bg-white">
         <img
           src={imageURL === 'profileDefaultImageUrl' ? dummyProfile : imageURL}
