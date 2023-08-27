@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import IPostListItem from '@/types/IPostListItem';
 import { timeFormatChange } from '../../utils/community/timeFormat';
+import popple from '@/assets/popple.jpg';
 
 type PostItemProp = {
   data: IPostListItem;
@@ -31,7 +32,7 @@ const PostItem = ({ data }: PostItemProp): JSX.Element => {
       <div>
         <img
           className={'mr-[20px] sm:w-[125px] md:w-[150px] lg:w-[200px]'}
-          src="@/assets/popple.jpg"
+          src={popple}
         />
       </div>
       <div>

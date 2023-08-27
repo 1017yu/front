@@ -1,10 +1,10 @@
 import React from 'react';
-import IDummyData_Comments from '@/types/IDummyData_PostComments';
 import NewComments from '@/components/community/NewComments';
 import CommentItem from '@/components/community/CommentItem';
+import IPostComments from '@/types/IPostComments';
 
 type TCommentsProps = {
-  TCommentsList: IDummyData_Comments[];
+  TCommentsList: IPostComments[];
 };
 
 const Comments: React.FC<TCommentsProps> = ({ TCommentsList }) => {

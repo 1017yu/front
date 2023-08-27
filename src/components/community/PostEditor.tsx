@@ -2,6 +2,8 @@ import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 
+import customToast from '@/utils/customToast';
+
 //Editor 라이브러리인 ReactQuill import
 import ReactQuill, { Quill } from 'react-quill';
 // ReactQuill 기본 스타일링 CSS import
@@ -21,13 +23,12 @@ const PostEditor = (): JSX.Element => {
   const savePost = useCallback(() => {
     if (titleInputRef.current && titleInputRef.current.value === '') {
       titleInputRef.current.focus();
-      alert('제목을 작성해주세요.');
+      customToast('제목을 입력해주세요.', 'error');
       return;
     } else if (contentRef.current && contentRef.current.value === '') {
       contentRef.current.focus();
-      alert('본문을 작성해주세요.');
+      customToast('본문을 작성해주세요.', 'error');
     } else {
-      //데이터를 서버로 전송하기
       navigate('/community', { replace: true });
     }
   }, []);

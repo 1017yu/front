@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 // Types
 import IPostListItem from '@/types/IPostListItem';
@@ -10,6 +9,8 @@ import Button from '@/components/ui/Button';
 import PostItem from '@/components/community/PostItem';
 import PaginationComponent from '@/components/community/Pagination';
 
+import { getBoardPage } from '@/api/community/getBoard';
+
 import {
   ITEMS_COUNT_PER_COMMUNITY_PAGE,
   PAGE_RANGE_DISPLAY,
@@ -17,35 +18,42 @@ import {
 
 const Community = (): JSX.Element => {
   const navigate = useNavigate();
-  const [totalPost, setTotalPost] = useState();
+  const [totalPost, setTotalPost] = useState<number>();
   const [data, setData] = useState<IPostListItem[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(() => {
+    const queryParams = new URLSearchParams(location.search);
+    return parseInt(queryParams.get('page') || '1', 10);
+  });
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-    axios
-      .get(`http://15.164.205.25:8080/api/board?page=${page - 1}`)
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.log('Error fetching data', error);
-      });
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    navigate(`?page=${newPage}`);
+  };
+
+  const handleGetBoardPage = (page: number) => {
+    getBoardPage(page).then((res) => {
+      try {
+        setData(res.data);
+        setTotalPost(res.totalPosts);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   useEffect(() => {
     const title = document.getElementsByTagName('title')[0];
     title.innerHTML = 'POPPLe - 회원 커뮤니티';
-    axios
-      .get('http://15.164.205.25:8080/api/board')
-      .then((response) => {
-        setData(response.data.data);
-        setTotalPost(response.data.totalPosts);
-      })
-      .catch((error) => {
-        console.log('Error fetching data', error);
-      });
-  }, []);
+    handleGetBoardPage(page || 0);
+  }, [page]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
 
   return (
     <div
@@ -71,7 +79,7 @@ const Community = (): JSX.Element => {
       </div>
       <div className={'mx-auto mt-[30px] flex justify-center md:w-[70%]'}>
         <PaginationComponent
-          page={page}
+          page={page || 0}
           totalPostCount={totalPost || 0}
           itemsCountPerPage={ITEMS_COUNT_PER_COMMUNITY_PAGE}
           pageRangeDisplayed={PAGE_RANGE_DISPLAY}
