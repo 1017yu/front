@@ -109,4 +109,22 @@ export const modalData = {
     okButton: '변경하기',
     cancleButton: '유지하기',
   },
+  SELLER_POST_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '스토어 등록 실패',
+    content: '',
+    cancelButton: '로그인',
+  },
+  EVENT_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '서버 통신 에러',
+    content: '서버와의 연결에 실패했습니다.',
+    cancelButton: '뒤로 가기',
+  },
+  EVENT_DETAIL_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '존재하지 않는 스토어',
+    content: '',
+    cancelButton: '뒤로 가기',
+  },
 };
