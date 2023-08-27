@@ -11,10 +11,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import EventLayout from '@/components/events/EventLayout';
 import PaginationComponent from '@/components/community/Pagination';
 import { totalEventsState, searchOptionState } from '@/states/Events';
+import Container from '../ui/Container';
 
 export default function EventList() {
   const { openModal } = useModal();
   const [page, setPage] = useState(1); // 페이지 번호
+  const [totalPage, setTotalPage] = useState(1); // 총 페이지 수
   const [pagePerEvents, setPagePerEvents] = useState(1);
   const searchOption = useRecoilValue(searchOptionState); // 검색 옵션을 관리하는 recoil State
   const [isSeller, setIsSeller] = useState<boolean>(false); // 일반 유저 or 셀러
@@ -30,6 +32,7 @@ export default function EventList() {
         setEventsList(response.data.content);
         setTotalEvents(response.data.totalElements);
         setPagePerEvents(response.data.numberOfElements);
+        setTotalPage(response.data.totalPages);
       } catch (error) {
         openModal({
           ...modalData.EVENT_RESPONSE_ERROR,
@@ -93,31 +96,33 @@ export default function EventList() {
   }, [eventsList, localBookmarked, searchOption]);
 
   return (
-    <div className="container mx-auto px-8 sm:px-20">
-      <div className="flex items-center justify-between">
-        <Title text={eventData.EVENT_LIST_TITLE} />
-        {isSeller && (
-          <div className="sm:min-w-[12rem]">
-            <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
+    <Container>
+      <div className="mb-8 rounded-lg bg-white pb-8 pt-4 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+        <div className="flex items-center justify-evenly sm:mt-0 sm:justify-between">
+          <Title text={eventData.EVENT_LIST_TITLE} />
+          {isSeller && (
+            <div className="sm:min-w-[12rem]">
+              <Button onClick={handleMovePostEvent} contents={'공고 등록'} />
+            </div>
+          )}
+        </div>
+        <div className="container mx-auto mt-8">
+          <div className="flex flex-wrap justify-center sm:justify-between">
+            {searchedList.map((event) => (
+              <EventLayout key={event.id} {...event} />
+            ))}
           </div>
-        )}
-      </div>
-      <div className="container mx-auto mt-8 sm:mt-16">
-        <div className="flex flex-wrap justify-between">
-          {searchedList.map((event) => (
-            <EventLayout key={event.id} {...event} />
-          ))}
+        </div>
+        <div className="mx-auto flex justify-center sm:max-w-[36rem]">
+          <PaginationComponent
+            page={page}
+            totalPostCount={totalEvents}
+            itemsCountPerPage={pagePerEvents}
+            pageRangeDisplayed={totalPage}
+            onChange={handleChange}
+          />
         </div>
       </div>
-      <div className="flex justify-center sm:my-16">
-        <PaginationComponent
-          page={page}
-          totalPostCount={totalEvents}
-          itemsCountPerPage={pagePerEvents}
-          pageRangeDisplayed={5}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
+    </Container>
   );
 }

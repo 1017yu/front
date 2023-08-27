@@ -1,9 +1,9 @@
 import moment from 'moment';
-import Hr from '@/components/ui/Hr';
 import Title from '@/components/ui/Title';
 import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
 import main_bg from '@/assets/main_bg.png';
+import { useModal } from '@/hooks/useModal';
 import { eventData } from '@/data/constants';
 import { modalData } from '@/data/modalData';
 import { IBookmark } from '@/types/IBookmark';
@@ -21,6 +21,7 @@ export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
     null,
   );
+  const { openModal } = useModal();
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const { user } = useUser();
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
@@ -140,7 +141,7 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className="container mx-auto mb-8 mt-16 sm:mb-16 sm:mt-8">
+        <div className=" mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
           <div className="block sm:flex">
             <Title text={eventData.EVENT_RECENT_STORE.title} />
             <div className="mb-4 flex max-w-[12rem] items-center justify-center sm:mb-0 sm:justify-start">
@@ -171,9 +172,8 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <Hr />
         </div>
-        <div className="container mx-auto mt-16 sm:mt-8">
+        <div className="mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
           <Title text={eventData.EVENT_BEAUTY_STORE} />
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
@@ -198,7 +198,4 @@ export default function Home() {
       </Container>
     </>
   );
-}
-function openModal(arg0: any) {
-  throw new Error('Function not implemented.');
 }
