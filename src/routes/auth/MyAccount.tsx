@@ -78,7 +78,7 @@ export default function MyAccount() {
             });
           } else {
             setSellerInfo({
-              address: '와야함', // 와야함
+              address: response.data.address,
               bio: response.data.bio,
               shopName: response.data.shopName,
             });
@@ -90,7 +90,7 @@ export default function MyAccount() {
       }
     };
     getData();
-  }, [user?.role]);
+  }, [isSeller, user?.role]);
 
   return (
     <div className="container mx-auto flex justify-center px-10 py-2">

@@ -29,7 +29,7 @@ export default function EditUserInfo() {
     isNicknameDupChecking,
     handleVerifyDuplicateNickname,
     setIsNickDuplicationVerified,
-  } = useNickNameDuplicateCheck(editInput, user, isSeller);
+  } = useNickNameDuplicateCheck(editInput, sellerEditInput, user, isSeller);
   const { citySelectOptions, districtSelectOptions } = useCitySelect(
     editInput.city,
   );

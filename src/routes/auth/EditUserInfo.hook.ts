@@ -118,6 +118,14 @@ export const useNickNameDuplicateCheck = (
     city: string;
     district: string;
   },
+  sellerEditInput: {
+    password: string;
+    passwordCheck: string;
+    address: string;
+    bio: string;
+    nickname: string;
+    shopName: string;
+  },
   user: ILocalUser | null,
   isSeller: boolean,
 ) => {
@@ -125,11 +133,14 @@ export const useNickNameDuplicateCheck = (
     useState(true);
   const [isNicknameDupChecking, setIsNicknameDupChecking] = useState(false);
   const handleVerifyDuplicateNickname = async () => {
-    if (editInput.nickname === user?.nickname) {
+    if (
+      editInput.nickname === user?.nickname ||
+      sellerEditInput.nickname === user?.nickname
+    ) {
       setIsNickDuplicationVerified(true);
       return;
     }
-    if (!editInput.nickname.trim()) {
+    if (!editInput.nickname.trim() || !sellerEditInput.nickname.trim()) {
       customToast('닉네임을 입력해주세요', 'error');
       return;
     }
