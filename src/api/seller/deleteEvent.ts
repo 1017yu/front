@@ -1,9 +1,7 @@
 import { apiInstance } from '@/api/axios';
 
 // * DELETE 셀러의 등록된 이벤트 삭제
-export const deleteEvent = async (eventId: string) => {
-  const getUser = localStorage.getItem('user');
-  const accessToken = JSON.parse(getUser as string).accessToken;
+export const deleteEvent = async (eventId: string, accessToken: string) => {
   const response = await apiInstance.delete(`/events/${eventId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,

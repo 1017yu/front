@@ -1,25 +1,25 @@
 // 상세 이벤트 조회 Response interface
 export interface IEventResponse<T> {
   data: T;
+  statusCode: number;
 }
 
-export interface IEvent {
-  id?: string;
-  thumbnailUrl?: string;
-  name?: string;
-  nickname?: string;
-  city?: string;
-  district?: string;
-  description?: string;
-  category?: string;
-  startDate?: string;
-  endDate?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  status?: string; // 진행중/마감
-  isOwner?: boolean;
-  isParticipant?: boolean;
-  participants?: IParticipants[];
+export interface IEvent extends IParticipantsProps {
+  id: string;
+  thumbnailUrl: string;
+  name: string;
+  nickname: string;
+  city: string;
+  district: string;
+  description: string;
+  category: string;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string; // 진행중/마감
+  isOwner: boolean;
+  isParticipant: boolean;
 }
 
 export interface IEventJoinProps {
@@ -33,6 +33,11 @@ export interface IParticipants {
   sellerId: string;
 }
 
-export interface IEventDetailTitle {
+export interface IParticipantsProps {
+  participants: IParticipants[];
+}
+
+export interface IEventTitle {
   title: string;
+  center?: boolean;
 }

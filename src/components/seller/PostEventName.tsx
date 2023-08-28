@@ -1,15 +1,15 @@
 import { ChangeEvent } from 'react';
 import { useRecoilState } from 'recoil';
 import Input from '@/components/ui/Input';
-import { POST_INPUT_TITLE } from '@/data/constants';
-import { PostEventState } from '@/states/PostEventState';
+import { eventData } from '@/data/constants';
+import { eventFormState } from '@/states/Events';
 
 export default function PostEventName() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
 
   const handleEventNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEventState((prev) => ({
+    setEventFormValue((prev) => ({
       ...prev,
       name: event.target.value,
     }));
@@ -20,9 +20,9 @@ export default function PostEventName() {
       <Input
         name="name"
         onChange={handleEventNameChange}
-        value={eventState.name as string}
-        label={POST_INPUT_TITLE.name[0]}
-        placeholder={POST_INPUT_TITLE.name[1]}
+        value={eventFormValue.name}
+        label={eventData.EVENT_POST_STORE.label.name[0]}
+        placeholder={eventFormValue.name}
       />
     </div>
   );

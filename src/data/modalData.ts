@@ -88,11 +88,43 @@ export const modalData = {
     okButton: '참가',
     cancleButton: '취소',
   },
+
   SELLER_CANCEL_CHECK: {
     type: 'twoButton',
     title: '참가 예정 행사 취소',
     content: '참가 예정인 행사를 참가 취소하시겠습니까?',
     okButton: '확인',
     cancleButton: '뒤로 가기',
-  },  
+  },
+  SELLER_MODIFY_CHECK: {
+    type: 'twoButton',
+    title: '등록된 스토어 수정',
+    content: '수정하시겠습니까?',
+    okButton: '수정',
+    cancleButton: '취소',
+  },
+  SELLER_MODIFY_IMAGE: {
+    type: 'twoButton',
+    title: '현재 등록된 이미지',
+    okButton: '변경하기',
+    cancleButton: '유지하기',
+  },
+  SELLER_POST_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '스토어 등록 실패',
+    content: '',
+    cancelButton: '로그인',
+  },
+  EVENT_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '서버 통신 에러',
+    content: '서버와의 연결에 실패했습니다.',
+    cancelButton: '뒤로 가기',
+  },
+  EVENT_DETAIL_RESPONSE_ERROR: {
+    type: 'basic',
+    title: '존재하지 않는 스토어',
+    content: '',
+    cancelButton: '뒤로 가기',
+  },
 };

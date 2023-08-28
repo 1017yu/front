@@ -1,35 +1,35 @@
 import moment from 'moment';
 import { useRecoilState } from 'recoil';
 import { IDateValue } from '@/types/IDateValue';
-import { POST_INPUT_TITLE } from '@/data/constants';
+import { eventFormState } from '@/states/Events';
+import { eventData } from '@/data/constants';
 import Datepicker from 'react-tailwindcss-datepicker';
-import { PostEventState } from '@/states/PostEventState';
 
 export default function PostPeriod() {
   // 이벤트 등록 Recoil Atom
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
   const today = new Date();
 
   // 시작일자와 종료일자를 등록 및 변경
   const handleDateChange = (event: IDateValue | null) => {
     if (event) {
-      setEventState({
-        ...eventState,
+      setEventFormValue({
+        ...eventFormValue,
         startDate: moment(event.startDate).toISOString(),
         endDate: moment(event.endDate).toISOString(),
       });
     }
   };
 
-  // 변경된 eventState atom에서 시작일자와 종료일자 선언
+  // 변경된 eventFormValue atom에서 시작일자와 종료일자 선언
   const dateValue = {
-    startDate: eventState.startDate,
-    endDate: eventState.endDate,
+    startDate: eventFormValue.startDate,
+    endDate: eventFormValue.endDate,
   };
 
   return (
     <label className="text-subTextAndBorder sm:text-base" htmlFor="date">
-      {POST_INPUT_TITLE.period}
+      {eventData.EVENT_POST_STORE.label.period}
       <Datepicker
         i18n={'ko'}
         inputClassName={
@@ -37,7 +37,7 @@ export default function PostPeriod() {
         }
         primaryColor={'teal'}
         startFrom={today}
-        value={dateValue as IDateValue}
+        value={dateValue}
         readOnly={true}
         onChange={handleDateChange}
         minDate={moment().add(1, 'day').toDate()}

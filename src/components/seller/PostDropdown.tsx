@@ -2,15 +2,15 @@ import { useRecoilState } from 'recoil';
 import { Listbox } from '@headlessui/react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { POST_CATERGORY } from '@/data/constants';
-import { PostEventState } from '@/states/PostEventState';
+import { eventFormState } from '@/states/Events';
 
 export default function EventSearchBar() {
   // recoil state
-  const [eventState, setEventState] = useRecoilState(PostEventState);
+  const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
 
   // 행사 제목 핸들러
   const handleCategoryChange = (value: string) => {
-    setEventState((prev) => ({
+    setEventFormValue((prev) => ({
       ...prev,
       category: value,
     }));
@@ -19,13 +19,16 @@ export default function EventSearchBar() {
   return (
     <div className="container sm:mx-auto sm:flex">
       <div className="flex w-full items-center gap-2 align-middle sm:m-0 sm:gap-4">
-        {/* 드롭다운 버튼 - region */}
-        <Listbox value={eventState.category} onChange={handleCategoryChange}>
+        {/* 드롭다운 버튼 */}
+        <Listbox
+          value={eventFormValue.category}
+          onChange={handleCategoryChange}
+        >
           <div className="relative w-full">
-            <Listbox.Button className="relative w-full cursor-pointer rounded-md border-2 border-subTextAndBorder py-2 pl-3 pr-10 text-left focus:border-accent focus:outline-none sm:w-full sm:text-sm">
+            <Listbox.Button className="relative w-full cursor-pointer rounded-md border-2 border-subTextAndBorder py-2 pl-3 pr-10 text-left focus:border-accent focus:outline-none sm:w-full sm:text-base">
               {/* 드롭다운 메뉴 이름 */}
               <span className="block w-full truncate sm:w-full">
-                {eventState.category}
+                {eventFormValue.category}
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 {/* 드롭다운 아이콘 */}

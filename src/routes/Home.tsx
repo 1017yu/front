@@ -1,29 +1,32 @@
-import { useCallback, useEffect, useState } from 'react';
-import Container from '@/components/ui/Container';
-import SurveyPopUp from '@/components/survey/SurveyPopUp';
-import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
-import { ISurveyResponse } from '@/types/ISurvey';
-import { useUser } from '@/hooks/useUser';
 import moment from 'moment';
-import { fetchEvents } from '@/api/events/events';
-import EventLayout from '@/components/EventLayout';
+import Title from '@/components/ui/Title';
+import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
 import main_bg from '@/assets/main_bg.png';
-import { mainData } from '@/data/constants';
-import Button from '@/components/ui/Button';
-
-import ReactS3Client from 'react-aws-s3-typescript';
+import { useModal } from '@/hooks/useModal';
+import { eventData } from '@/data/constants';
+import { modalData } from '@/data/modalData';
+import { IBookmark } from '@/types/IBookmark';
 import { boardConfig } from '@/data/s3configs';
+import Container from '@/components/ui/Container';
+import { ISurveyResponse } from '@/types/ISurvey';
+import { fetchEvents } from '@/api/events/events';
+import ReactS3Client from 'react-aws-s3-typescript';
+import { useCallback, useEffect, useState } from 'react';
+import SurveyPopUp from '@/components/survey/SurveyPopUp';
+import EventLayout from '@/components/events/EventLayout';
+import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
     null,
   );
+  const { openModal } = useModal();
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const { user } = useUser();
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
-
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
 
   useEffect(() => {
     fetchActiveSurvey().then((res) => {
@@ -42,20 +45,43 @@ export default function Home() {
 
   useEffect(() => {
     // 모든 이벤트 조회
-    fetchEvents().then((res) => {
+    const fetchEventsData = async () => {
       try {
-        setEventsList(res.data.content);
+        const response = await fetchEvents();
+        setEventsList(response.data.content);
       } catch (error) {
-        alert(error);
+        openModal({
+          ...modalData.EVENT_RESPONSE_ERROR,
+        });
       }
-    });
+    };
+
+    fetchEventsData();
+
+    const getBookmark = localStorage.getItem('bookmark');
+
+    if (getBookmark) {
+      setLocalBookmarked(JSON.parse(getBookmark));
+    }
   }, []);
 
-  const recentList = eventsList.reverse().slice(0, 4);
+  const bookmarkedList = eventsList
+    .map((event) => ({
+      ...event,
+      bookmark: localBookmarked.some(
+        (value) => value.id === event.id && value.bookmark,
+      ),
+    }))
+    // 3. 최근 등록된 이벤트 순으로 정렬
+    .sort((a, b) => b.id - a.id);
 
-  const beautyList = eventsList.filter((value) =>
-    value.category.includes('뷰티'),
-  );
+  // 최근 등록된 이벤트 중 상위 4개
+  const recentList = [...bookmarkedList].slice(0, 4);
+
+  // 카테고리가 '뷰티'인 이벤트 중 상위 4개
+  const beautyList = [...bookmarkedList]
+    .filter((value) => value.category.includes('뷰티'))
+    .slice(0, 4);
 
   const uploadImage = async (file: File) => {
     const s3 = new ReactS3Client(boardConfig);
@@ -115,18 +141,21 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className="container mx-auto">
-          <div className="block justify-between sm:flex">
-            <div className="my-8 flex items-center justify-between text-2xl sm:mt-0 sm:h-40 sm:text-5xl">
-              {mainData.MAIN_RECENT_STORE.title}
-            </div>
-            <div className="mb-4 flex max-w-[20rem] items-center sm:mb-0">
-              <Button contents={'더 알아보기'} onClick={handleMoveEventsPage} />
+        <div className=" mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
+          <div className="block sm:flex">
+            <Title text={eventData.EVENT_RECENT_STORE.title} />
+            <div className="mb-4 flex max-w-[12rem] items-center justify-center sm:mb-0 sm:justify-start">
+              <button
+                className="hidden text-xl transition-all hover:scale-110 hover:transform hover:shadow-xl sm:ml-8 sm:block"
+                onClick={handleMoveEventsPage}
+              >
+                {eventData.EVENT_RECENT_STORE.content}
+              </button>
             </div>
           </div>
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-10">
+              <div className="flex flex-wrap justify-between sm:mt-8">
                 {recentList.map((event) => (
                   <EventLayout
                     key={event.id}
@@ -144,13 +173,11 @@ export default function Home() {
             </div>
           </section>
         </div>
-        <div className="container mx-auto">
-          <div className="mt-8 flex items-center justify-between text-2xl sm:mt-0 sm:mt-0 sm:h-40 sm:text-5xl">
-            {mainData.MAIN_BEAUTY_STORE.title}
-          </div>
+        <div className="mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
+          <Title text={eventData.EVENT_BEAUTY_STORE} />
           <section className="body-font text-gray-600">
             <div className="container mx-auto">
-              <div className="flex flex-wrap gap-9">
+              <div className="flex flex-wrap justify-between sm:mt-8">
                 {beautyList.map((event) => (
                   <EventLayout
                     key={event.id}
