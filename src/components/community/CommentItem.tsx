@@ -1,22 +1,22 @@
 import React from 'react';
-import IDummyData_Comments from '@/types/IDummyData_PostComments';
 import { timeFormatChange } from '@/utils/community/timeFormat';
-import { create } from 'domain';
+import IPostComments from '@/types/IPostComments';
 
-const CommentItem: React.FC<IDummyData_Comments> = ({
-  nickname,
+const CommentItem: React.FC<IPostComments> = ({
   content,
-  created_at,
-  updated_at,
+  createdAt,
+  updatedAt,
+  id,
+  member,
 }) => {
   return (
     <div>
-      <p className={'font-bold'}>{nickname}</p>
+      <p className={'font-bold'}>{member.email}</p>
       <p className={'mb-[10px] mt-[10px]'}>{content}</p>
       <p className={'text-gray-400'}>
-        {created_at === updated_at
-          ? timeFormatChange(created_at)
-          : timeFormatChange(updated_at) + ', 수정 됨'}
+        {createdAt === updatedAt
+          ? timeFormatChange(createdAt)
+          : timeFormatChange(updatedAt) + ', 수정 됨'}
       </p>
     </div>
   );

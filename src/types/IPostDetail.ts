@@ -4,7 +4,7 @@ export default interface IPostDetail {
   content: string;
   createdAt: string;
   id: number;
-  nickname: number;
+  nickname: string;
   title: string;
   updatedAt: string;
   comments: IPostComments[];

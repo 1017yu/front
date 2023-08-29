@@ -7,3 +7,4 @@ export default interface IPostListItem {
   title: string;
   updatedAt: null | string;
 }
+

@@ -1,14 +1,14 @@
 import React from 'react';
 import { timeFormatChange } from '@/utils/community/timeFormat';
 
-type TProps = {
+type TPostDetailProps = {
   nickname: string;
   title: string;
   content: string;
-  created_at: number;
-  updated_at: number;
+  created_at: string;
+  updated_at: string;
 };
-const RenderHtml: React.FC<TProps> = ({
+const RenderHtml: React.FC<TPostDetailProps> = ({
   nickname,
   title,
   content,
