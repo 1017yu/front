@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { boardConfig } from '@/data/s3configs';
 import Button from '@/components/ui/Button';
 import customToast from '@/utils/customToast';
+import { createPost } from '@/api/community/postRequests';
+import { useModal } from '@/hooks/useModal';
 
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import ReactS3Client from 'react-aws-s3-typescript';
 import moment from 'moment';
+import { modalData } from '@/data/modalData';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -18,19 +21,33 @@ const PostEditor = (): JSX.Element => {
   const contentRef = useRef<ReactQuill | null>(null);
   const [title, setTitle] = useState<string>('');
   const [editorContent, setEditorContent] = useState<string>('');
+  const { openModal } = useModal();
 
-  const savePost = useCallback(() => {
-    if (titleInputRef.current && titleInputRef.current.value === '') {
-      titleInputRef.current.focus();
+  const savePost = useCallback(async () => {
+    if (title.trim() === '') {
+      titleInputRef.current?.focus();
       customToast('제목을 입력해주세요.', 'error');
       return;
-    } else if (contentRef.current && contentRef.current.value === '') {
-      contentRef.current.focus();
-      customToast('본문을 작성해주세요.', 'error');
-    } else {
-      navigate('/community', { replace: true });
     }
-  }, []);
+
+    if (editorContent.trim() === '') {
+      contentRef.current?.focus();
+      customToast('본문을 작성해주세요.', 'error');
+      return;
+    }
+
+    createPost({
+      title: title,
+      content: editorContent,
+    }).then(
+      (res) => {
+        navigate(`/community/${res.data.id}`, { replace: true });
+      },
+      () => {
+        openModal(modalData.POST_CREATE_FAILUR);
+      },
+    );
+  }, [title, editorContent, navigate, openModal]);
 
   const cancelPost = useCallback(() => {
     navigate(-1);
@@ -47,7 +64,7 @@ const PostEditor = (): JSX.Element => {
       const file = input.files?.[0];
 
       if (!file || file.size > 5000000 || !contentRef.current) {
-        // TODO 파일 사이즈 제한 예외처리
+        customToast('이미지 사이즈가 너무 커요🥲', 'error');
         return;
       }
 
@@ -59,15 +76,13 @@ const PostEditor = (): JSX.Element => {
         }`;
         const res = await s3.uploadFile(file, fileName);
 
-        console.log(res.location);
-
         const editor = contentRef.current.getEditor();
         const range = editor.getSelection();
         if (range) {
           editor.insertEmbed(range.index, 'image', res.location);
         }
       } catch (error) {
-        console.log(error);
+        customToast('이미지 업로드를 실패했어요😭', 'error');
       }
     });
   };
@@ -118,15 +133,12 @@ const PostEditor = (): JSX.Element => {
   };
 
   const handleChangeContent = (value: string) => {
-    console.log(value);
     setEditorContent(value);
   };
 
   return (
     <div
-      className={
-        'container my-5 rounded bg-white px-5 py-5 sm:mx-auto sm:w-[50%]'
-      }
+      className={'mx-5 my-5 rounded bg-white px-5 py-5 sm:mx-auto sm:w-[55%]'}
     >
       <input
         ref={titleInputRef}
