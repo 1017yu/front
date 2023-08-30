@@ -365,7 +365,7 @@ export default function SignUp() {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10 bg-slate-100">
       <form
-        className="relative flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-sm sm:w-[600px] sm:gap-4"
+        className="relative flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-lg sm:w-[600px] sm:gap-4"
         onSubmit={isSeller ? handleSellerSignup : handleSignup}
       >
         <div className="mx-auto w-32">

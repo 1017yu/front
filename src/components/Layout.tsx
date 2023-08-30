@@ -12,7 +12,7 @@ export default function Layout() {
     <RecoilRoot>
       <div className="flex min-h-screen flex-col">
         <Navbar />
-        <div className="flex-1 bg-slate-100">
+        <div className="flex flex-1 flex-col justify-center bg-gray-100">
           <Outlet />
         </div>
         <Footer />

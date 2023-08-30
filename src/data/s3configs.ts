@@ -10,9 +10,9 @@ export const boardConfig = {
   dirName: 'resource/board/image',
 };
 
-export const memberConfig = {
+export const userConfig = {
   ...config,
-  dirName: 'resource/member/image',
+  dirName: 'resource/user/image',
 };
 
 export const eventConfig = {
