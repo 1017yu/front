@@ -15,32 +15,24 @@ const RenderHtml: React.FC<TPostDetailProps> = ({
   created_at,
   updated_at,
 }) => {
-  const stringDate: String =
+  const stringDate: string =
     created_at === updated_at
       ? timeFormatChange(created_at)
       : timeFormatChange(updated_at) + ', 수정 됨';
 
   return (
     <div>
-      <div
-        className={
-          'mx-auto mt-[30px] rounded-md bg-white pb-[10px] pl-[15px] pr-[15px] pt-[10px] shadow-sm sm:w-[540px] md:w-[700px] lg:w-[1024px] xl:w-[1024px]'
-        }
-      >
-        <div className={'pb-[5px] pr-[10px] pt-[15px] text-4xl font-bold'}>
-          {title}
-        </div>
-        <div className={'pb-[5px]'}>
+      <div className="mt-[30px] w-full rounded-md bg-white p-5 shadow-sm">
+        <div className="text-4xl font-bold">{title}</div>
+        <div className="pt-4">
           <p>
             <span className={'font-bold'}>{nickname}</span> ·{' '}
-            <span className={'  text-gray-400'}>{stringDate}</span>
+            <span className={'text-gray-400'}>{stringDate}</span>
           </p>
         </div>
       </div>
       <div
-        className={
-          'mx-auto mb-[30px] mt-[15px] rounded-md bg-white pb-[10px] pl-[15px] pr-[15px] pt-[10px] shadow-sm sm:w-[540px] md:w-[700px] lg:w-[1024px] xl:w-[1024px]'
-        }
+        className={'mx-auto mb-6 mt-5 w-full rounded-md bg-white p-5 shadow-sm'}
         dangerouslySetInnerHTML={{ __html: content }}
       ></div>
     </div>

@@ -133,4 +133,18 @@ export const modalData = {
     content: '게시글 작성에 실패했습니다.\n잠시 후 다시 시도해주세요.',
     cancelButton: '닫기',
   },
+  POST_DELETE_CONFIRM: {
+    type: 'twoButton',
+    title: '게시글 삭제',
+    content: '게시글을 정말 삭제하시겠습니까?',
+    okButton: '삭제',
+    cancelButton: '취소',
+  },
+  POST_EDIT_CONFIRM: {
+    type: 'twoButton',
+    title: '게시글 수정',
+    content: '게시글을 정말 수정하시겠습니까?',
+    okButton: '수정',
+    cancelButton: '취소',
+  },
 };
