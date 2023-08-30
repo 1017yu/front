@@ -46,12 +46,12 @@ export default function App() {
             path="/survey-results/:surveyId"
             element={<SurveyResultDetail />}
           />
+          <Route path="/community/new" element={<NewPost />} />
           {/* not found */}
           <Route path="/*" element={<NotFound />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/community/new" element={<NewPost />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/confirmsignup" element={<ConfirmSignup />} />
         <Route element={<AdminLayout />}>

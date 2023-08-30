@@ -127,4 +127,10 @@ export const modalData = {
     content: '',
     cancelButton: '뒤로 가기',
   },
+  POST_CREATE_FAILUR: {
+    type: 'basic',
+    title: '작성 오류',
+    content: '게시글 작성에 실패했습니다.\n잠시 후 다시 시도해주세요.',
+    cancelButton: '닫기',
+  },
 };
