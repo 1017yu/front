@@ -37,7 +37,13 @@ const Post = () => {
   }, [id]);
 
   const handleEditClick = () => {
-    // TODO : 수정 모드
+    navigate('/community/new', {
+      state: {
+        title: content?.title,
+        content: content?.content,
+        id: content?.id,
+      },
+    });
   };
 
   const handleDeleteClick = () => {

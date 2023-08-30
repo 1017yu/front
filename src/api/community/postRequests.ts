@@ -16,3 +16,12 @@ export const deletePost = async (postId: number) => {
   const response = await apiInstance.delete(`/board/${postId}`);
   return response.data;
 };
+
+// 글 수정
+export const editPost = async (
+  postId: number,
+  post: IPostRequest,
+): Promise<IResponse<IPostDetail>> => {
+  const response = await apiInstance.patch(`/board/${postId}`, post);
+  return response.data;
+};
