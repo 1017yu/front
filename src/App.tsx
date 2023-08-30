@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import AdminLayout from '@/components/AdminLayout';
 import AdminSurvey from '@/routes/admin/AdminSurvey';
 import AdminSurveyDetail from '@/routes/admin/AdminSurveyDetail';
 import Home from '@/routes/Home';
@@ -23,8 +22,9 @@ import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
 import EditUserInfo from '@/routes/auth/EditUserInfo';
 import MyAccount from '@/routes/auth/MyAccount';
 import ModifyEvent from '@/routes/seller/ModifyEvent';
-import SignoutRequireRoute from './components/protectedRoutes/SignoutRequireRoute';
-import SigninRequireRoute from './components/protectedRoutes/SigninRequireRoute';
+import SignoutRequireRoute from '@/components/protectedRoutes/SignoutRequireRoute';
+import SigninRequireRoute from '@/components/protectedRoutes/SigninRequireRoute';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function App() {
   return (

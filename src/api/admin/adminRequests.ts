@@ -36,3 +36,9 @@ export const modifySurvey = async (survey: IAdminSurvey) => {
   const response = await apiInstance.put(`/admin/survey/${survey.id}`, survey);
   return response.data;
 };
+
+// 롤확인(어드민 여부 확인)
+export const getRole = async () => {
+  const response = await apiInstance('/test');
+  return response.data;
+};

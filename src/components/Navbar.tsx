@@ -47,38 +47,49 @@ export default function Navbar() {
       </div>
       <div>
         <ul className="flex items-center gap-2">
-          {/* 관리자 메뉴 임시 생성 */}
-          <li>
-            <Link to="/admin/survey">관리자</Link>
-          </li>
-
           {user ? (
-            <>
-              <li className="text-subTextAndBorder">
-                <Link to="/myaccount">{user.nickname}님</Link>
-              </li>
-              <li>
-                <Link to="/myaccount">
-                  <img
-                    src={
-                      `${user.profileImgUrl}` === 'profileDefaultImageUrl'
-                        ? dummyProfile
-                        : user.profileImgUrl
-                    }
-                    alt="profile"
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
-                </Link>
-              </li>
-              <Button
-                color="error"
-                variant="outlined"
-                size="small"
-                onClick={handleLogout}
-              >
-                {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
-              </Button>
-            </>
+            user.role === 'ROLE_ADMIN' ? (
+              <>
+                <li>
+                  <Link to="/admin/survey">관리자</Link>
+                </li>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                >
+                  {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <li className="text-subTextAndBorder">
+                  <Link to="/myaccount">{user.nickname}님</Link>
+                </li>
+                <li>
+                  <Link to="/myaccount">
+                    <img
+                      src={
+                        `${user.profileImgUrl}` === 'profileDefaultImageUrl'
+                          ? dummyProfile
+                          : user.profileImgUrl
+                      }
+                      alt="profile"
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  </Link>
+                </li>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                >
+                  {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
+                </Button>
+              </>
+            )
           ) : (
             <>
               <li>
