@@ -23,7 +23,8 @@ import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
 import EditUserInfo from '@/routes/auth/EditUserInfo';
 import MyAccount from '@/routes/auth/MyAccount';
 import ModifyEvent from '@/routes/seller/ModifyEvent';
-import SignoutRequireRoute from './components/protectedRoutes/signoutRequireRoute';
+import SignoutRequireRoute from './components/protectedRoutes/SignoutRequireRoute';
+import SigninRequireRoute from './components/protectedRoutes/SigninRequireRoute';
 
 export default function App() {
   return (
@@ -32,8 +33,13 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/myaccount" element={<MyAccount />} />
-          <Route path="/myaccount/edit" element={<EditUserInfo />} />
+
+          {/* 로그인이 필요한 라우트 */}
+          <Route element={<SigninRequireRoute />}>
+            <Route path="/myaccount" element={<MyAccount />} />
+            <Route path="/myaccount/edit" element={<EditUserInfo />} />
+          </Route>
+
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<Event />} />
           <Route path="/community" element={<Community />} />
