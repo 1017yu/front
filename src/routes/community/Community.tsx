@@ -47,14 +47,6 @@ const Community = (): JSX.Element => {
     handleGetBoardPage(page || 0);
   }, [page]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
-
   return (
     <div
       className={
@@ -62,7 +54,7 @@ const Community = (): JSX.Element => {
       }
     >
       <div className={'flex items-center justify-between  pb-[35px] pt-[35px]'}>
-        <h1 className={'text-[40px] font-thin'}>전체 글</h1>
+        <h1 className={'text-[40px] font-medium'}>커뮤니티</h1>
         <div className={'w-36'}>
           <Button
             contents={'새 글 작성'}
