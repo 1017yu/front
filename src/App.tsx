@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import AdminLayout from '@/components/AdminLayout';
 import AdminSurvey from '@/routes/admin/AdminSurvey';
 import AdminSurveyDetail from '@/routes/admin/AdminSurveyDetail';
 import Home from '@/routes/Home';
@@ -20,8 +19,12 @@ import PostEvent from '@/routes/seller/PostEvent';
 import Survey from '@/routes/survey/Survey';
 import SurveyResults from '@/routes/survey/SurveyResults';
 import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
+import EditUserInfo from '@/routes/auth/EditUserInfo';
 import MyAccount from '@/routes/auth/MyAccount';
 import ModifyEvent from '@/routes/seller/ModifyEvent';
+import SignoutRequireRoute from '@/components/protectedRoutes/SignoutRequireRoute';
+import SigninRequireRoute from '@/components/protectedRoutes/SigninRequireRoute';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function App() {
   return (
@@ -30,7 +33,13 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/myaccount" element={<MyAccount />} />
+
+          {/* 로그인이 필요한 라우트 */}
+          <Route element={<SigninRequireRoute />}>
+            <Route path="/myaccount" element={<MyAccount />} />
+            <Route path="/myaccount/edit" element={<EditUserInfo />} />
+          </Route>
+
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<Event />} />
           <Route path="/community" element={<Community />} />
@@ -48,10 +57,16 @@ export default function App() {
           {/* not found */}
           <Route path="/*" element={<NotFound />} />
         </Route>
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/confirmsignup" element={<ConfirmSignup />} />
+
+        {/* 로그인시 접근 불가능 */}
+        <Route element={<SignoutRequireRoute />}>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/confirmsignup" element={<ConfirmSignup />} />
+        </Route>
+
+        <Route path="/community/new" element={<NewPost />} />
         <Route element={<AdminLayout />}>
           <Route path="/admin/survey" element={<AdminSurvey />} />
           <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />

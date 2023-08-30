@@ -8,10 +8,6 @@ export const NAV_ITEMS = [
     href: '/events',
   },
   {
-    label: '공간찾기',
-    href: '/search',
-  },
-  {
     label: '회원 커뮤니티',
     href: '/community',
   },
@@ -19,14 +15,6 @@ export const NAV_ITEMS = [
     label: '수요조사 결과',
     href: '/survey-results',
   },
-  // {
-  //   label: '임차대행',
-  //   href: '/rent',
-  // },
-  // {
-  //   label: '프로모션대행',
-  //   href: '/promotion',
-  // },
 ];
 
 export const ADMIN_NAV_ITEMS = [
@@ -54,8 +42,8 @@ export const EMAIL_REGEX =
 // 비밀번호 8자리 이상 숫자 최소 1개, 문자 최소 1개
 export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-// 닉네임 정규식(영어, 숫자, 특수기호( . , _ , - 만 허용) 2~10글자)
-export const NICKNAME_REGEX = /^[a-z0-9._-]{2,10}$/;
+// 닉네임 정규식(영어, 숫자, 특수기호( . , _ , - 만 허용) 2~16글자)
+export const NICKNAME_REGEX = /^[a-z0-9._-]{2,16}$/;
 
 export const EVENT_CATEGORY_OPTIONS = [
   '레저',

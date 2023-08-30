@@ -10,7 +10,8 @@ export interface IServerUser {
   profileImgUrl: string;
   accessToken: string;
   refreshToken: string;
-  role: 'ROLE_USER' | 'ROLE_SELLER';
+  role: 'ROLE_USER' | 'ROLE_SELLER' | 'ROLE_ADMIN';
+  platform: 'BASIC' | 'KAKAO';
 }
 
 export type ILocalUser = Omit<IServerUser, 'userId'>;

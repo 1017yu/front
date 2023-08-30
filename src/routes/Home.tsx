@@ -13,9 +13,9 @@ import { ISurveyResponse } from '@/types/ISurvey';
 import { fetchEvents } from '@/api/events/events';
 import ReactS3Client from 'react-aws-s3-typescript';
 import { useCallback, useEffect, useState } from 'react';
-import SurveyPopUp from '@/components/survey/SurveyPopUp';
 import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
+import SurveyPopUp from '@/components/survey/SurveyPopUp';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -125,14 +125,6 @@ export default function Home() {
       />
 
       <Container>
-        <div>이메일 : {user?.email}</div>
-        <div>닉네임 : {user?.nickname}</div>
-        <div>프로필이미지url : {user?.profileImgUrl}</div>
-        {/* 이미지 업로드 S3 테스트 */}
-        <form>
-          <input type="file" accept="image/*" onChange={onChangeFile} />
-        </form>
-        {/* {user?.accessToken} */}
         {activeSurvey &&
           !activeSurvey.isDone &&
           moment().format('YYYY-MM-DD') !== closeTodayDate && (

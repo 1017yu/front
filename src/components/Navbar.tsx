@@ -1,5 +1,5 @@
 import { NAV_ITEMS } from '@/data/constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Popple from './ui/Popple';
 import { useUser } from '@/hooks/useUser';
 import dummyProfile from '@/assets/dummy-profile.png';
@@ -10,6 +10,7 @@ import { logout } from '@/api/auth/logout';
 import customToast from '@/utils/customToast';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const { user, setUser } = useUser();
 
   const [isLoggingout, setIsLoggingout] = useState(false);
@@ -28,11 +29,12 @@ export default function Navbar() {
       setUser(null);
       localStorage.removeItem('user');
       setIsLoggingout(false);
+      navigate('/');
     }
   };
 
   return (
-    <header className="container mx-auto flex items-center justify-between px-10 py-2 shadow-lg">
+    <header className="container mx-auto flex h-12 items-center justify-between border-b px-10 py-2 shadow-lg">
       <div className="flex items-center gap-10">
         <Popple />
         <ul className="flex gap-3">
@@ -45,38 +47,49 @@ export default function Navbar() {
       </div>
       <div>
         <ul className="flex items-center gap-2">
-          {/* 관리자 메뉴 임시 생성 */}
-          <li>
-            <Link to="/admin/survey">관리자</Link>
-          </li>
-
           {user ? (
-            <>
-              <li className="text-subTextAndBorder">
-                <Link to="/myaccount">{user.nickname}님</Link>
-              </li>
-              <li>
-                <Link to="/myaccount">
-                  <img
-                    src={
-                      `${user.profileImgUrl}` === 'profileDefaultImageUrl'
-                        ? dummyProfile
-                        : user.profileImgUrl
-                    }
-                    alt="profile"
-                    className="w-8 rounded-full"
-                  />
-                </Link>
-              </li>
-              <Button
-                color="error"
-                variant="outlined"
-                size="small"
-                onClick={handleLogout}
-              >
-                {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
-              </Button>
-            </>
+            user.role === 'ROLE_ADMIN' ? (
+              <>
+                <li>
+                  <Link to="/admin/survey">관리자</Link>
+                </li>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                >
+                  {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <li className="text-subTextAndBorder">
+                  <Link to="/myaccount">{user.nickname}님</Link>
+                </li>
+                <li>
+                  <Link to="/myaccount">
+                    <img
+                      src={
+                        `${user.profileImgUrl}` === 'profileDefaultImageUrl'
+                          ? dummyProfile
+                          : user.profileImgUrl
+                      }
+                      alt="profile"
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  </Link>
+                </li>
+                <Button
+                  color="error"
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                >
+                  {isLoggingout ? <LoadingSpinner color="red" /> : '로그아웃'}
+                </Button>
+              </>
+            )
           ) : (
             <>
               <li>
