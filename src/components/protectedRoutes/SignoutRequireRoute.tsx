@@ -1,5 +1,4 @@
 import { useUser } from '@/hooks/useUser';
-import customToast from '@/utils/customToast';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export default function SignoutRequireRoute() {
@@ -7,6 +6,5 @@ export default function SignoutRequireRoute() {
   if (!user) {
     return <Outlet />;
   }
-  customToast('로그아웃 해주세요', 'error');
   return <Navigate to="/" replace />;
 }
