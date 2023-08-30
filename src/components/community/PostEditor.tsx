@@ -67,6 +67,7 @@ const PostEditor = ({
     if (!id) {
       return;
     }
+
     editPost(id, {
       title: title,
       content: editorContent,
@@ -94,7 +95,7 @@ const PostEditor = ({
     }
 
     if (isEditMode) {
-      handleEditPost();
+      openModal({ ...modalData.POST_EDIT_CONFIRM, okCallback: handleEditPost });
       return;
     }
     handleSaveNewPost();

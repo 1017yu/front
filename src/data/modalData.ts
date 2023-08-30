@@ -140,4 +140,11 @@ export const modalData = {
     okButton: '삭제',
     cancelButton: '취소',
   },
+  POST_EDIT_CONFIRM: {
+    type: 'twoButton',
+    title: '게시글 수정',
+    content: '게시글을 정말 수정하시겠습니까?',
+    okButton: '수정',
+    cancelButton: '취소',
+  },
 };
