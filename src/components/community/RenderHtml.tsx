@@ -15,7 +15,7 @@ const RenderHtml: React.FC<TPostDetailProps> = ({
   created_at,
   updated_at,
 }) => {
-  const stringDate: String =
+  const stringDate: string =
     created_at === updated_at
       ? timeFormatChange(created_at)
       : timeFormatChange(updated_at) + ', 수정 됨';
@@ -33,7 +33,7 @@ const RenderHtml: React.FC<TPostDetailProps> = ({
         <div className={'pb-[5px]'}>
           <p>
             <span className={'font-bold'}>{nickname}</span> ·{' '}
-            <span className={'  text-gray-400'}>{stringDate}</span>
+            <span className={'text-gray-400'}>{stringDate}</span>
           </p>
         </div>
       </div>

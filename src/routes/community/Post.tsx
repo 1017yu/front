@@ -8,19 +8,13 @@ import IPostDetail from '@/types/IPostDetail';
 import Comments from '@/components/community/Comments';
 
 const Post = () => {
-  const [content, setContent] = useState<IPostDetail>() || null;
+  const [content, setContent] = useState<IPostDetail | null>(null);
   const { user } = useUser();
-  const config = {
-    headers: {
-      Authorization: 'Bearer ' + user?.accessToken,
-    },
-  };
   const { id } = useParams();
-  const parsedId = id ? parseInt(id, 10) : undefined;
 
   useEffect(() => {
-    if (parsedId !== undefined) {
-      getPostDetail(parsedId).then((res) => {
+    if (id) {
+      getPostDetail(Number(id)).then((res) => {
         try {
           setContent(res.data);
         } catch (error) {
@@ -28,7 +22,7 @@ const Post = () => {
         }
       });
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     console.log('content : ', content);
@@ -38,15 +32,15 @@ const Post = () => {
     <div>
       <div>
         <RenderHtml
-          nickname={content?.nickname || ''}
-          title={content?.title || ''}
-          content={content?.content || ''}
-          created_at={content?.createdAt || ''}
-          updated_at={content?.updatedAt || ''}
+          nickname={content?.nickname ?? ''}
+          title={content?.title ?? ''}
+          content={content?.content ?? ''}
+          created_at={content?.createdAt ?? ''}
+          updated_at={content?.updatedAt ?? ''}
         />
       </div>
       <div>
-      <Comments TCommentsList={content?.comments || []} />
+        <Comments TCommentsList={content?.comments || []} />
       </div>
     </div>
   );
