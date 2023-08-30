@@ -23,6 +23,7 @@ import SurveyResultDetail from '@/routes/survey/SurveyResultDetail';
 import EditUserInfo from '@/routes/auth/EditUserInfo';
 import MyAccount from '@/routes/auth/MyAccount';
 import ModifyEvent from '@/routes/seller/ModifyEvent';
+import SignoutRequireRoute from './components/protectedRoutes/signoutRequireRoute';
 
 export default function App() {
   return (
@@ -50,10 +51,16 @@ export default function App() {
           {/* not found */}
           <Route path="/*" element={<NotFound />} />
         </Route>
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/confirmsignup" element={<ConfirmSignup />} />
+
+        {/* 로그인시 접근 불가능 */}
+        <Route element={<SignoutRequireRoute />}>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/confirmsignup" element={<ConfirmSignup />} />
+        </Route>
+
+        <Route path="/community/new" element={<NewPost />} />
         <Route element={<AdminLayout />}>
           <Route path="/admin/survey" element={<AdminSurvey />} />
           <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />
