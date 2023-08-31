@@ -59,7 +59,7 @@ const Community = (): JSX.Element => {
           <Button
             contents={'새 글 작성'}
             onClick={() => {
-              navigate('/community/new');
+              navigate('/community/new', { state: null });
             }}
           />
         </div>
