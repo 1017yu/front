@@ -97,7 +97,7 @@ export default function EventList() {
 
   return (
     <Container>
-      <div className="mb-8 rounded-lg bg-white pb-8 pt-4 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+      <div className="mb-8 rounded-lg bg-white py-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
         <div className="flex items-center justify-evenly sm:mt-0 sm:justify-between">
           <Title text={eventData.EVENT_LIST_TITLE} />
           {isSeller && (

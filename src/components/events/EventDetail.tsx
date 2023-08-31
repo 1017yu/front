@@ -62,7 +62,7 @@ export default function EventDetail() {
   }, [id, isParticipate, navigate, openModal, setEventData, setEventFormValue]);
 
   return (
-    <div className="container mx-auto my-12 rounded-lg bg-white pb-16 drop-shadow-md sm:max-w-[1250px] sm:p-16">
+    <div className="px-2 container mx-auto my-12 rounded-lg bg-white pb-16 drop-shadow-md sm:max-w-[1250px] sm:p-16">
       {eventData && id && (
         <>
           <EventDetailBox
