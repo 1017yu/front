@@ -43,8 +43,8 @@ function EventLayout({ ...props }: IEvents) {
   };
 
   return (
-    <Link to={`/events/${props.id}`} className="mb-8 w-auto">
-      <div className="relative mb-4 overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 drop-shadow-md transition hover:shadow-lg">
+    <Link to={`/events/${props.id}`}>
+      <div className="h-[348px] relative mb-8 sm:mb-16 overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 drop-shadow-md transition hover:shadow-lg">
         <img
           className="h-48 w-[300px] object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={

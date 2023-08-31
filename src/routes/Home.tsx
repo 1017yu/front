@@ -13,6 +13,10 @@ import { useCallback, useEffect, useState } from 'react';
 import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
 import SurveyPopUp from '@/components/survey/SurveyPopUp';
+import { getBoardPage } from '@/api/community/getBoard';
+import IPostListItem from '@/types/IPostListItem';
+import PostItem from '@/components/community/PostItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [activeSurvey, setActiveSurvey] = useState<ISurveyResponse | null>(
@@ -22,6 +26,8 @@ export default function Home() {
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
   const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
+  const [boardList, setBoardList] =  useState<IPostListItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchActiveSurvey().then((res) => {
@@ -36,8 +42,8 @@ export default function Home() {
   }, []);
 
   // 전체 이벤트 페이지로 이동
-  const handleMoveEventsPage = () => {
-    location.assign('/events');
+  const handleMovePage = (isEvent: boolean) => {
+    return isEvent ? navigate('/events') : navigate('/community')
   };
 
   useEffect(() => {
@@ -53,14 +59,26 @@ export default function Home() {
       }
     };
 
+    const fetchBoardData = async (page: number) => {
+      try {
+        const response = await getBoardPage(page);
+        setBoardList(response.data);
+      } catch (error) {
+        openModal({
+          ...modalData.EVENT_RESPONSE_ERROR,
+        });
+      }
+    };
+
     fetchEventsData();
+    fetchBoardData(0);
 
     const getBookmark = localStorage.getItem('bookmark');
 
     if (getBookmark) {
       setLocalBookmarked(JSON.parse(getBookmark));
     }
-  }, []);
+  }, [openModal]);
 
   const bookmarkedList = eventsList
     .map((event) => ({
@@ -73,12 +91,9 @@ export default function Home() {
     .sort((a, b) => b.id - a.id);
 
   // 최근 등록된 이벤트 중 상위 4개
-  const recentList = [...bookmarkedList].slice(0, 4);
+  const recentEventList = [...bookmarkedList].slice(0, 4);
+  const recentBoardList = boardList.slice(0, 4);
 
-  // 카테고리가 '뷰티'인 이벤트 중 상위 4개
-  const beautyList = [...bookmarkedList]
-    .filter((value) => value.category.includes('뷰티'))
-    .slice(0, 4);
 
   return (
     <>
@@ -97,59 +112,47 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className="relative my-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
-          <div className="block sm:flex">
+        <div className="sm:overflow-hidden sm:max-h-[500px] mb-8 mt-4 rounded-lg bg-white pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+          <div className="flex items-center justify-evenly sm:justify-between">
             <Title text={eventData.EVENT_RECENT_STORE.title} />
-            <div className="mb-4 flex max-w-[12rem] items-center justify-center sm:mb-0 sm:justify-start">
+            <div className="max-w-[12rem] justify-center sm:mb-0 sm:justify-start">
               <button
-                className="hidden text-xl transition-all hover:scale-105 hover:transform sm:ml-8 sm:block"
-                onClick={handleMoveEventsPage}
+                className="sm:text-xl transition-all hover:scale-105 hover:transform sm:ml-8 text-xs"
+                onClick={() => handleMovePage(true)}
               >
                 {eventData.EVENT_RECENT_STORE.content}
               </button>
             </div>
           </div>
           <section className="body-font text-gray-600">
-            <div className="container mx-auto">
-              <div className="flex flex-wrap justify-between sm:mt-8">
-                {recentList.map((event) => (
-                  <EventLayout
-                    key={event.id}
-                    id={event.id}
-                    name={event.name}
-                    city={event.city}
-                    district={event.district}
-                    thumbnailUrl={event?.thumbnailUrl}
-                    category={event?.category}
-                    status={event.status}
-                    bookmark={event.bookmark}
-                  />
+            <div className="container mx-auto mt-8">
+              <div className="flex flex-wrap justify-center sm:justify-between">
+                {recentEventList.map((event) => (
+                  <EventLayout key={event.id} {...event} />
                 ))}
               </div>
             </div>
           </section>
         </div>
-        <div className="mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
-          <Title text={eventData.EVENT_BEAUTY_STORE} />
-          <section className="body-font text-gray-600">
-            <div className="container mx-auto">
-              <div className="flex flex-wrap justify-between sm:mt-8">
-                {beautyList.map((event) => (
-                  <EventLayout
-                    key={event.id}
-                    id={event.id}
-                    name={event.name}
-                    city={event.city}
-                    district={event.district}
-                    thumbnailUrl={event?.thumbnailUrl}
-                    category={event?.category}
-                    status={event.status}
-                    bookmark={event.bookmark}
-                  />
+        <div className="mb-8 mt-4 px-3 rounded-lg bg-white pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+          <div className='flex items-center justify-evenly sm:justify-between'>
+            <Title text={eventData.COMMUNITY_RECENT_BOARD} />
+             <div className="max-w-[12rem] justify-center sm:mb-0 sm:justify-start">
+              <button
+                className="sm:text-xl transition-all hover:scale-105 hover:transform sm:ml-8 text-xs"
+                onClick={() => handleMovePage(false)}
+              >
+                {eventData.EVENT_RECENT_STORE.content}
+              </button>
+            </div>
+          </div>
+            <div className="container mx-auto mt-8">
+              <div className="flex flex-col gap-10">
+                {recentBoardList.map((board) => (
+                  <PostItem key={board.id} data={board} />
                 ))}
               </div>
             </div>
-          </section>
         </div>
       </Container>
     </>

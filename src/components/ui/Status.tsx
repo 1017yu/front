@@ -29,12 +29,12 @@ export default function Status({ status }: IStatusProps) {
 
   return (
     <div
-      className={`text-whie mb-2 mt-6 flex h-10 max-w-[10rem] items-center rounded-3xl text-sm text-white sm:mb-4 sm:mt-6 sm:h-12 ${statusClass}`}
+      className={`text-whie mb-2 mt-6 flex h-10 w-[7rem] sm:w-[10rem] items-center rounded-3xl text-sm text-white sm:mb-2 sm:mt-6 sm:h-12 ${statusClass}`}
     >
       <div
-        className={`ml-6 mr-5 h-4 w-4 rounded-full sm:ml-5 sm:h-6 sm:pr-6 md:mr-6 ${statusClass} brightness-75`}
-      ></div>
-      <div className="text-base sm:text-xl lg:text-2xl">{statusText}</div>
+        className={`mx-4 sm:mx-5 h-4 w-4 sm:w-6 rounded-full sm:h-6 ${statusClass} brightness-75`}
+       />
+      <div className="text-base sm:text-xl lg:text-2xl sm:mb-1 font-light">{statusText}</div>
     </div>
   );
 }
