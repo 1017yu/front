@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ADMIN_NAV_ITEMS } from '@/data/constants';
 import Popple from '../ui/Popple';
+import { ADMIN_NAV_ITEMS } from '@/data/constants/navItems';
 
 const AdminNav = () => {
   const location = useLocation();

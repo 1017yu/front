@@ -10,14 +10,11 @@ import { useEffect, useMemo, useState } from 'react';
 import ReactS3Client from 'react-aws-s3-typescript';
 import { userConfig } from '@/data/s3configs';
 import moment from 'moment';
-import {
-  ADRESS_SELECT_OPTIONS,
-  NICKNAME_REGEX,
-  PASSWORD_REGEX,
-} from '@/data/constants';
+import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 import { verifyEmailOrNickname } from '@/api/auth/signup';
 import { ILocalUser } from '@/types/ISignin';
 import { useNavigate } from 'react-router-dom';
+import { NICKNAME_REGEX, PASSWORD_REGEX } from '@/data/constants/regex';
 
 export const useGetUserData = (isSeller: boolean) => {
   const [editInput, setEditInput] = useState({

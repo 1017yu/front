@@ -8,6 +8,7 @@ import { useState } from 'react';
 import LoadingSpinner from './ui/LoadingSpinner';
 import { logout } from '@/api/auth/logout';
 import customToast from '@/utils/customToast';
+import { NAV_ITEMS } from '@/data/constants/navItems';
 
 export default function Navbar() {
   const navigate = useNavigate();

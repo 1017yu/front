@@ -12,17 +12,17 @@ import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Popple from '@/components/ui/Popple';
 import Select from '@/components/ui/Select';
-import {
-  ADRESS_SELECT_OPTIONS,
-  EMAIL_REGEX,
-  NICKNAME_REGEX,
-  PASSWORD_REGEX,
-} from '@/data/constants';
+import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customToast from '@/utils/customToast';
 import Toggle from '@/components/ui/Toggle';
 import DaumPostcode from 'react-daum-postcode';
+import {
+  EMAIL_REGEX,
+  NICKNAME_REGEX,
+  PASSWORD_REGEX,
+} from '@/data/constants/regex';
 
 export default function SignUp() {
   const navigate = useNavigate();

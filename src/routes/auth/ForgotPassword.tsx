@@ -4,7 +4,7 @@ import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Popple from '@/components/ui/Popple';
 import Title from '@/components/ui/Title';
-import { EMAIL_REGEX } from '@/data/constants';
+import { EMAIL_REGEX } from '@/data/constants/regex';
 import customToast from '@/utils/customToast';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

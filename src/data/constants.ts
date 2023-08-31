@@ -2,49 +2,6 @@ import { createTheme } from '@mui/material/styles';
 
 export const API_BASE_URL = 'http://15.164.205.25:8080/api';
 
-export const NAV_ITEMS = [
-  {
-    label: '팝업스토어',
-    href: '/events',
-  },
-  {
-    label: '회원 커뮤니티',
-    href: '/community',
-  },
-  {
-    label: '수요조사 결과',
-    href: '/survey-results',
-  },
-];
-
-export const ADMIN_NAV_ITEMS = [
-  {
-    label: 'menu 1',
-    href: '/admin',
-    children: [], // 하위 메뉴 href
-  },
-  {
-    label: 'menu 2',
-    href: '/admin/menu2',
-    children: [],
-  },
-  {
-    label: '수요조사',
-    href: '/admin/survey',
-    children: ['/admin/survey/detail'],
-  },
-];
-
-// 이메일 유효성 정규식
-export const EMAIL_REGEX =
-  /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
-// 비밀번호 8자리 이상 숫자 최소 1개, 문자 최소 1개
-export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-
-// 닉네임 정규식(영어, 숫자, 특수기호( . , _ , - 만 허용) 2~16글자)
-export const NICKNAME_REGEX = /^[a-z0-9._-]{2,16}$/;
-
 export const EVENT_CATEGORY_OPTIONS = [
   '레저',
   '패션',
