@@ -432,7 +432,7 @@ export const eventData = {
     title: '⏰ 최근 등록된 스토어',
     content: '+ 더보기',
   },
-  EVENT_BEAUTY_STORE: '💅 뷰티 스토어',
+  COMMUNITY_RECENT_BOARD: '📰 최근 커뮤니티 목록',
   EVENT_DETAIL_DESCRIPTION: '상세 설명',
   EVENT_DETAIL_MAP: '스토어 위치',
 
