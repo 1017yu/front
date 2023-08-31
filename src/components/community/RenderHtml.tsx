@@ -15,27 +15,22 @@ const RenderHtml: React.FC<TPostDetailProps> = ({
   created_at,
   updated_at,
 }) => {
-  const stringDate: string =
+  const stringDate =
     created_at === updated_at
       ? timeFormatChange(created_at)
       : timeFormatChange(updated_at) + ', 수정 됨';
 
   return (
-    <div>
-      <div className="mt-[30px] w-full rounded-md bg-white p-5 shadow-sm">
-        <div className="text-4xl font-bold">{title}</div>
-        <div className="pt-4">
-          <p>
-            <span className={'font-bold'}>{nickname}</span> ·{' '}
-            <span className={'text-gray-400'}>{stringDate}</span>
-          </p>
-        </div>
-      </div>
+    <>
+      <div className="text-2xl font-bold sm:mb-2 sm:text-4xl">{title}</div>
+      <span className="mr-2 font-bold">{nickname}</span>
+      <span className="text-gray-400">{stringDate}</span>
       <div
-        className={'mx-auto mb-6 mt-5 w-full rounded-md bg-white p-5 shadow-sm'}
+        className="mx-auto rounded-md sm:my-16"
         dangerouslySetInnerHTML={{ __html: content }}
-      ></div>
-    </div>
+      />
+      <hr />
+    </>
   );
 };
 export default RenderHtml;

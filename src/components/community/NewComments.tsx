@@ -1,32 +1,56 @@
-import React, { useState, ChangeEvent, useCallback } from 'react';
 import Button from '@/components/ui/Button';
+import { postComment } from '@/api/community/postComment';
+import { useState, ChangeEvent, useCallback } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { commentState } from '@/states/Community';
+import { modalData } from '@/data/modalData';
+import { useModal } from '@/hooks/useModal';
+import customToast from '@/utils/customToast';
 
-const NewComments = () => {
-  const [content, setContent] = useState<string>('');
+export default function NewComments({ id }: { id?: number }) {
+  const [contentInput, setContentInput] = useState('');
+  const setCommentValue = useSetRecoilState(commentState);
+  const { openModal } = useModal();
+
   const onChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value);
+    setContentInput(event.target.value);
   }, []);
+
   const onClick = useCallback(() => {
-    // API 호출 등의 동작을 수행
-    console.log('댓글 작성 버튼이 클릭되었습니다.');
-    console.log('댓글 내용:', content);
-    // 댓글 작성 완료 후 content 값을 초기화
-    setContent('');
-  }, [content]);
+    if (id) {
+      try {
+        openModal({
+          ...modalData.COMMUNITY_POST_COMMENT,
+          okCallback: async () => {
+            await postComment(id, contentInput);
+            setCommentValue((prev) => ({
+              ...prev,
+              isUpdated: !prev.isUpdated,
+            }));
+            setContentInput('');
+            customToast('댓글이 등록되었습니다.', 'success');
+          },
+        });
+      } catch (error) {
+        alert(error);
+      }
+      // API 호출 등의 동작을 수행
+      // 댓글 작성 완료 후 content 값을 초기화
+    }
+  }, [contentInput, id, openModal, setCommentValue]);
 
   return (
-    <div className={'mb-[30px] flex flex-col border-b-2 p-[10px] pt-[15px]'}>
+    <div className="mb-8 flex flex-col rounded-md">
       <textarea
-        className={'mb-[15px] h-[100px] rounded-md p-[10px] focus:outline-none'}
-        value={content}
+        className="min-h-[6rem] rounded-md border-2 p-4 focus:outline-none"
+        value={contentInput}
         onChange={onChange}
-        placeholder={'댓글을 작성하세요'}
+        placeholder="댓글을 작성하세요"
       />
-      <div className={'self-end'}>
-        <Button contents={'댓글 작성'} onClick={onClick} />
+      <div className="mb-8 mt-8 self-end">
+        <Button contents="댓글 작성" onClick={onClick} />
       </div>
+      <hr />
     </div>
   );
-};
-
-export default React.memo(NewComments);
+}

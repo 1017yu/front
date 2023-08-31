@@ -71,7 +71,7 @@ export const modalData = {
     title: '스토어 등록',
     content: '스토어를 등록하시겠습니까?',
     okButton: '등록',
-    cancleButton: '닫기',
+    cancelButton: '닫기',
   },
   SELLER_DELETE_CHECK: {
     type: 'twoButton',
@@ -79,14 +79,14 @@ export const modalData = {
     content:
       '⚠️ 해당 스토어를 삭제하시겠습니까? \n삭제된 게시글은 복구 되지 않습니다.',
     okButton: '삭제',
-    cancleButton: '취소',
+    cancelButton: '취소',
   },
   SELLER_JOIN_CHECK: {
     type: 'twoButton',
     title: '행사에 셀러로 참가',
     content: '해당 스토어에 참가하시겠습니까?',
     okButton: '참가',
-    cancleButton: '취소',
+    cancelButton: '취소',
   },
 
   SELLER_CANCEL_CHECK: {
@@ -94,20 +94,20 @@ export const modalData = {
     title: '참가 예정 행사 취소',
     content: '참가 예정인 행사를 참가 취소하시겠습니까?',
     okButton: '확인',
-    cancleButton: '뒤로 가기',
+    cancelButton: '뒤로 가기',
   },
   SELLER_MODIFY_CHECK: {
     type: 'twoButton',
     title: '등록된 스토어 수정',
     content: '수정하시겠습니까?',
     okButton: '수정',
-    cancleButton: '취소',
+    cancelButton: '취소',
   },
   SELLER_MODIFY_IMAGE: {
     type: 'twoButton',
     title: '현재 등록된 이미지',
     okButton: '변경하기',
-    cancleButton: '유지하기',
+    cancelButton: '유지하기',
   },
   SELLER_POST_RESPONSE_ERROR: {
     type: 'basic',
@@ -132,6 +132,33 @@ export const modalData = {
     title: '작성 오류',
     content: '게시글 작성에 실패했습니다.\n잠시 후 다시 시도해주세요.',
     cancelButton: '닫기',
+  },
+  COMMUNITY_POST_COMMENT: {
+    type: 'twoButton',
+    title: '댓글 등록',
+    content: '댓글을 등록하시겠습니까?',
+    okButton: '확인',
+    cancelButton: '취소',
+  },
+  COMMUNITY_EDIT_COMMENT: {
+    type: 'twoButton',
+    title: '댓글 수정',
+    content: '댓글을 수정하시겠습니까?',
+    okButton: '수정',
+    cancelButton: '취소',
+  },
+  COMMUNITY_DELETE_COMMENT: {
+    type: 'twoButton',
+    title: '댓글 삭제',
+    content: '댓글을 삭제하시겠습니까?',
+    okButton: '삭제',
+    cancelButton: '취소',
+  },
+  COMMUNITY_RESPONSE_ERRROR: {
+    type: 'basic',
+    title: '존재하지 않는 글',
+    content: '존재하지 않는 게시글입니다.',
+    cancelButton: '뒤로 가기',
   },
   POST_DELETE_CONFIRM: {
     type: 'twoButton',
