@@ -1,9 +1,16 @@
-import { useState, useRef, useCallback, ChangeEvent, useMemo } from 'react';
+import {
+  useState,
+  useRef,
+  useCallback,
+  ChangeEvent,
+  useMemo,
+  useEffect,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { boardConfig } from '@/data/s3configs';
 import Button from '@/components/ui/Button';
 import customToast from '@/utils/customToast';
-import { createPost } from '@/api/community/postRequests';
+import { createPost, editPost } from '@/api/community/postRequests';
 import { useModal } from '@/hooks/useModal';
 
 import ReactQuill, { Quill } from 'react-quill';
@@ -15,7 +22,19 @@ import { modalData } from '@/data/modalData';
 
 Quill.register('modules/ImageResize', ImageResize);
 
-const PostEditor = (): JSX.Element => {
+type PostEditorProps = {
+  isEditMode: boolean;
+  id?: number;
+  postTitle?: string;
+  postContent?: string;
+};
+
+const PostEditor = ({
+  isEditMode = false,
+  id,
+  postTitle,
+  postContent,
+}: PostEditorProps): JSX.Element => {
   const navigate = useNavigate();
   const titleInputRef = useRef<HTMLInputElement | null>(null);
   const contentRef = useRef<ReactQuill | null>(null);
@@ -23,7 +42,46 @@ const PostEditor = (): JSX.Element => {
   const [editorContent, setEditorContent] = useState<string>('');
   const { openModal } = useModal();
 
-  const savePost = useCallback(async () => {
+  useEffect(() => {
+    if (isEditMode && postTitle && postContent && id) {
+      setTitle(postTitle);
+      setEditorContent(postContent);
+    }
+  }, [isEditMode, postTitle, postContent, id]);
+
+  const handleSaveNewPost = useCallback(async () => {
+    createPost({
+      title: title,
+      content: editorContent,
+    }).then(
+      (res) => {
+        navigate(`/community/${res.data.id}`, { replace: true });
+      },
+      () => {
+        openModal(modalData.POST_CREATE_FAILUR);
+      },
+    );
+  }, [title, editorContent, navigate, openModal]);
+
+  const handleEditPost = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
+    editPost(id, {
+      title: title,
+      content: editorContent,
+    }).then(
+      (res) => {
+        navigate(`/community/${res.data.id}`, { replace: true });
+      },
+      () => {
+        openModal(modalData.POST_CREATE_FAILUR);
+      },
+    );
+  }, [title, editorContent, navigate, openModal, id]);
+
+  const savePost = useCallback(() => {
     if (title.trim() === '') {
       titleInputRef.current?.focus();
       customToast('제목을 입력해주세요.', 'error');
@@ -36,17 +94,11 @@ const PostEditor = (): JSX.Element => {
       return;
     }
 
-    createPost({
-      title: title,
-      content: editorContent,
-    }).then(
-      (res) => {
-        navigate(`/community/${res.data.id}`, { replace: true });
-      },
-      () => {
-        openModal(modalData.POST_CREATE_FAILUR);
-      },
-    );
+    if (isEditMode) {
+      openModal({ ...modalData.POST_EDIT_CONFIRM, okCallback: handleEditPost });
+      return;
+    }
+    handleSaveNewPost();
   }, [title, editorContent, navigate, openModal]);
 
   const cancelPost = useCallback(() => {

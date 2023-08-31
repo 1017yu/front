@@ -19,6 +19,10 @@ export default {
         surveyItems: '2fr 1fr 1fr 120px 50px',
         smSurveyItems: '1.5fr 1fr 1fr 1.2fr 40px',
       },
+      fontFamily: {
+        base: ['Noto Sans KR', 'sans-serif'],
+        logo: ['Luckiest Guy'],
+      },
     },
   },
   plugins: [],

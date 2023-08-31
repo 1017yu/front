@@ -22,7 +22,7 @@ export default function Select({
   disabled,
 }: SelectProps) {
   return (
-    <div className="relative block">
+    <div className="relative block text-xs sm:text-sm">
       <label
         className="text-xs text-subTextAndBorder sm:text-base"
         htmlFor={label}
@@ -34,7 +34,7 @@ export default function Select({
         value={value}
         name={name}
         onChange={onChange}
-        className="block h-12 w-full appearance-none rounded-md border-2 border-subTextAndBorder bg-transparent px-3 py-2 transition focus:border-accent focus:outline-none"
+        className="block h-10 w-full appearance-none rounded-md border-2 border-subTextAndBorder bg-transparent px-3 py-2 transition focus:border-accent focus:outline-none sm:h-12"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

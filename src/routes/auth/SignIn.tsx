@@ -2,7 +2,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Toggle from '@/components/ui/Toggle';
 import Popple from '@/components/ui/Popple';
 import { useUser } from '@/hooks/useUser';
@@ -16,6 +16,9 @@ export default function SignIn() {
   const [isSeller, setIsSeller] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [loginInput, setLoginInput] = useState({ email: '', password: '' });
+
+  const location = useLocation();
+  const from = location.state?.redirectedFrom.pathname;
 
   const { setUser } = useUser();
 
@@ -56,13 +59,14 @@ export default function SignIn() {
           accessToken: serverUserData.accessToken,
           refreshToken: serverUserData.refreshToken,
           role: serverUserData.role,
+          platform: serverUserData.platform,
         };
         // 전역 사용자 지정
         setUser(localUserData);
         // 로컬저장소 저장
         localStorage.setItem('user', JSON.stringify(localUserData));
         // 홈으로 이동
-        navigate('/');
+        navigate(from);
         // 성공메세지 토스트
         customToast(`${localUserData.nickname}님 반가워요🖐️🖐️`, 'success');
       }
@@ -77,7 +81,7 @@ export default function SignIn() {
   return (
     <div className="flex h-screen items-center justify-center bg-slate-100">
       <form
-        className="flex w-5/6 flex-col gap-4 rounded-md bg-white p-5 sm:w-[600px] sm:p-8"
+        className="flex w-5/6 flex-col gap-4 rounded-md bg-white p-5 shadow-lg sm:w-[600px] sm:p-8"
         onSubmit={handleLogin}
       >
         <div className="mx-auto w-32">

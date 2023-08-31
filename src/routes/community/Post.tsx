@@ -46,11 +46,11 @@ const Post = () => {
     <Container>
       <div className="bg-white p-8">
         <RenderHtml
-          nickname={content?.nickname || ''}
-          title={content?.title || ''}
-          content={content?.content || ''}
-          created_at={content?.createdAt || ''}
-          updated_at={content?.updatedAt || ''}
+          nickname={content?.nickname ?? ''}
+          title={content?.title ?? ''}
+          content={content?.content ?? ''}
+          created_at={content?.createdAt ?? ''}
+          updated_at={content?.updatedAt ?? ''}
         />
         <Comment comments={content?.comments || []} id={content?.id} />
       </div>

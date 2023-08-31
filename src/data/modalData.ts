@@ -160,4 +160,18 @@ export const modalData = {
     content: '존재하지 않는 게시글입니다.',
     cancelButton: '뒤로 가기',
   },
+  POST_DELETE_CONFIRM: {
+    type: 'twoButton',
+    title: '게시글 삭제',
+    content: '게시글을 정말 삭제하시겠습니까?',
+    okButton: '삭제',
+    cancelButton: '취소',
+  },
+  POST_EDIT_CONFIRM: {
+    type: 'twoButton',
+    title: '게시글 수정',
+    content: '게시글을 정말 수정하시겠습니까?',
+    okButton: '수정',
+    cancelButton: '취소',
+  },
 };

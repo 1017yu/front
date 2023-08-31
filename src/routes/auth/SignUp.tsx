@@ -12,17 +12,17 @@ import Input from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Popple from '@/components/ui/Popple';
 import Select from '@/components/ui/Select';
-import {
-  ADRESS_SELECT_OPTIONS,
-  EMAIL_REGEX,
-  NICKNAME_REGEX,
-  PASSWORD_REGEX,
-} from '@/data/constants';
+import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customToast from '@/utils/customToast';
 import Toggle from '@/components/ui/Toggle';
 import DaumPostcode from 'react-daum-postcode';
+import {
+  EMAIL_REGEX,
+  NICKNAME_REGEX,
+  PASSWORD_REGEX,
+} from '@/data/constants/regex';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -365,7 +365,7 @@ export default function SignUp() {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10 bg-slate-100">
       <form
-        className="relative flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-sm sm:w-[600px] sm:gap-4"
+        className="relative flex w-5/6 flex-col gap-1 rounded-md bg-white p-5 shadow-lg sm:w-[600px] sm:gap-4"
         onSubmit={isSeller ? handleSellerSignup : handleSignup}
       >
         <div className="mx-auto w-32">
@@ -459,7 +459,7 @@ export default function SignUp() {
         </div>
         <div className="flex items-end gap-2">
           <Input
-            label="비밀번호* (영문, 숫자 8자리 이상)"
+            label="비밀번호*"
             name="password"
             onChange={handleChange}
             value={signupInput.password}

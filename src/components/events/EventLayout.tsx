@@ -44,7 +44,7 @@ function EventLayout({ ...props }: IEvents) {
 
   return (
     <Link to={`/events/${props.id}`} className="mb-8 w-auto">
-      <div className="relative mb-4 overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 drop-shadow-md hover:shadow-lg">
+      <div className="relative mb-4 overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 drop-shadow-md transition hover:shadow-lg">
         <img
           className="h-48 w-[300px] object-cover object-center md:ml-0 md:h-36 lg:h-48"
           src={
@@ -55,7 +55,7 @@ function EventLayout({ ...props }: IEvents) {
           alt="Thumbnail"
         />
         <button
-          className="absolute right-3 top-3 text-2xl transition-all hover:scale-125 hover:transform hover:shadow-2xl"
+          className="absolute right-3 top-3 text-2xl transition hover:scale-125 hover:transform hover:shadow-2xl"
           onClick={handleClick}
         >
           {bookmark ? (

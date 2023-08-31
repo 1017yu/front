@@ -1,13 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
-import { ADMIN_NAV_ITEMS } from '@/data/constants';
 import Popple from '../ui/Popple';
+import { ADMIN_NAV_ITEMS } from '@/data/constants/navItems';
 
 const AdminNav = () => {
   const location = useLocation();
   const path = location.pathname;
 
   return (
-    <div className="flex h-[56px] w-full items-center justify-between bg-white pr-3 sm:h-full sm:w-[200px] sm:min-w-[200px] sm:flex-col sm:px-5 sm:py-10">
+    <div className="flex h-[56px] w-full items-center justify-between bg-white px-5 pr-3 sm:h-full sm:w-[200px] sm:min-w-[200px] sm:flex-col sm:py-10">
       <Link to="/">
         <Popple />
       </Link>
@@ -19,7 +19,7 @@ const AdminNav = () => {
               path === item.href || item.children.includes(path)
                 ? 'sm:bg-accent sm:text-white'
                 : 'sm:bg-white sm:text-black'
-            } sm:container sm:rounded-lg sm:py-2`}
+            } text-center sm:container sm:rounded-lg sm:py-2`}
           >
             <Link to={item.href} className="px-2 text-sm sm:px-3 sm:text-base">
               {item.label}

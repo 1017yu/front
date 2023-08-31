@@ -77,51 +77,54 @@ const AdminSurvey = () => {
 
   return (
     <div
-      className="flex h-screen w-full flex-col bg-gray-100 px-5 py-10"
+      className="flex h-screen w-full flex-col gap-14 bg-gray-100 px-5 py-10"
       onClick={closeMenu}
     >
-      <h1 className="text-2xl font-bold">수요조사 관리</h1>
-      <div className="h-9 w-[200px] self-end">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">수요조사 관리</h1>
+
         <Link to="/admin/survey/detail">
           <Button contents={'수요조사 등록하기'} />
         </Link>
       </div>
 
       {/* 수요조사 목록 */}
-      <ul className="mt-[70px] grid grid-cols-smSurveyItems gap-3 border-b border-subTextAndBorder bg-white sm:grid-cols-surveyItems">
-        <li className="pl-5 text-sm leading-[56px] sm:pl-10 sm:text-base sm:leading-[56px]">
-          제목
-        </li>
-        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
-          조사 시작일
-        </li>
-        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
-          조사 종료일
-        </li>
-        <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
-          상태
-        </li>
-        <li className="mr-[10px] h-[56px] w-10"></li>
-      </ul>
-
-      {surveyList.length !== 0 ? (
-        <ul>
-          {surveyList.map((item) => (
-            <SurveyItem
-              key={item.id}
-              survey={item}
-              isOpen={openMenuID === item.id}
-              onClickMore={onClickMore}
-              onClickMenuItem={onClickMenuItem}
-              onClickDetails={() => {
-                moveToDetail(item);
-              }}
-            />
-          ))}
+      <div className="overflow-auto rounded-lg shadow-lg">
+        <ul className="grid grid-cols-smSurveyItems gap-3 rounded-tl-lg rounded-tr-lg border-b border-subTextAndBorder bg-white sm:grid-cols-surveyItems">
+          <li className="pl-5 text-sm leading-[56px] sm:pl-10 sm:text-base sm:leading-[56px]">
+            제목
+          </li>
+          <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+            시작일
+          </li>
+          <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+            종료일
+          </li>
+          <li className="text-sm leading-[56px] sm:text-base sm:leading-[56px]">
+            상태
+          </li>
+          <li className="mr-[10px] h-[56px] w-10"></li>
         </ul>
-      ) : (
-        <div className="bg-white p-5">수요조사가 없습니다.</div>
-      )}
+
+        {surveyList.length !== 0 ? (
+          <ul>
+            {surveyList.map((item) => (
+              <SurveyItem
+                key={item.id}
+                survey={item}
+                isOpen={openMenuID === item.id}
+                onClickMore={onClickMore}
+                onClickMenuItem={onClickMenuItem}
+                onClickDetails={() => {
+                  moveToDetail(item);
+                }}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="bg-white p-5">수요조사가 없습니다.</div>
+        )}
+      </div>
     </div>
   );
 };
