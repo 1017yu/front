@@ -21,7 +21,5 @@ export interface IComment {
 
 export interface ICommentState extends IComment {
   content: string;
-  isEdited?: boolean;
-  isDeleted?: boolean;
-  isPosted?: boolean;
+  isUpdated?: boolean;
 }

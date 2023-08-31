@@ -43,7 +43,7 @@ const CommentItem: React.FC<IPostComments> = ({
           await deleteComment(id);
           setCommentValue((prev) => ({
             ...prev,
-            isDeleted: true,
+            isUpdated: !prev.isUpdated,
           }));
           customToast('댓글이 삭제되었습니다.', 'success');
         },
@@ -63,7 +63,7 @@ const CommentItem: React.FC<IPostComments> = ({
           setCommentValue((prev) => ({
             ...prev,
             content: commentValue.content,
-            isEdited: true,
+            isUpdated: !prev.isUpdated,
           }));
           handleChangeEditMode();
           customToast('댓글이 수정되었습니다.', 'success');

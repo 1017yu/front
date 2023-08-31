@@ -25,7 +25,7 @@ export default function NewComments({ id }: { id?: number }) {
             await postComment(id, contentInput);
             setCommentValue((prev) => ({
               ...prev,
-              isPosted: true,
+              isUpdated: !prev.isUpdated,
             }));
             setContentInput('');
             customToast('댓글이 등록되었습니다.', 'success');

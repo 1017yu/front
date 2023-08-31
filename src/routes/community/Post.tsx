@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import RenderHtml from '@/components/community/RenderHtml';
 import { getPostDetail } from '@/api/community/getPostDetail';
@@ -18,6 +18,15 @@ const Post = () => {
   const { openModal } = useModal();
   const navigator = useNavigate();
 
+  const handleFetchError = useCallback(() => {
+    openModal({
+      ...modalData.COMMUNITY_RESPONSE_ERRROR,
+      cancelCallback: () => {
+        navigator(-1);
+      },
+    });
+  }, [openModal, navigator]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,25 +35,12 @@ const Post = () => {
           setContent(res.data);
         }
       } catch (error) {
-        openModal({
-          ...modalData.COMMUNITY_RESPONSE_ERRROR,
-          cancelCallback: () => {
-            navigator(-1);
-          },
-        });
+        handleFetchError();
       }
     };
 
     fetchData();
-  }, [
-    parsedId,
-    setContent,
-    commentValue.isEdited,
-    commentValue.isDeleted,
-    commentValue.isPosted,
-    navigator,
-    openModal,
-  ]);
+  }, [parsedId, setContent, commentValue.isUpdated, handleFetchError]);
 
   return (
     <Container>

@@ -10,8 +10,6 @@ export const commentState = atom<ICommentState>({
     profileUrl: '',
     inactive: false,
     content: '',
-    isEdited: false,
-    isDeleted: false,
-    isPosted: false,
+    isUpdated: false,
   },
 });
