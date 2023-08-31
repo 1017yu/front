@@ -98,7 +98,7 @@ const Post = () => {
               </div>
             </div>
           )}
-          <div className="bg-white p-8">
+          <div className="my-10 bg-white p-8">
             <RenderHtml
               nickname={content?.nickname ?? ''}
               title={content?.title ?? ''}
