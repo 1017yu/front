@@ -38,6 +38,8 @@ export default function App() {
           <Route element={<SigninRequireRoute />}>
             <Route path="/myaccount" element={<MyAccount />} />
             <Route path="/myaccount/edit" element={<EditUserInfo />} />
+            <Route path="/community/new" element={<NewPost />} />
+            <Route path="/survey" element={<Survey />} />
           </Route>
 
           <Route path="/events" element={<Events />} />
@@ -47,13 +49,12 @@ export default function App() {
           <Route path="/auth/kakao/callback" element={<Kakao />} />
           <Route path="/seller/new" element={<PostEvent />} />
           <Route path="/seller/modify" element={<ModifyEvent />} />
-          <Route path="/survey" element={<Survey />} />
           <Route path="/survey-results" element={<SurveyResults />} />
           <Route
             path="/survey-results/:surveyId"
             element={<SurveyResultDetail />}
           />
-          <Route path="/community/new" element={<NewPost />} />
+
           {/* not found */}
           <Route path="/*" element={<NotFound />} />
         </Route>
@@ -66,7 +67,6 @@ export default function App() {
           <Route path="/confirmsignup" element={<ConfirmSignup />} />
         </Route>
 
-        <Route path="/community/new" element={<NewPost />} />
         <Route element={<AdminLayout />}>
           <Route path="/admin/survey" element={<AdminSurvey />} />
           <Route path="/admin/survey/detail" element={<AdminSurveyDetail />} />

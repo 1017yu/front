@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import PostEditor from '@/components/community/PostEditor';
 
 const NewPost = (): JSX.Element => {
-  const { title = null, content = null, id = null } = useLocation().state;
+  const { title, content, id } = useLocation().state;
 
   return (
     <div>
