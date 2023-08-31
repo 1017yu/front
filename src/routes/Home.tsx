@@ -25,7 +25,9 @@ export default function Home() {
 
   useEffect(() => {
     fetchActiveSurvey().then((res) => {
-      setActiveSurvey(res.data);
+      if (res) {
+        setActiveSurvey(res.data);
+      }
     });
   }, []);
 

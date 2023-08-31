@@ -190,7 +190,9 @@ const PostEditor = ({
 
   return (
     <div
-      className={'mx-5 my-5 rounded bg-white px-5 py-5 sm:mx-auto sm:w-[55%]'}
+      className={
+        'mx-5 my-5 flex h-[80vh] max-w-[1020px] flex-col rounded bg-white px-5 py-5 sm:mx-auto sm:w-[80%]'
+      }
     >
       <input
         ref={titleInputRef}
@@ -202,12 +204,12 @@ const PostEditor = ({
         placeholder="제목을 입력하세요."
         onChange={handleChangeTitle}
       />
-      <div className={'mb-[15px] h-[10px] w-[350px] bg-gray-400'}></div>
+      <div className={'mb-[15px] h-[10px] w-[70%] bg-gray-400'}></div>
       <ReactQuill
         ref={(ref) => {
           contentRef.current = ref;
         }}
-        className={'h-[70vh]'}
+        className="mb-10 flex-grow"
         placeholder="여기에 내용을 입력하세요."
         value={editorContent}
         onChange={handleChangeContent}
@@ -215,11 +217,11 @@ const PostEditor = ({
         formats={formats}
         theme="snow"
       />
-      <div className={'flex w-[100%] justify-between'}>
-        <div className={'mt-[60px] w-[150px]'}>
+      <div className={'flex w-[100%] shrink-0 justify-between pt-10'}>
+        <div className={'w-[150px]'}>
           <Button contents={'뒤로가기'} onClick={cancelPost} />
         </div>
-        <div className={'mt-[60px] w-[150px]'}>
+        <div className={'w-[150px]'}>
           <Button contents={'작성하기'} onClick={savePost} />
         </div>
       </div>

@@ -3,12 +3,14 @@ import IResponse from '@/types/IResponse';
 import { ISurveyRequest, ISurveyResponse } from '@/types/ISurvey';
 
 // * 진행중인 수요조사 조회
-export const fetchActiveSurvey = async (): Promise<
-  IResponse<ISurveyResponse>
-> => {
-  const response = await apiInstance.get(`/survey/active`);
-  return response.data;
-};
+export const fetchActiveSurvey =
+  async (): Promise<IResponse<ISurveyResponse> | null> => {
+    const response = await apiInstance.get(`/survey/active`);
+    if (typeof response.data.data === 'string') {
+      return null;
+    }
+    return response.data;
+  };
 
 // * 수요조사 답변 제출
 export const submitSurvey = async (params: ISurveyRequest) => {
