@@ -51,7 +51,7 @@ const SurveyPopUp = React.memo(
     }, [navigate, surveyData, openModal, closePopUp, user]);
 
     return (
-      <div className="z-1000 absolute bottom-0 left-0 right-0 m-auto aspect-square w-full sm:top-0 sm:h-[440px] sm:w-[400px] sm:drop-shadow-md">
+      <div className="absolute bottom-0 left-0 right-0 z-50 m-auto aspect-square w-full sm:top-0 sm:h-[440px] sm:w-[400px] sm:drop-shadow-md">
         <div
           className="w-full overflow-hidden rounded-t-2xl object-contain sm:h-[400px] sm:w-[400px]"
           onClick={handleClickSurvey}

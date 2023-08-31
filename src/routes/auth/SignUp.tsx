@@ -459,7 +459,7 @@ export default function SignUp() {
         </div>
         <div className="flex items-end gap-2">
           <Input
-            label="비밀번호* (영문, 숫자 8자리 이상)"
+            label="비밀번호*"
             name="password"
             onChange={handleChange}
             value={signupInput.password}
