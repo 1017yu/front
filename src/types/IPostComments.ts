@@ -3,11 +3,25 @@ export default interface IPostComments {
   createdAt: string;
   updatedAt: string;
   id: number;
-  member: {
-    email: string;
-    id: number;
-    inactive: boolean;
-    nickname: string;
-    profileUrl: string;
-  };
+  member: IComment;
+}
+
+export interface IComments {
+  comments: IPostComments[];
+  id?: number;
+}
+
+export interface IComment {
+  email: string;
+  id: number;
+  inactive: boolean;
+  nickname: string;
+  profileUrl: string;
+}
+
+export interface ICommentState extends IComment {
+  content: string;
+  isEdited?: boolean;
+  isDeleted?: boolean;
+  isPosted?: boolean;
 }
