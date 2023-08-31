@@ -19,29 +19,31 @@ const Post = () => {
   const navigator = useNavigate();
 
   useEffect(() => {
-    if (parsedId) {
-      getPostDetail(parsedId).then((res) => {
-        try {
+    const fetchData = async () => {
+      try {
+        if (parsedId) {
+          const res = await getPostDetail(parsedId);
           setContent(res.data);
-        } catch (error) {
-          // TOFIXED:  현재 존재하지 않는 게시글 조회 시 500 INTERNAL ERROR를 반환해서, 에러 처리가 안되는 듯.
-          openModal({
-            ...modalData.COMMUNITY_RESPONSE_ERRROR,
-            cancelCallback: () => {
-              navigator(-1);
-            },
-          });
         }
-      });
-    }
+      } catch (error) {
+        openModal({
+          ...modalData.COMMUNITY_RESPONSE_ERRROR,
+          cancelCallback: () => {
+            navigator(-1);
+          },
+        });
+      }
+    };
+
+    fetchData();
   }, [
     parsedId,
     setContent,
     commentValue.isEdited,
     commentValue.isDeleted,
     commentValue.isPosted,
-    openModal,
     navigator,
+    openModal,
   ]);
 
   return (

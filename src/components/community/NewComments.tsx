@@ -8,12 +8,12 @@ import { useModal } from '@/hooks/useModal';
 import customToast from '@/utils/customToast';
 
 export default function NewComments({ id }: { id?: number }) {
-  const [contentInput, setContentInput] = useState({ content: '' });
+  const [contentInput, setContentInput] = useState('');
   const setCommentValue = useSetRecoilState(commentState);
   const { openModal } = useModal();
 
   const onChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    setContentInput({ content: event.target.value });
+    setContentInput(event.target.value);
   }, []);
 
   const onClick = useCallback(() => {
@@ -25,14 +25,12 @@ export default function NewComments({ id }: { id?: number }) {
             await postComment(id, contentInput);
             setCommentValue((prev) => ({
               ...prev,
-              isDeleted: true,
+              isPosted: true,
             }));
-            setContentInput({ content: '' });
+            setContentInput('');
             customToast('댓글이 등록되었습니다.', 'success');
           },
         });
-
-        setCommentValue((prev) => ({ ...prev, isPosted: true }));
       } catch (error) {
         alert(error);
       }
@@ -45,7 +43,7 @@ export default function NewComments({ id }: { id?: number }) {
     <div className="mb-8 flex flex-col rounded-md">
       <textarea
         className="min-h-[6rem] rounded-md border-2 p-4 focus:outline-none"
-        value={contentInput.content}
+        value={contentInput}
         onChange={onChange}
         placeholder="댓글을 작성하세요"
       />
