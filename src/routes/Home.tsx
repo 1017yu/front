@@ -1,17 +1,14 @@
 import moment from 'moment';
 import Title from '@/components/ui/Title';
-import { useUser } from '@/hooks/useUser';
 import { IEvents } from '@/types/IEvents';
-import main_bg from '@/assets/main_bg.png';
+import banner from '@/assets/banner2.gif';
 import { useModal } from '@/hooks/useModal';
 import { eventData } from '@/data/constants';
 import { modalData } from '@/data/modalData';
 import { IBookmark } from '@/types/IBookmark';
-import { boardConfig } from '@/data/s3configs';
 import Container from '@/components/ui/Container';
 import { ISurveyResponse } from '@/types/ISurvey';
 import { fetchEvents } from '@/api/events/events';
-import ReactS3Client from 'react-aws-s3-typescript';
 import { useCallback, useEffect, useState } from 'react';
 import EventLayout from '@/components/events/EventLayout';
 import { fetchActiveSurvey } from '@/api/survey/surveyRequests';
@@ -23,9 +20,7 @@ export default function Home() {
   );
   const { openModal } = useModal();
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
-  const { user } = useUser();
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
 
   useEffect(() => {
@@ -83,45 +78,12 @@ export default function Home() {
     .filter((value) => value.category.includes('뷰티'))
     .slice(0, 4);
 
-  const uploadImage = async (file: File) => {
-    const s3 = new ReactS3Client(boardConfig);
-    try {
-      const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
-        file.name.split('.')[0]
-      }`;
-      const res = await s3.uploadFile(file, fileName);
-      setImageFile(null);
-      console.log(res.location);
-    } catch (error) {
-      // TODO : 파일 업로드 실패 예외처리
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (imageFile !== null) {
-      uploadImage(imageFile);
-    }
-  }, [imageFile]);
-
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      if (file.size > 5000000) {
-        // TODO 파일 사이즈 제한 예외처리
-        return;
-      }
-
-      setImageFile(file);
-    }
-  };
-
   return (
     <>
       <img
-        src={main_bg}
+        src={banner}
         alt="main_banner"
-        className="mx-auto h-96 object-cover md:w-full"
+        className="h-96 object-cover md:w-full"
       />
 
       <Container>
@@ -133,12 +95,12 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className=" mb-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
+        <div className="relative my-8 rounded-lg bg-white drop-shadow-md sm:mx-auto sm:px-12 sm:pb-8 sm:pt-12">
           <div className="block sm:flex">
             <Title text={eventData.EVENT_RECENT_STORE.title} />
             <div className="mb-4 flex max-w-[12rem] items-center justify-center sm:mb-0 sm:justify-start">
               <button
-                className="hidden text-xl transition-all hover:scale-110 hover:transform hover:shadow-xl sm:ml-8 sm:block"
+                className="hidden text-xl transition-all hover:scale-105 hover:transform sm:ml-8 sm:block"
                 onClick={handleMoveEventsPage}
               >
                 {eventData.EVENT_RECENT_STORE.content}
