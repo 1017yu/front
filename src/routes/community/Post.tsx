@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { commentState } from '@/states/Community';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
+import IErrorResponse from '@/types/IErrorResponse';
 
 const Post = () => {
   const [content, setContent] = useState<IPostDetail>() || null;
@@ -18,14 +19,19 @@ const Post = () => {
   const { openModal } = useModal();
   const navigator = useNavigate();
 
-  const handleFetchError = useCallback(() => {
-    openModal({
-      ...modalData.COMMUNITY_RESPONSE_ERRROR,
-      cancelCallback: () => {
-        navigator(-1);
-      },
-    });
-  }, [openModal, navigator]);
+  const handleFetchError = useCallback(
+    (isTokenError: boolean) => {
+      openModal({
+        ...(isTokenError
+          ? modalData.COMMUNITY_TOKEN_ERRROR
+          : modalData.COMMUNITY_RESPONSE_ERRROR),
+        cancelCallback: () => {
+          navigator(-1);
+        },
+      });
+    },
+    [openModal, navigator],
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +41,7 @@ const Post = () => {
           setContent(res.data);
         }
       } catch (error) {
-        handleFetchError();
+        handleFetchError((error as IErrorResponse).errorCode === 401);
       }
     };
 
@@ -44,16 +50,18 @@ const Post = () => {
 
   return (
     <Container>
-      <div className="bg-white p-8">
-        <RenderHtml
-          nickname={content?.nickname ?? ''}
-          title={content?.title ?? ''}
-          content={content?.content ?? ''}
-          created_at={content?.createdAt ?? ''}
-          updated_at={content?.updatedAt ?? ''}
-        />
-        <Comment comments={content?.comments || []} id={content?.id} />
-      </div>
+      {content && (
+        <div className="bg-white p-8">
+          <RenderHtml
+            nickname={content?.nickname ?? ''}
+            title={content?.title ?? ''}
+            content={content?.content ?? ''}
+            created_at={content?.createdAt ?? ''}
+            updated_at={content?.updatedAt ?? ''}
+          />
+          <Comment comments={content?.comments || []} id={content?.id} />
+        </div>
+      )}
     </Container>
   );
 };

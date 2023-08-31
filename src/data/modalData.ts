@@ -158,7 +158,13 @@ export const modalData = {
     type: 'basic',
     title: '존재하지 않는 글',
     content: '존재하지 않는 게시글입니다.',
-    cancelButton: '뒤로 가기',
+    cancelButton: '뒤로가기',
+  },
+  COMMUNITY_TOKEN_ERRROR: {
+    type: 'basic',
+    title: '로그인',
+    content: '로그인이 필요한 서비스입니다.',
+    cancelButton: '뒤로가기',
   },
   POST_DELETE_CONFIRM: {
     type: 'twoButton',
