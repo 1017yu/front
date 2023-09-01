@@ -25,8 +25,13 @@ import ModifyEvent from '@/routes/seller/ModifyEvent';
 import SignoutRequireRoute from '@/components/protectedRoutes/SignoutRequireRoute';
 import SigninRequireRoute from '@/components/protectedRoutes/SigninRequireRoute';
 import AdminLayout from '@/components/admin/AdminLayout';
+import { s3config } from '@/data/s3configs';
+
+import AWS from 'aws-sdk';
 
 export default function App() {
+  AWS.config.update(s3config);
+
   return (
     <>
       <MyToast />
