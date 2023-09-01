@@ -3,11 +3,11 @@ import { useRecoilState } from 'recoil';
 import Button from '@/components/ui/Button';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
-import { eventDirName } from '@/data/s3configs';
+import { eventDirName, client } from '@/data/s3configs';
 import { eventFormState } from '@/states/Events';
 import customToast from '@/utils/customToast';
 
-import AWS from 'aws-sdk';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface IPostImage {
@@ -22,25 +22,32 @@ export default function ModifyImage({ ...props }: IPostImage) {
   const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
 
   const uploadImage = async (file: File) => {
-    const s3 = new AWS.S3();
     try {
       const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
         file.name.split('.')[0]
       }`;
-      s3.upload({
+
+      const params = {
         Bucket: import.meta.env.VITE_BUCKET_NAME,
         Key: `${eventDirName}${fileName}`,
         Body: file,
-      })
-        .promise()
-        .then((res) => {
+      };
+
+      const command = new PutObjectCommand(params);
+      await client.send(command).then((res) => {
+        if (res.$metadata.httpStatusCode === 200) {
+          const url = `https://${
+            import.meta.env.VITE_BUCKET_NAME
+          }.s3.ap-northeast-2.amazonaws.com/${eventDirName}${fileName}`;
+
           setImageFile(null);
           // 업로드된 이미지의 URL을 thumbnailUrl에 설정
           setEventFormValue({
             ...eventFormValue,
-            thumbnailUrl: res.Location,
+            thumbnailUrl: url,
           });
-        });
+        }
+      });
     } catch (error) {
       customToast('이미지 업로드를 실패했어요😭', 'error');
     }

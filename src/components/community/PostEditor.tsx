@@ -7,7 +7,7 @@ import {
   useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { boardDirName } from '@/data/s3configs';
+import { client, boardDirName } from '@/data/s3configs';
 import Button from '@/components/ui/Button';
 import customToast from '@/utils/customToast';
 import { createPost, editPost } from '@/api/community/postRequests';
@@ -18,7 +18,7 @@ import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import moment from 'moment';
 import { modalData } from '@/data/modalData';
-import AWS from 'aws-sdk';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -120,26 +120,30 @@ const PostEditor = ({
         return;
       }
 
-      const s3 = new AWS.S3();
-
       try {
         const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
           file.name.split('.')[0]
         }`;
 
-        s3.upload({
+        const params = {
           Bucket: import.meta.env.VITE_BUCKET_NAME,
           Key: `${boardDirName}${fileName}`,
           Body: file,
-        })
-          .promise()
-          .then((res) => {
+        };
+
+        const command = new PutObjectCommand(params);
+        await client.send(command).then((res) => {
+          if (res.$metadata.httpStatusCode === 200) {
+            const url = `https://${
+              import.meta.env.VITE_BUCKET_NAME
+            }.s3.ap-northeast-2.amazonaws.com/${boardDirName}${fileName}`;
             const editor = contentRef.current?.getEditor();
             const range = editor?.getSelection();
             if (editor && range) {
-              editor.insertEmbed(range.index, 'image', res.Location);
+              editor.insertEmbed(range.index, 'image', url);
             }
-          });
+          }
+        });
       } catch (error) {
         customToast('이미지 업로드를 실패했어요😭', 'error');
       }
