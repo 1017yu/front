@@ -11,6 +11,6 @@ export default defineConfig({
     },
   },
   define: {
-    global: 'globalThis' || window,
+    _global: {},
   },
 });
