@@ -10,4 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  ...(process.env.NODE_ENV === 'development'
+    ? {
+        define: {
+          global: {},
+        },
+      }
+    : {}),
 });

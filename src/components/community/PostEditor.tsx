@@ -7,7 +7,7 @@ import {
   useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { boardConfig } from '@/data/s3configs';
+import { client, boardDirName } from '@/data/s3configs';
 import Button from '@/components/ui/Button';
 import customToast from '@/utils/customToast';
 import { createPost, editPost } from '@/api/community/postRequests';
@@ -16,9 +16,9 @@ import { useModal } from '@/hooks/useModal';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from 'quill-image-resize-module-ts';
-import ReactS3Client from 'react-aws-s3-typescript';
 import moment from 'moment';
 import { modalData } from '@/data/modalData';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 Quill.register('modules/ImageResize', ImageResize);
 
@@ -120,19 +120,30 @@ const PostEditor = ({
         return;
       }
 
-      const s3 = new ReactS3Client(boardConfig);
-
       try {
         const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
           file.name.split('.')[0]
         }`;
-        const res = await s3.uploadFile(file, fileName);
 
-        const editor = contentRef.current.getEditor();
-        const range = editor.getSelection();
-        if (range) {
-          editor.insertEmbed(range.index, 'image', res.location);
-        }
+        const params = {
+          Bucket: import.meta.env.VITE_BUCKET_NAME,
+          Key: `${boardDirName}${fileName}`,
+          Body: file,
+        };
+
+        const command = new PutObjectCommand(params);
+        await client.send(command).then((res) => {
+          if (res.$metadata.httpStatusCode === 200) {
+            const url = `https://${
+              import.meta.env.VITE_BUCKET_NAME
+            }.s3.ap-northeast-2.amazonaws.com/${boardDirName}${fileName}`;
+            const editor = contentRef.current?.getEditor();
+            const range = editor?.getSelection();
+            if (editor && range) {
+              editor.insertEmbed(range.index, 'image', url);
+            }
+          }
+        });
       } catch (error) {
         customToast('이미지 업로드를 실패했어요😭', 'error');
       }

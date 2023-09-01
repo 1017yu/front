@@ -7,8 +7,8 @@ import {
 import { useUser } from '@/hooks/useUser';
 import customToast from '@/utils/customToast';
 import { useEffect, useMemo, useState } from 'react';
-import ReactS3Client from 'react-aws-s3-typescript';
-import { userConfig } from '@/data/s3configs';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { client, userDirName } from '@/data/s3configs';
 import moment from 'moment';
 import { ADRESS_SELECT_OPTIONS } from '@/data/constants';
 import { verifyEmailOrNickname } from '@/api/auth/signup';
@@ -73,17 +73,29 @@ export const useProfileImage = (user: ILocalUser | null) => {
     user?.profileImgUrl as string,
   );
   const uploadImage = async (file: File) => {
-    const s3 = new ReactS3Client(userConfig);
     try {
       const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
         file.name.split('.')[0]
       }`;
-      const res = await s3.uploadFile(file, fileName);
-      setProfileImageFile(null);
-      setProfileImageURL(res.location);
+      const params = {
+        Bucket: import.meta.env.VITE_BUCKET_NAME,
+        Key: `${userDirName}${fileName}`,
+        Body: file,
+      };
+
+      const command = new PutObjectCommand(params);
+      await client.send(command).then((res) => {
+        if (res.$metadata.httpStatusCode === 200) {
+          const url = `https://${
+            import.meta.env.VITE_BUCKET_NAME
+          }.s3.ap-northeast-2.amazonaws.com/${userDirName}${fileName}`;
+          setProfileImageFile(null);
+          setProfileImageURL(url);
+        }
+      });
+      setProfileImageURL('');
     } catch (error) {
       customToast('이미지 업로드에 실패했습니다.', 'error');
-      console.log(error);
     }
   };
 

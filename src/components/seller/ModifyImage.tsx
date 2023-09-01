@@ -3,9 +3,11 @@ import { useRecoilState } from 'recoil';
 import Button from '@/components/ui/Button';
 import { useModal } from '@/hooks/useModal';
 import { modalData } from '@/data/modalData';
-import { boardConfig } from '@/data/s3configs';
+import { eventDirName, client } from '@/data/s3configs';
 import { eventFormState } from '@/states/Events';
-import ReactS3Client from 'react-aws-s3-typescript';
+import customToast from '@/utils/customToast';
+
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface IPostImage {
@@ -20,22 +22,34 @@ export default function ModifyImage({ ...props }: IPostImage) {
   const [eventFormValue, setEventFormValue] = useRecoilState(eventFormState);
 
   const uploadImage = async (file: File) => {
-    const s3 = new ReactS3Client(boardConfig);
     try {
       const fileName = `${moment().format('YYMMDDhh:mm:ss')}_${
         file.name.split('.')[0]
       }`;
-      const res = await s3.uploadFile(file, fileName);
-      setImageFile(null);
 
-      // 업로드된 이미지의 URL을 thumbnailUrl에 설정
-      setEventFormValue({
-        ...eventFormValue,
-        thumbnailUrl: res.location,
+      const params = {
+        Bucket: import.meta.env.VITE_BUCKET_NAME,
+        Key: `${eventDirName}${fileName}`,
+        Body: file,
+      };
+
+      const command = new PutObjectCommand(params);
+      await client.send(command).then((res) => {
+        if (res.$metadata.httpStatusCode === 200) {
+          const url = `https://${
+            import.meta.env.VITE_BUCKET_NAME
+          }.s3.ap-northeast-2.amazonaws.com/${eventDirName}${fileName}`;
+
+          setImageFile(null);
+          // 업로드된 이미지의 URL을 thumbnailUrl에 설정
+          setEventFormValue({
+            ...eventFormValue,
+            thumbnailUrl: url,
+          });
+        }
       });
     } catch (error) {
-      // TODO: 파일 업로드 실패 예외처리
-      console.log(error);
+      customToast('이미지 업로드를 실패했어요😭', 'error');
     }
   };
 
@@ -49,7 +63,7 @@ export default function ModifyImage({ ...props }: IPostImage) {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file.size > 5000000) {
-        // TODO 파일 사이즈 제한 예외처리
+        customToast('이미지 사이즈가 너무 커요🥲', 'error');
         return;
       }
       setImageFile(file);
