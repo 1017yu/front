@@ -15,7 +15,7 @@
     "@headlessui/react": "^1.7.15",
     "@mui/material": "^5.14.1",
     "@types/uuid": "^8.0.1",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "dotenv": "^16.3.1",
     "moment": "^2.29.4",
     "quill-image-resize-module-ts": "^3.0.3",
