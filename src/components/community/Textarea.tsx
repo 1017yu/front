@@ -1,5 +1,3 @@
-import { ChangeEvent } from 'react';
-
 interface TextareaProps {
   contents: string;
   onChange: any;

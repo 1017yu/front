@@ -3,7 +3,7 @@ import { useUser } from '@/hooks/useUser';
 import { ILocalUser } from '@/types/ISignin';
 import customToast from '@/utils/customToast';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Kakao() {
