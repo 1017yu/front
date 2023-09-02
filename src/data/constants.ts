@@ -1,7 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-export const API_BASE_URL = 'http://15.164.205.25:8080/api';
-
 export const EVENT_CATEGORY_OPTIONS = [
   '레저',
   '패션',

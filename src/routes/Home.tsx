@@ -26,7 +26,7 @@ export default function Home() {
   const closeTodayDate = localStorage.getItem('CloseTodayDate');
   const [eventsList, setEventsList] = useState<IEvents[]>([]); // 모든 이벤트 목록
   const [localBookmarked, setLocalBookmarked] = useState<IBookmark[]>([]);
-  const [boardList, setBoardList] =  useState<IPostListItem[]>([]);
+  const [boardList, setBoardList] = useState<IPostListItem[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,14 +43,14 @@ export default function Home() {
 
   // 전체 이벤트 페이지로 이동
   const handleMovePage = (isEvent: boolean) => {
-    return isEvent ? navigate('/events') : navigate('/community')
+    return isEvent ? navigate('/events') : navigate('/community');
   };
 
   useEffect(() => {
     // 모든 이벤트 조회
     const fetchEventsData = async () => {
       try {
-        const response = await fetchEvents();
+        const response = await fetchEvents(0);
         setEventsList(response.data.content);
       } catch (error) {
         openModal({
@@ -94,7 +94,6 @@ export default function Home() {
   const recentEventList = [...bookmarkedList].slice(0, 4);
   const recentBoardList = boardList.slice(0, 4);
 
-
   return (
     <>
       <img
@@ -112,12 +111,12 @@ export default function Home() {
               closePopUp={closeSurveyPopUp}
             />
           )}
-        <div className="sm:overflow-hidden sm:max-h-[500px] mb-8 mt-4 rounded-lg bg-white pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+        <div className="mb-8 mt-4 rounded-lg bg-white pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:max-h-[500px] sm:overflow-hidden sm:p-12">
           <div className="flex items-center justify-evenly sm:justify-between">
             <Title text={eventData.EVENT_RECENT_STORE.title} />
             <div className="max-w-[12rem] justify-center sm:mb-0 sm:justify-start">
               <button
-                className="sm:text-xl transition-all hover:scale-105 hover:transform sm:ml-8 text-xs"
+                className="text-xs transition-all hover:scale-105 hover:transform sm:ml-8 sm:text-xl"
                 onClick={() => handleMovePage(true)}
               >
                 {eventData.EVENT_RECENT_STORE.content}
@@ -134,25 +133,25 @@ export default function Home() {
             </div>
           </section>
         </div>
-        <div className="mb-8 mt-4 px-3 rounded-lg bg-white pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
-          <div className='flex items-center justify-evenly sm:justify-between'>
+        <div className="mb-8 mt-4 rounded-lg bg-white px-3 pb-8 pt-8 drop-shadow-md sm:mx-auto sm:mb-8 sm:p-12">
+          <div className="flex items-center justify-evenly sm:justify-between">
             <Title text={eventData.COMMUNITY_RECENT_BOARD} />
-             <div className="max-w-[12rem] justify-center sm:mb-0 sm:justify-start">
+            <div className="max-w-[12rem] justify-center sm:mb-0 sm:justify-start">
               <button
-                className="sm:text-xl transition-all hover:scale-105 hover:transform sm:ml-8 text-xs"
+                className="text-xs transition-all hover:scale-105 hover:transform sm:ml-8 sm:text-xl"
                 onClick={() => handleMovePage(false)}
               >
                 {eventData.EVENT_RECENT_STORE.content}
               </button>
             </div>
           </div>
-            <div className="container mx-auto mt-8">
-              <div className="flex flex-col gap-10">
-                {recentBoardList.map((board) => (
-                  <PostItem key={board.id} data={board} />
-                ))}
-              </div>
+          <div className="container mx-auto mt-8">
+            <div className="flex flex-col gap-10">
+              {recentBoardList.map((board) => (
+                <PostItem key={board.id} data={board} />
+              ))}
             </div>
+          </div>
         </div>
       </Container>
     </>
