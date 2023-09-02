@@ -12,13 +12,14 @@ export default function Kakao() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const code = queryParams.get('code');
+  const deployUrl = import.meta.env.VITE_DEPLOY_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response1 = await axios.post(
           'https://kauth.kakao.com/oauth/token',
-          `grant_type=authorization_code&client_id=510e09592b1197652bfa854b34a2592d&redirect_uri=http://localhost:5173/auth/kakao/callback&code=${code}`,
+          `grant_type=authorization_code&client_id=510e09592b1197652bfa854b34a2592d&redirect_uri=${deployUrl}/auth/kakao/callback&code=${code}`,
           {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
